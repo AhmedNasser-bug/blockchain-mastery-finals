@@ -909,8 +909,11 @@ window.addEventListener('DOMContentLoaded', init);
 
 // Service Worker Config
 if ('serviceWorker' in navigator) {
-    // ENABLE for deployment
-    navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW Registered', reg))
-        .catch(err => console.log('SW Failed', err));
+    // UNREGISTER any existing service workers to clear cache
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+            console.log('Unregistering SW to clear cache:', registration);
+            registration.unregister();
+        }
+    });
 }

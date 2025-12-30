@@ -25,32 +25,8 @@ Your application has been prepped for a production-grade deployment on Netlify.
 To ensure this app is robust for your exams, we added:
 
 *   **`index.html`**: A production copy of `index2.html` (standard entry point).
-*   **PWA Support (`manifest.json` & `sw.js`)**: You can now **install this app** on your phone or desktop. Updates work offline!
-*   **SEO & Social Tags**: Added proper title, description, and Open Graph tags so links look good when shared.
-*   **Offline Capability**: The app uses a Service Worker to cache questions, so you can study even without internet.
-*   **Mobile Icon**: An SVG icon was created for the home screen installation.
+*   **SEO & Social Tags**: Added proper title, description, and Open Graph tags.
 
-## � How to Download & Use Offline
+## 📱 Use on Mobile
 
-### Option A: The "Install" Button (Easiest)
-1.  Open the site on your phone or computer.
-2.  Look for the **"⬇️ Install App"** button at the top right.
-3.  Tap it and follow the prompt to add to your home screen.
-
-### Option B: Browser Menu
-**On iPhone (iOS Safari):**
-1.  Tap the "Share" button (square with arrow up).
-2.  Scroll down and tap **"Add to Home Screen"**.
-
-**On Android (Chrome):**
-1.  Tap the three dots `⋮` menu.
-2.  Tap **"Install app"** or **"Add to Home screen"**.
-
-**Once installed**:
-*   Turn off your WiFi/Data.
-*   Open the app from your home screen.
-*   **It works perfectly!** (Questions are cached automatically).
-
-## �🔍 Verification
-
-After deployment, open the link on your phone. You should see an "Add to Home Screen" prompt (or find it in the browser menu). The app will feel like a native mobile app.
+After deployment, simply open the link on your phone browser. The responsive design ensures it works perfectly on all devices.
