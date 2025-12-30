@@ -16,10 +16,14 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛓️</text></svg>">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="stylesheet" href="css/styles.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="css/styles.css?v=1.1.1">
 </head>
 
 <body>
+    <!-- Body content omitted for brevity, identical to original except scripts -->
     <button id="installBtn">
         <span>⬇️</span> Install App
     </button>
@@ -259,8 +263,9 @@
             </div>
         </div>
 
-        <script src="js/data.js"></script>
-        <script src="js/app.js"></script>
+        <!-- Cache-busting: v=1.1.1 forces reload on update -->
+        <script src="js/data.js?v=1.1.1"></script>
+        <script src="js/app.js?v=1.1.1"></script>
 </body>
 
 </html>
