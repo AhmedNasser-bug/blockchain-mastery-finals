@@ -1,9 +1,13 @@
-const CACHE_NAME = 'blockchain-prep-v1';
+const CACHE_NAME = 'blockchain-mastery-v2-rev1';
 const ASSETS = [
-    './',
-    './index.html',
-    './manifest.json',
-    './icon.svg'
+    '/',
+    '/index.html',
+    '/css/styles.css',
+    '/js/app.js',
+    '/js/config.js',
+    '/js/questions.js',
+    '/js/terminology.js',
+    '/manifest.json'
 ];
 
 self.addEventListener('install', (e) => {
