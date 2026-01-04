@@ -10,8 +10,12 @@
     "n8n-bridge": "npx ts-node src/scripts/export_config.ts"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.6",
     "@astrojs/netlify": "^6.6.3",
+    "@types/he": "^1.2.3",
     "astro": "^5.16.6",
+    "he": "^1.2.0",
+    "typescript": "^5.9.3",
     "zod": "^3.25.76",
     "zod-to-json-schema": "^3.25.1"
   }

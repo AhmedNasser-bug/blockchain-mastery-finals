@@ -29,6 +29,7 @@
 
 <script>
     import type { SubjectData as Subject } from "../../data/subjects/Subject";
+    import { escapeHtml } from '../../utils';
 
     class RevisionScreenController {
         private subject: Subject;
@@ -78,21 +79,21 @@
                 .map(
                     (cat) => `
                 <div class="category-section">
-                    <h3 class="category-header">${cat}</h3>
+                    <h3 class="category-header">${escapeHtml(cat)}</h3>
                     <div class="revision-grid">
                         ${categorized[cat]
                             .map(
                                 (term) => `
-                            <div class="term-card" data-term="${term.key.toLowerCase()}">
+                            <div class="term-card" data-term="${escapeHtml(term.key.toLowerCase())}">
                                 <div class="term-header">
-                                    <div class="term-title">${term.key.replace(/_/g, " ")}</div>
+                                    <div class="term-title">${escapeHtml(term.key.replace(/_/g, " "))}</div>
                                     <div class="expand-icon">▼</div>
                                 </div>
-                                <div class="term-preview">${term.Meaning.substring(0, 50)}...</div>
+                                <div class="term-preview">${escapeHtml(term.Meaning).substring(0, 50)}...</div>
                                 <div class="term-details">
-                                    <p><strong>Meaning:</strong> ${term.Meaning}</p>
-                                    ${term.Analogy ? `<div class="analogy-box"><strong>Analogy:</strong> ${term.Analogy}</div>` : ""}
-                                    ${term.Where_it_is_used ? `<p><strong>Where:</strong> ${term.Where_it_is_used}</p>` : ""}
+                                    <p><strong>Meaning:</strong> ${escapeHtml(term.Meaning)}</p>
+                                    ${term.Analogy ? `<div class="analogy-box"><strong>Analogy:</strong> ${escapeHtml(term.Analogy)}</div>` : ""}
+                                    ${term.Where_it_is_used ? `<p><strong>Where:</strong> ${escapeHtml(term.Where_it_is_used)}</p>` : ""}
                                 </div>
                             </div>
                         `,

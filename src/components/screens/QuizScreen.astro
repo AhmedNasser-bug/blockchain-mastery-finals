@@ -72,6 +72,7 @@
         SubjectData as Subject,
         Question,
     } from "../../data/subjects/Subject";
+    import { escapeHtml } from '../../utils';
 
     class QuizScreenController {
         private subject: Subject;
@@ -122,7 +123,53 @@
             // @ts-ignore
             window.game.selectMCQ = this.selectOption.bind(this);
             // @ts-ignore
+            window.game.selectMulti = this.selectMulti.bind(this);
+            // @ts-ignore
             window.game.selectTF = this.selectTF.bind(this);
+            // @ts-ignore
+            window.game.selectTF = this.selectTF.bind(this);
+            
+            document.addEventListener('keydown', this.handleKeydown.bind(this));
+        }
+
+        handleKeydown(e: KeyboardEvent) {
+             const screen = document.getElementById('quizScreen');
+             if (!screen?.classList.contains('active')) return;
+
+             const key = e.key.toLowerCase();
+
+             // 1. Navigation / Action
+             if (key === 'enter') {
+                 if (this.isAnswered) {
+                     this.nextQuestion();
+                 } else {
+                     this.submitAnswer();
+                 }
+                 return;
+             }
+
+             if (key === 's') {
+                 this.skipQuestion();
+                 return;
+             }
+
+             // 2. Selection (Numbers 1-9)
+             if (/^[1-9]$/.test(key)) {
+                 const idx = parseInt(key) - 1;
+                 const q = this.currentQuestions[this.currentIndex];
+                 if(idx >= (q.options?.length || 0)) return;
+
+                 if (q.type === 'mcq') this.selectOption(idx);
+                 else if (q.type === 'multi') this.selectMulti(idx);
+                 return;
+             }
+            
+             // 3. Selection (Letters a-z) - Optional mapping A->0, B->1...
+             // (Skipping for now to keep it simple, or can add if requested)
+             
+             // 4. TF Selection
+             if (key === 't') this.selectTF(true);
+             if (key === 'f') this.selectTF(false);
         }
 
         startQuiz() {
@@ -153,20 +200,45 @@
                     ),
                 );
             } else if (currentMode === "blitz") {
+                // Dynamic Blitz: 30 or 25% of total, whichever is smaller (but min 10 if possible)
+                // Actually user said "Subject specific", implies using the config or just "not fixed".
+                // Let's default to a "Smart Blitz" - 25% of the deck to ensure rotation.
+                // Or if there's a config in subjectData, use that (TODO: Add config schema later)
+                const blitzCount = Math.max(10, Math.floor(this.subject.questions.length * 0.25));
                 this.currentQuestions = this.shuffleArray(
                     this.subject.questions,
-                ).slice(0, 30);
+                ).slice(0, blitzCount);
             } else if (currentMode === "hardcore") {
                 this.currentQuestions = this.shuffleArray(
                     this.subject.questions.filter(
                         (q) => q.category === "Hardcore",
                     ),
                 );
+            } else if (currentMode === "full-revision") {
+                // 1. Get ordered questions (No Shuffle)
+                const orderedQuestions = [...this.subject.questions];
+                
+                // 2. Convert Terminology to Questions
+                const termQuestions: any[] = Object.entries(this.subject.terminology).map(([term, data], idx) => ({
+                    id: `term_${idx}`,
+                    type: 'tf', // Using True/False template
+                    category: 'Terminology',
+                    // ESCAPE the dynamic content inside, but mark question as HTML so <strong> etc. works
+                    question: `<strong>Term:</strong> ${escapeHtml(term.replace(/_/g, ' '))}<br><br><strong>Definition:</strong> ${escapeHtml(data.Meaning)}<br><br>Is this definition correct?`,
+                    correct: true,
+                    explanation: `<strong>Analogy:</strong> ${escapeHtml(data.Analogy || 'N/A')}`,
+                    difficulty: 'easy',
+                    isHtml: true // Flag as pre-formatted
+                }));
+
+                // 3. Combine
+                this.currentQuestions = [...orderedQuestions, ...termQuestions];
             } else {
-                // Speedrun
+                // Speedrun: ALL Questions (Time Attack)
                 this.currentQuestions = this.shuffleArray(
                     this.subject.questions,
-                ).slice(0, 120);
+                ); 
+                // Removed .slice(0, 120) limit
             }
 
             this.currentIndex = 0;
@@ -197,18 +269,20 @@
             this.timer = setInterval(() => {
                 this.seconds++;
                 const display = document.getElementById("timer");
-                if (display) {
+                if (display) 
+                {
                     display.textContent = this.formatTime(this.seconds);
                     display.classList.remove("warning", "danger");
 
-                    const limits =
-                        mode === "blitz"
-                            ? this.config.TIMERS.BLITZ
-                            : this.config.TIMERS.SPEEDRUN;
-                    if (this.seconds > limits.DANGER)
+                    const limits = (mode === "blitz") ? this.config.TIMERS.BLITZ : this.config.TIMERS.SPEEDRUN;
+
+
+                    if (this.seconds > limits.DANGER){
                         display.classList.add("danger");
-                    else if (this.seconds > limits.WARNING)
+                    }
+                    else if (this.seconds > limits.WARNING){
                         display.classList.add("warning");
+                    }
                 }
             }, 1000);
         }
@@ -263,12 +337,16 @@
         private buildQuestionHTML(q: Question): string {
             const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
+            // Logic: If q.isHtml is true, assume safe HTML (use as-is). 
+            // If false/undefined (default JSON), allow NO HTML (escape everything).
+            const safeQuestion = q.isHtml ? q.question : escapeHtml(q.question);
+
             let html = `
                 <div class="question-header">
                     <span class="question-number">Question ${this.currentIndex + 1} of ${this.currentQuestions.length}</span>
                     <span class="question-category">${q.category}</span>
                 </div>
-                <div class="question-text">${q.question}</div>
+                <div class="question-text">${safeQuestion}</div>
             `;
 
             if (q.type === "mcq" && q.options) {
@@ -277,7 +355,23 @@
                         (opt, idx) => `
                     <div class="option" onclick="window.game.selectMCQ(${idx})" data-idx="${idx}">
                         <span class="option-marker">${LETTERS[idx]}</span>
-                        <span class="option-text">${opt}</span>
+                        <span class="option-text">${escapeHtml(opt)}</span>
+                    </div>
+                `,
+                    )
+                    .join("")}</div>`;
+            } else if (q.type === "multi" && q.options) {
+                 html += `
+                    <div class="instruction-text" style="color:var(--text-secondary);margin-bottom:10px;font-size:0.9rem">
+                        (Select all that apply)
+                    </div>
+                    <div class="options-grid">
+                    ${q.options
+                    .map(
+                        (opt, idx) => `
+                    <div class="option multi-option" onclick="window.game.selectMulti(${idx})" data-idx="${idx}">
+                        <div class="checkbox-indicator"></div>
+                        <span class="option-text">${escapeHtml(opt)}</span>
                     </div>
                 `,
                     )
@@ -317,6 +411,31 @@
             if (btn) btn.disabled = false;
         }
 
+
+
+        selectMulti(idx: number) {
+            if (this.isAnswered) return;
+            
+            const optEl = document.querySelector(`.option[data-idx="${idx}"]`);
+            if (optEl) {
+                optEl.classList.toggle("selected");
+            }
+
+            if (this.selectedOptions.includes(idx)) {
+                this.selectedOptions = this.selectedOptions.filter(i => i !== idx);
+            } else {
+                this.selectedOptions.push(idx);
+            }
+            // Sort for comparison
+            this.selectedOptions.sort((a, b) => a - b);
+
+
+            const btn = document.getElementById(
+                "submitBtn",
+            ) as HTMLButtonElement;
+            if (btn) btn.disabled = this.selectedOptions.length === 0;
+        }
+
         selectTF(value: boolean) {
             if (this.isAnswered) return;
             document
@@ -347,6 +466,11 @@
             } else if (q.type === "tf") {
                 isCorrect = this.selectedOptions[0] === q.correct;
                 this.highlightTF(q.correct as boolean);
+            } else if (q.type === "multi") {
+                // Array comparison
+                const correctArr = (q.correct as number[]).sort((a, b) => a - b);
+                isCorrect = JSON.stringify(this.selectedOptions) === JSON.stringify(correctArr);
+                this.highlightMulti(correctArr);
             }
 
             this.answers.push({
@@ -360,13 +484,16 @@
             const feedback = document.getElementById("feedback");
             const container = document.getElementById("questionContainer");
 
+            // Handle Explanation Safe Rendering
+            const safeExplanation = q.isHtml ? q.explanation : escapeHtml(q.explanation);
+
             if (isCorrect) {
                 this.score++;
                 this.streak++;
                 if (this.streak > this.maxStreak) this.maxStreak = this.streak;
                 if (feedback && container) {
                     feedback.className = "feedback correct";
-                    feedback.innerHTML = `<span class="feedback-icon">✓</span> Correct! ${q.explanation}`;
+                    feedback.innerHTML = `<span class="feedback-icon">✓</span> Correct! ${safeExplanation}`;
                     container.classList.add("celebrate");
                     this.checkCombo();
                 }
@@ -374,7 +501,7 @@
                 this.streak = 0;
                 if (feedback && container) {
                     feedback.className = "feedback incorrect";
-                    feedback.innerHTML = `<span class="feedback-icon">✗</span> Incorrect. ${q.explanation}`;
+                    feedback.innerHTML = `<span class="feedback-icon">✗</span> Incorrect. ${safeExplanation}`;
                     container.classList.add("shake");
                 }
             }
@@ -409,6 +536,22 @@
                 if (val === correctVal) {
                     opt.classList.add("correct");
                 } else if (opt.classList.contains("selected")) {
+                    opt.classList.add("incorrect");
+                }
+            });
+        }
+
+        highlightMulti(correctArr: number[]) {
+             document.querySelectorAll(".multi-option").forEach((opt: any) => {
+                const idx = parseInt(opt.dataset.idx);
+                const isSelected = opt.classList.contains("selected");
+                const isCorrect = correctArr.includes(idx);
+
+                if (isCorrect) {
+                     opt.classList.add("correct");
+                     // Ensure checkmark shows
+                     opt.innerHTML += '<span style="margin-left:auto;color:var(--success)">✓</span>';
+                } else if (isSelected && !isCorrect) {
                     opt.classList.add("incorrect");
                 }
             });

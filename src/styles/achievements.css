@@ -13,7 +13,7 @@
 
 .achievement-card.unlocked {
     opacity: 1;
-    border-color: gold;
+    border-color: var(--primary);
     background: linear-gradient(135deg, var(--bg-card), rgba(255, 215, 0, 0.1));
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
 }

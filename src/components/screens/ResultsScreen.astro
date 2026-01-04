@@ -1,35 +1,49 @@
 ---
 ---
 <div class="screen" id="resultsScreen">
-    <div class="card results-container">
-        <h2 style="color:var(--text-secondary)">Challenge Complete!</h2>
-        <div class="results-score" id="finalScore">0%</div>
-        <div class="results-grade" id="finalGrade">-</div>
+    <div class="card results-container" style="text-align:center; padding: 40px;">
+        <h2 style="color:var(--text-secondary); letter-spacing: 2px;">MISSION COMPLETE</h2>
+        
+        <div class="score-ring-container" style="margin: 30px auto; position: relative; width: 200px; height: 200px;">
+             <!-- Simplified Ring (CSS Border) -->
+            <div class="score-ring" style="width:100%; height:100%; border-radius:50%; border: 10px solid var(--bg-card-hover); position:relative; display:flex; align-items:center; justify-content:center;">
+                 <div id="finalGrade" style="font-size: 5rem; font-weight: 900; color: var(--primary);">S</div>
+            </div>
+             <div id="finalScore" style="position: absolute; bottom: -40px; left: 0; right: 0; font-size: 1.5rem; color: var(--text-muted); font-weight: 700;">100%</div>
+        </div>
 
-        <div class="results-stats">
-            <div class="result-stat">
-                <div class="result-stat-value" id="correctCount">0</div>
-                <div class="result-stat-label">Correct</div>
+        <div class="results-stats" style="display:flex; justify-content:center; gap:30px; margin-top: 60px;">
+            <div class="stat-item">
+                <div class="stat-icon" style="font-size:1.5rem; margin-bottom:5px">✅</div>
+                <div class="stat-val" id="correctCount" style="font-size:1.8rem; font-weight:700; color:var(--success)">0</div>
+                <div class="stat-lbl" style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase">Correct</div>
             </div>
-            <div class="result-stat">
-                <div class="result-stat-value" id="incorrectCount">0</div>
-                <div class="result-stat-label">Incorrect</div>
+            <div class="stat-item">
+                <div class="stat-icon" style="font-size:1.5rem; margin-bottom:5px">❌</div>
+                <div class="stat-val" id="incorrectCount" style="font-size:1.8rem; font-weight:700; color:var(--error)">0</div>
+                <div class="stat-lbl" style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase">Incorrect</div>
             </div>
-            <div class="result-stat">
-                <div class="result-stat-value" id="finalTime">00:00</div>
-                <div class="result-stat-label">Time</div>
+            <div class="stat-item">
+                <div class="stat-icon" style="font-size:1.5rem; margin-bottom:5px">⏱️</div>
+                <div class="stat-val" id="finalTime" style="font-size:1.8rem; font-weight:700; color:var(--primary)">00:00</div>
+                <div class="stat-lbl" style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase">Time</div>
             </div>
         </div>
 
-        <div style="margin-top:30px">
-            <button class="btn btn-primary" onclick="window.game.showReview()">Review Answers</button>
-            <button class="btn btn-secondary" onclick="window.game.goHome()" style="margin-left:10px">Back to Home</button>
+        <div style="margin-top:50px; display:flex; gap:15px; justify-content:center;">
+             <button class="btn btn-secondary" onclick="window.game.showReview()">
+                <span>📝 Review</span>
+            </button>
+            <button class="btn btn-primary" onclick="window.game.goHome()">
+                <span>🏠 Home</span>
+            </button>
         </div>
     </div>
 
-    <div class="card" id="reviewContainer" style="display:none">
-        <h3 style="margin-bottom:20px">Answer Review</h3>
+    <div class="card" id="reviewContainer" style="display:none; margin-top:20px;">
+        <h3 style="margin-bottom:20px; text-align:center;">DEBRIEF</h3>
         <div id="reviewContent"></div>
+         <button class="btn btn-secondary" onclick="document.getElementById('reviewContainer').style.display='none'" style="width:100%; margin-top:20px">Close Review</button>
     </div>
 </div>
 </div>
@@ -105,13 +119,18 @@
         }
 
         private getGrade(score: number): string {
-            if (score >= 97) return 'S+';
-            if (score >= 93) return 'S';
-            if (score >= 90) return 'A+';
-            if (score >= 87) return 'A';
-            if (score >= 80) return 'B+';
-            if (score >= 70) return 'C+';
-            if (score >= 60) return 'D+';
+            const el = document.getElementById('finalGrade');
+            let color = 'var(--text-muted)';
+            
+            if (score >= 97) { color = 'var(--primary)'; return 'S+'; }
+            if (score >= 93) { color = 'var(--primary)'; return 'S'; }
+            if (score >= 90) { color = 'var(--success)'; return 'A+'; }
+            if (score >= 87) { color = 'var(--success)'; return 'A'; }
+            if (score >= 80) { color = 'var(--accent-blue)'; return 'B'; }
+            if (score >= 70) { color = 'var(--text-primary)'; return 'C'; }
+            if (score >= 60) { color = 'var(--accent-purple)'; return 'D'; }
+            
+            if(el) el.style.color = color;
             return 'F';
         }
 

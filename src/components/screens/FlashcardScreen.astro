@@ -62,6 +62,7 @@
 
 <script>
     import type { SubjectData as Subject } from "../../data/subjects/Subject";
+    import { UserProgressService } from "../../storage/UserProgress";
 
     // Self-contained Flashcard Controller
     class FlashcardController {
@@ -120,7 +121,8 @@
                 });
             }
 
-            this.shuffle();
+            // Sort by XP (Needs Subject ID)
+            this.flashcards = UserProgressService.sortFlashcardsByPriority(this.subject.id, this.flashcards);
             this.renderCard();
         }
 
@@ -169,9 +171,14 @@
                 progressBar.style.width = `${pct}%`;
             }
 
+            
+            // Show XP Hints
+            const xp = UserProgressService.getCardXP(this.subject.id, card.front);
+            const level = UserProgressService.getMasteryLevel(xp);
+            
             const progressText = document.getElementById("fcProgressText");
             if (progressText) {
-                progressText.textContent = `Card ${this.currentIndex + 1} / ${this.flashcards.length}`;
+                progressText.innerHTML = `Card ${this.currentIndex + 1} / ${this.flashcards.length} <span class="badge badge-outline" style="margin-left:10px">${level} (${xp} XP)</span>`;
             }
         }
 
@@ -183,8 +190,11 @@
             }
         }
 
-        next(rating: string) {
-            // Rating logic could go here
+        next(rating: 'bad'|'hard'|'good'|'easy') {
+            const card = this.flashcards[this.currentIndex];
+            if (card) {
+                UserProgressService.updateCardXP(this.subject.id, card.front, rating);
+            }
             this.currentIndex++;
             this.renderCard();
         }

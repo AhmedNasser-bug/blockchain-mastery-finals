@@ -21,82 +21,127 @@ A powerful, extensible platform for mastering subjects through gamified quizzes,
 
 ## 📚 How to Add a New Subject ("Mold")
 
-In this project, a "Mold" represents a specific subject (e.g., *Blockchain*, *Theory of Computation*). Each subject is self-contained in its own directory.
+A **Mold** is a self-contained subject package (e.g., *Blockchain*, *Web Programming*). To add a new subject, you simply create a folder and add JSON files.
 
-### Step 1: Create the Subject Directory
-Navigate to `src/data/subjects/` and create a new folder for your subject. The folder name will serve as the unique ID for the subject (e.g., `MyNewSubject`).
+### 1. Create the Directory
+Go to `src/data/subjects/` and create a new folder. The folder name itself (e.g., `MySubject`) is used as the internal ID.
+> **Example**: `src/data/subjects/WebProgramming/`
 
-### Step 2: Add `meta.json` (Required)
-Create a `meta.json` file in your new folder. This defines the subject's display properties.
+### 2. Create `meta.json` (Required)
+This file governs how the subject appears in the menu. It **MUST** contain both `subject` and `config` objects.
 
+**File Path**: `.../[YourFolder]/meta.json`
 ```json
 {
-  "config": {
-    "title": "My New Subject",
-    "description": "A brief description of what this subject covers.",
-    "themeColor": "#3b82f6",
-    "version": "1.0"
-  },
   "subject": {
-    "name": "My New Subject"
+    "id": "my-subject-id",
+    "name": "My Subject Name"
+  },
+  "config": {
+    "title": "My Subject Name",
+    "description": "A short description displayed on the card.",
+    "themeColor": "#FFD700",
+    "version": "1.0.0"
   }
 }
 ```
 
-### Step 3: Add Content Files
-Add the following JSON files to populate your subject with data. You can skip any file if you don't have that content type yet.
+### 3. Add Content Files
+The system automatically loads files starting with specific prefixes.
 
-#### `questions.json` (Quizzes)
-Contains the question bank for the "Speedrun", "Blitz", etc. modes.
+#### A. `questions.json` (The Question Bank)
+This file drives **Speedrun**, **Blitz**, **Hardcore**, **Practice**, and **Full Revision** modes.
 
+**File Path**: `.../[YourFolder]/questions.json`
 ```json
 [
   {
-    "type": "mcq",
+    "id": "q1",
+    "type": "mcq", 
+    "category": "Basic Concepts",
     "question": "What is the capital of France?",
-    "explanation": "Paris is the capital and most populous city of France.",
-    "category": "Geography",
-    "options": ["London", "Berlin", "Paris", "Madrid"],
-    "correct": 2
+    "options": ["Berlin", "Madrid", "Paris", "Rome"],
+    "correct": 2,
+    "explanation": "Paris is the capital.",
+    "difficulty": "Easy",
+    "relatedTerms": ["Capital_City"]
   },
   {
-    "type": "tf",
-    "question": "The sky is green.",
-    "explanation": "Rayleigh scattering causes the sky to appear blue.",
-    "category": "Science",
-    "correct": false
-  }
-]
-```
-
-#### `flashcards.json` (Memorization)
-Contains cards for the Flashcard mode.
-
-```json
-[
+    "id": "q2",
+    "type": "multi",
+    "category": "Advanced",
+    "question": "Select all prime numbers.",
+    "options": ["2", "4", "5", "9"],
+    "correct": [0, 2],
+    "explanation": "2 and 5 are prime.",
+    "difficulty": "Hard"
+  },
   {
-    "front": "HTTP",
-    "back": "Hypertext Transfer Protocol",
-    "type": "term"
+    "id": "q3",
+    "type": "tf",
+    "category": "Logic",
+    "question": "True or False: The sky is usually green.",
+    "correct": false,
+    "explanation": "It's blue.",
+    "difficulty": "Easy"
   }
 ]
 ```
+> **Important**: `difficulty` must be one of: `"Easy"`, `"Medium"`, `"Hard"`.
 
-#### `terminology.json` (Encyclopedia)
-Defines terms for the glossary/encyclopedia view.
+#### B. `terminology.json` (The Encyclopedia)
+Defines terms for the Encyclopedia view and auto-generates questions for **Full Revision** mode.
 
+**File Path**: `.../[YourFolder]/terminology.json`
 ```json
 {
   "API": {
-    "definition": "Application Programming Interface",
-    "analogy": "Like a waiter in a restaurant taking your order to the kitchen."
+    "Category": "Software",
+    "Meaning": "Application Programming Interface.",
+    "Analogy": "A waiter at a restaurant.",
+    "Where_it_is_used": "Software integration.",
+    "When_it_is_used": "Connecting two systems.",
+    "Pros": ["Modular", "Reusable"],
+    "Cons": ["Overhead"]
+  },
+  "HTTP": {
+    "Category": "Protocol",
+    "Meaning": "Hypertext Transfer Protocol.",
+    "Analogy": "The language of the web."
   }
 }
 ```
 
-**That's it!** The application will automatically detect your new folder and add it to the Home Screen.
+#### C. `flashcards.json` (Memorization)
+Manually defined flashcards for **Flashcard** mode.
+
+**File Path**: `.../[YourFolder]/flashcards.json`
+```json
+[
+  {
+    "front": "What does SQL stand for?",
+    "back": "Structured Query Language",
+    "type": "term" 
+  }
+]
+```
+> `type` can be `"term"` or `"question"`.
+
+### 4. Verify
+After adding these files, simply run `npm run dev`. The new subject will appear on the dashboard automatically.
 
 ---
+
+---
+
+## 🎓 Full Revision Mode
+
+**Full Revision Mode** is designed for pedagogical mastery. Unlike other modes that randomize questions, this mode:
+1.  **Strict Order**: Presents questions in the exact order they are defined in `questions.json`. This allows for a "bottom-up" learning experience where concepts build upon each other.
+2.  **Terminology Integration**: After all standard questions are completed, the system will present every term from `terminology.json` as a verification question.
+3.  **100% Mastery**: The goal is to verify knowledge of the *entire* material without gaps.
+
+> **Note**: For Subject Creators, ensure your `questions.json` is ordered logically from easiest/foundational to hardest/complex for this mode to be most effective.
 
 ## 🎮 How to Add a New Game Mode
 

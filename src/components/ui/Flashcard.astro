@@ -18,7 +18,7 @@ const { frontText = "Term Name", backText = "Definition text..." } = Astro.props
             <p class="fc-tap-hint">(Tap to flip)</p>
         </div>
         <div class="flashcard-face flashcard-back-face">
-            <div id="fcContent" class="fc-content-text" set:html={backText}></div>
+            <div id="fcContent" class="fc-content-text">{backText}</div>
         </div>
     </div>
 </div>

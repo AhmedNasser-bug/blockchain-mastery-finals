@@ -14,9 +14,10 @@ const BaseQuestionSchema = z.object({
     question: z.string(),
     explanation: z.string(),
     category: z.string(),
-    difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
+    difficulty: z.enum(['Easy', 'Medium', 'Hard']).optional(),
     relatedTerms: z.array(z.string()).optional(),
     sourceChunkId: z.string().optional(),
+    isHtml: z.boolean().optional(),
 });
 
 export const MCQQuestionSchema = BaseQuestionSchema.extend({
@@ -48,9 +49,39 @@ export const FlashcardSchema = z.array(z.object({
     type: z.enum(['term', 'question'])
 }));
 
+export const TerminologyItemSchema = z.object({
+    Category: z.string(),
+    Meaning: z.string(),
+    Where_it_is_used: z.string().optional(),
+    When_it_is_used: z.string().optional(),
+    Analogy: z.string().optional(),
+    Pros: z.array(z.string()).optional(),
+    Cons: z.array(z.string()).optional(),
+});
+
+export const TerminologySchema = z.record(z.string(), TerminologyItemSchema);
+
 // TypeScript Derived Types
 export type Question = z.infer<typeof QuestionSchema>;
 export type Flashcard = z.infer<typeof FlashcardSchema>[number];
+export type TerminologyItem = z.infer<typeof TerminologyItemSchema>;
+export type Terminology = z.infer<typeof TerminologySchema>;
+
+// Meta Schema
+export const SubjectMetaSchema = z.object({
+    subject: z.object({
+        id: z.string(),
+        name: z.string()
+    }),
+    config: z.object({
+        title: z.string(),
+        description: z.string(),
+        themeColor: z.string().optional(),
+        version: z.string().optional(),
+        storageKey: z.string().optional()
+    })
+});
+export type SubjectMeta = z.infer<typeof SubjectMetaSchema>;
 
 // ==========================================
 // 2. GAME MODES (Configuration & Prompts)
@@ -70,26 +101,31 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
     speedrun: {
         id: 'speedrun',
         label: 'Speedrun',
-        description: 'All 120 questions, timed challenge',
+        description: 'Time Attack: Complete all questions.',
         icon: '⚡',
         componentId: 'QuizScreen',
         schema: z.array(QuestionSchema),
         promptStrategy: (context) => `
-            GOAL: Generate educational questions covering the breadth of the material.
-            STRATEGY: Focus on flow. Mix easy and medium difficulty.
+            GOAL: Generate the MASTER QUESTION SET (questions.json).
+            STRATEGY: This file is used for ALL modes (Speedrun, Blitz, Revision).
+            RULES:
+            1. Pedagogical Order: From simple foundations to complex mastery.
+            2. Comprehensive: Cover 100% of the material.
+            3. Quantity: Generate as many as needed to cover the topics (Subject Specific).
             CONTEXT: ${context}
         `
     },
     blitz: {
         id: 'blitz',
         label: 'Blitz',
-        description: '30 random questions, fast-paced',
+        description: 'Random subset for quick review.',
         icon: '🎯',
         componentId: 'QuizScreen',
         schema: z.array(QuestionSchema),
         promptStrategy: (context) => `
-            GOAL: Generate fast-paced recall questions.
-            STRATEGY: Short questions, unambiguous answers. Focus on definitions and core facts.
+            GOAL: Generate the MASTER QUESTION SET (questions.json).
+            NOTE: Blitz mode simply subsets this master file.
+            STRATEGY: Same as Full Revision. Order matters. Coverage matters.
             CONTEXT: ${context}
         `
     },
@@ -101,8 +137,8 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         componentId: 'QuizScreen',
         schema: z.array(QuestionSchema),
         promptStrategy: (context) => `
-            GOAL: Generate difficult questions acting as a Senior Auditor.
-            STRATEGY: Edge cases, complex scenarios, multi-select vulnerability identification.
+            GOAL: Generate the MASTER QUESTION SET (Hardcore variant/tier).
+            STRATEGY: Focus on deep analysis, edge cases, and "select all that apply".
             CONTEXT: ${context}
         `
     },
@@ -114,8 +150,8 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         componentId: 'QuizScreen',
         schema: z.array(QuestionSchema),
         promptStrategy: (context) => `
-            GOAL: Generate pedagogical questions for practice.
-            STRATEGY: Detailed explanations are priority. Group by sub-topic.
+             GOAL: Generate the MASTER QUESTION SET (Practice view).
+             STRATEGY: Ensure distinct Categories are assigned to every question for filtering.
             CONTEXT: ${context}
         `
     },
@@ -127,8 +163,12 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         componentId: 'FlashcardScreen',
         schema: FlashcardSchema,
         promptStrategy: (context) => `
-            GOAL: Extract terminology flashcards.
-            STRATEGY: Front is the term, Back is the definition + analogy. Set type to 'term'.
+            ROLE: Lexicographer for this field.
+            GOAL: Extract every significant technical term.
+            STRATEGY:
+            1. Front: The Term.
+            2. Back: Precise Definition + a real-world Analogy (if applicable).
+            3. OutputFormat: JSON array of objects with { front, back, type: 'term' }.
             CONTEXT: ${context}
         `
     },
@@ -140,8 +180,29 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         componentId: 'FlashcardScreen',
         schema: FlashcardSchema,
         promptStrategy: (context) => `
-            GOAL: Create Q&A flashcards for interview prep.
-            STRATEGY: Front is the question, Back is the concise text answer. Set type to 'question'.
+            ROLE: Interview Coach.
+            GOAL: Create a "Cheat Sheet" of high-impact Questions & Answers.
+            STRATEGY:
+            1. Front: A common interview or exam question.
+            2. Back: The concisest "perfect score" answer.
+            3. Focus on "Big Picture" concepts and critical relationships.
+            CONTEXT: ${context}
+        `
+    },
+    'full-revision': {
+        id: 'full-revision',
+        label: 'Full Revision',
+        description: 'Strict order: Questions then Terminology. 100% Mastery.',
+        icon: '🎓',
+        componentId: 'QuizScreen',
+        schema: z.array(QuestionSchema),
+        promptStrategy: (context) => `
+            ROLE: Pedagogical Architect.
+            GOAL: Generate the MASTER QUESTION SET (questions.json).
+            CRITICAL RULES:
+            1. STRICT PEDAGOGICAL ORDER: Q1 is a foundation for Q2.
+            2. NO GAPS: Assume zero prior knowledge.
+            3. TOTAL COVERAGE: If it's in the text, it's in the questions.
             CONTEXT: ${context}
         `
     }
@@ -164,7 +225,7 @@ export interface SubjectData {
     };
     questions: Question[];
     flashcards: Flashcard[];
-    terminology: Record<string, any>;
+    terminology: Terminology;
     achievements: any[];
     [key: string]: any;
 }
@@ -203,7 +264,7 @@ export class Subject {
             const jsonFiles = import.meta.glob('../../data/subjects/**/*.json', { eager: true });
             let questions: Question[] = [];
             let flashcards: Flashcard[] = [];
-            let terminology: Record<string, any> = {};
+            let terminology: Terminology = {};
             let achievements: any[] = [];
 
             // We need to match files in the same relative directory as metaPath

@@ -1,0 +1,847 @@
+[
+    {
+        "front": "HTML tag for metadata (inside <head>)?",
+        "back": "`<meta>`",
+        "type": "question"
+    },
+    {
+        "front": "HTML: Meta attribute used to label a metadata field (e.g., description)?",
+        "back": "`name`",
+        "type": "question"
+    },
+    {
+        "front": "HTML: Meta attribute that holds the metadata value string?",
+        "back": "`content`",
+        "type": "question"
+    },
+    {
+        "front": "Meta content for UTF-8 in older form (Content-Type)?",
+        "back": "`text/html; charset=utf-8`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a paragraph?",
+        "back": "`<p>`",
+        "type": "question"
+    },
+    {
+        "front": "Legacy paragraph alignment attribute name?",
+        "back": "`ALIGN`",
+        "type": "question"
+    },
+    {
+        "front": "Legacy ALIGN value to center a <p> or heading?",
+        "back": "`CENTER`",
+        "type": "question"
+    },
+    {
+        "front": "Heading tags range?",
+        "back": "`<h1>` .. `<h6>`",
+        "type": "question"
+    },
+    {
+        "front": "Legacy tag for changing font (deprecated)?",
+        "back": "`<font>`",
+        "type": "question"
+    },
+    {
+        "front": "<font> attribute for size (1..7)?",
+        "back": "`SIZE`",
+        "type": "question"
+    },
+    {
+        "front": "<font> attribute for color name (e.g., red)?",
+        "back": "`COLOR`",
+        "type": "question"
+    },
+    {
+        "front": "<font> attribute for font name (e.g., verdana)?",
+        "back": "`FACE`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for an image?",
+        "back": "`<img>`",
+        "type": "question"
+    },
+    {
+        "front": "<img> attribute for image URL/file?",
+        "back": "`SRC`",
+        "type": "question"
+    },
+    {
+        "front": "<img> attribute for alternative text?",
+        "back": "`ALT`",
+        "type": "question"
+    },
+    {
+        "front": "<img> attribute for width in pixels?",
+        "back": "`WIDTH`",
+        "type": "question"
+    },
+    {
+        "front": "<img> attribute for height in pixels?",
+        "back": "`HEIGHT`",
+        "type": "question"
+    },
+    {
+        "front": "<img> legacy attribute for border thickness?",
+        "back": "`border`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a hyperlink?",
+        "back": "`<a>`",
+        "type": "question"
+    },
+    {
+        "front": "<a> attribute for link destination?",
+        "back": "`href`",
+        "type": "question"
+    },
+    {
+        "front": "How do you link to an in-page bookmark?",
+        "back": "`href=\"#someId\"`",
+        "type": "question"
+    },
+    {
+        "front": "Which attribute can identify a bookmark target (modern)?",
+        "back": "`id`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for ordered list?",
+        "back": "`<ol>`",
+        "type": "question"
+    },
+    {
+        "front": "<ol> attribute to set numbering style?",
+        "back": "`type`",
+        "type": "question"
+    },
+    {
+        "front": "<ol> attribute to start numbering at a specific number?",
+        "back": "`start`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for unordered list?",
+        "back": "`<ul>`",
+        "type": "question"
+    },
+    {
+        "front": "<ul> type value for filled bullets?",
+        "back": "`disc`",
+        "type": "question"
+    },
+    {
+        "front": "<ul> type value for hollow circle bullets?",
+        "back": "`circle`",
+        "type": "question"
+    },
+    {
+        "front": "<ul> type value for square bullets?",
+        "back": "`square`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a table?",
+        "back": "`<table>`",
+        "type": "question"
+    },
+    {
+        "front": "<table> attribute for border thickness?",
+        "back": "`border`",
+        "type": "question"
+    },
+    {
+        "front": "<table> attribute for space between cells?",
+        "back": "`cellspacing`",
+        "type": "question"
+    },
+    {
+        "front": "<table> attribute for padding inside cells?",
+        "back": "`cellpadding`",
+        "type": "question"
+    },
+    {
+        "front": "<table> attribute for background color (legacy)?",
+        "back": "`bgcolor`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a table row?",
+        "back": "`<tr>`",
+        "type": "question"
+    },
+    {
+        "front": "<tr> attribute for vertical alignment?",
+        "back": "`valign`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a table data cell?",
+        "back": "`<td>`",
+        "type": "question"
+    },
+    {
+        "front": "<td> attribute to merge cells across columns?",
+        "back": "`colspan`",
+        "type": "question"
+    },
+    {
+        "front": "<td> attribute to merge cells across rows?",
+        "back": "`rowspan`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a table header cell?",
+        "back": "`<th>`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a table caption?",
+        "back": "`<caption>`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a form?",
+        "back": "`<form>`",
+        "type": "question"
+    },
+    {
+        "front": "<form> attribute that sets submission HTTP method?",
+        "back": "`method`",
+        "type": "question"
+    },
+    {
+        "front": "<form> method value to send data in URL?",
+        "back": "`get`",
+        "type": "question"
+    },
+    {
+        "front": "<form> method value to send data in request body?",
+        "back": "`post`",
+        "type": "question"
+    },
+    {
+        "front": "<form> attribute that sets target script URL?",
+        "back": "`action`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a form control input?",
+        "back": "`<input>`",
+        "type": "question"
+    },
+    {
+        "front": "<input> attribute that selects control kind (text/password/etc.)?",
+        "back": "`type`",
+        "type": "question"
+    },
+    {
+        "front": "<input type> for hidden field?",
+        "back": "`hidden`",
+        "type": "question"
+    },
+    {
+        "front": "<input type> for file upload?",
+        "back": "`file`",
+        "type": "question"
+    },
+    {
+        "front": "<input> attribute that names the key sent to server?",
+        "back": "`name`",
+        "type": "question"
+    },
+    {
+        "front": "<input> attribute for default/posted value?",
+        "back": "`value`",
+        "type": "question"
+    },
+    {
+        "front": "<input> attribute for DOM id hook?",
+        "back": "`id`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for dropdown/list selection?",
+        "back": "`<select>`",
+        "type": "question"
+    },
+    {
+        "front": "<select> attribute for visible options count?",
+        "back": "`size`",
+        "type": "question"
+    },
+    {
+        "front": "<select> attribute to allow multiple selections?",
+        "back": "`multiple`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for a dropdown option?",
+        "back": "`<option>`",
+        "type": "question"
+    },
+    {
+        "front": "<option> attribute for submitted value?",
+        "back": "`value`",
+        "type": "question"
+    },
+    {
+        "front": "<option> attribute to preselect?",
+        "back": "`selected`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for multi-line text input?",
+        "back": "`<textarea>`",
+        "type": "question"
+    },
+    {
+        "front": "<textarea> attribute for columns?",
+        "back": "`cols`",
+        "type": "question"
+    },
+    {
+        "front": "<textarea> attribute for rows?",
+        "back": "`rows`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag to group form controls?",
+        "back": "`<fieldset>`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag that labels a <fieldset>?",
+        "back": "`<legend>`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag that defines frames layout (legacy)?",
+        "back": "`<frameset>`",
+        "type": "question"
+    },
+    {
+        "front": "<frameset> attribute for horizontal splits?",
+        "back": "`rows`",
+        "type": "question"
+    },
+    {
+        "front": "<frameset> attribute for vertical splits?",
+        "back": "`cols`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag for one frame (legacy)?",
+        "back": "`<frame>`",
+        "type": "question"
+    },
+    {
+        "front": "<frame> attribute for source URL?",
+        "back": "`src`",
+        "type": "question"
+    },
+    {
+        "front": "<frame> attribute controlling scrollbars?",
+        "back": "`scrolling`",
+        "type": "question"
+    },
+    {
+        "front": "HTML tag providing fallback when frames not supported (legacy)?",
+        "back": "`<noframe>`",
+        "type": "question"
+    },
+    {
+        "front": "CSS selector for an element by tag name (example for paragraphs)?",
+        "back": "`p`",
+        "type": "question"
+    },
+    {
+        "front": "CSS selector for a class named myinfo?",
+        "back": "`.myinfo`",
+        "type": "question"
+    },
+    {
+        "front": "CSS selector for an id named p1?",
+        "back": "`#p1`",
+        "type": "question"
+    },
+    {
+        "front": "CSS universal selector?",
+        "back": "`*`",
+        "type": "question"
+    },
+    {
+        "front": "CSS grouped selector syntax example (h1..h6)?",
+        "back": "`h1,h2,h3,h4,h5,h6`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for text color?",
+        "back": "`color`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for background color?",
+        "back": "`background-color`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for font family?",
+        "back": "`font-family`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for font size?",
+        "back": "`font-size`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for italics?",
+        "back": "`font-style: italic;`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for bold text?",
+        "back": "`font-weight: bold;`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for text alignment (center/left/right/justify)?",
+        "back": "`text-align`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property for underline/line-through/overline?",
+        "back": "`text-decoration`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property to set a background image?",
+        "back": "`background-image`",
+        "type": "question"
+    },
+    {
+        "front": "CSS function syntax used for background-image?",
+        "back": "`url(\"path\")`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property controlling background repetition?",
+        "back": "`background-repeat`",
+        "type": "question"
+    },
+    {
+        "front": "background-repeat value: repeat horizontally?",
+        "back": "`repeat-x`",
+        "type": "question"
+    },
+    {
+        "front": "background-repeat value: do not repeat?",
+        "back": "`no-repeat`",
+        "type": "question"
+    },
+    {
+        "front": "CSS property controlling background position?",
+        "back": "`background-position`",
+        "type": "question"
+    },
+    {
+        "front": "CSS list marker style property for ol/ul?",
+        "back": "`list-style-type`",
+        "type": "question"
+    },
+    {
+        "front": "list-style-type value for lower Roman numerals?",
+        "back": "`lower-roman`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap: class for fixed-width centered layout container?",
+        "back": "`container`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap: class for full-width fluid container?",
+        "back": "`container-fluid`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap: class that creates a grid row?",
+        "back": "`row`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap: example column class for small screens (4/12 width)?",
+        "back": "`col-sm-4`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap button base class?",
+        "back": "`btn`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap primary button class combination?",
+        "back": "`btn btn-primary`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap large button size class?",
+        "back": "`btn-lg`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap: class for a glyphicon cloud icon?",
+        "back": "`glyphicon glyphicon-cloud`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap navbar container class (as in notes)?",
+        "back": "`navbar navbar-deafult`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap: class to mark current menu item?",
+        "back": "`active`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap helper class for primary-colored text?",
+        "back": "`text-primary`",
+        "type": "question"
+    },
+    {
+        "front": "Bootstrap helper class for warning background?",
+        "back": "`bg-warning`",
+        "type": "question"
+    },
+    {
+        "front": "Include Bootstrap CSS (link tag key attribute)?",
+        "back": "`rel=\"stylesheet\"`",
+        "type": "question"
+    },
+    {
+        "front": "JS arithmetic operator: multiplication",
+        "back": "`*`",
+        "type": "question"
+    },
+    {
+        "front": "JS arithmetic operator: modulus",
+        "back": "`%`",
+        "type": "question"
+    },
+    {
+        "front": "JS arithmetic operator: increment",
+        "back": "`++`",
+        "type": "question"
+    },
+    {
+        "front": "JS logical operator: AND",
+        "back": "`&&`",
+        "type": "question"
+    },
+    {
+        "front": "JS logical operator: OR",
+        "back": "`||`",
+        "type": "question"
+    },
+    {
+        "front": "JS logical operator: NOT",
+        "back": "`!`",
+        "type": "question"
+    },
+    {
+        "front": "JS assignment operator: add and assign",
+        "back": "`+=`",
+        "type": "question"
+    },
+    {
+        "front": "JS comparison operator: equal to",
+        "back": "`==`",
+        "type": "question"
+    },
+    {
+        "front": "JS String length (property or method?)",
+        "back": "Property: `str.length`",
+        "type": "question"
+    },
+    {
+        "front": "JS String: character at index",
+        "back": "`str.charAt(index)`",
+        "type": "question"
+    },
+    {
+        "front": "JS String: find first index of substring",
+        "back": "`str.indexOf(\"x\")`",
+        "type": "question"
+    },
+    {
+        "front": "JS String: find last index of substring",
+        "back": "`str.lastIndexOf(\"x\")`",
+        "type": "question"
+    },
+    {
+        "front": "JS String: extract substring",
+        "back": "`str.substring(from,to)`",
+        "type": "question"
+    },
+    {
+        "front": "JS String: lowercase conversion",
+        "back": "`str.toLowerCase()`",
+        "type": "question"
+    },
+    {
+        "front": "JS Date: get full year",
+        "back": "`date.getFullYear()`",
+        "type": "question"
+    },
+    {
+        "front": "JS built-in: prompt with default value",
+        "back": "`prompt(\"msg\",\"default\")`",
+        "type": "question"
+    },
+    {
+        "front": "JS built-in: check not-a-number",
+        "back": "`isNaN(value)`",
+        "type": "question"
+    },
+    {
+        "front": "JS number parsing: integer",
+        "back": "`parseInt(str)`",
+        "type": "question"
+    },
+    {
+        "front": "JS number parsing: float",
+        "back": "`parseFloat(str)`",
+        "type": "question"
+    },
+    {
+        "front": "JS risky string execution function",
+        "back": "`eval(str)`",
+        "type": "question"
+    },
+    {
+        "front": "DOM hierarchy (top -> deeper) from notes",
+        "back": "`window -> document -> form -> element`",
+        "type": "term"
+    },
+    {
+        "front": "DOM: get page title property",
+        "back": "`document.title`",
+        "type": "question"
+    },
+    {
+        "front": "DOM: write text to document stream",
+        "back": "`document.write(\"text\")`",
+        "type": "question"
+    },
+    {
+        "front": "DOM: write text + newline",
+        "back": "`document.writeln(\"text\")`",
+        "type": "question"
+    },
+    {
+        "front": "DOM: select element by id",
+        "back": "`document.getElementById(\"id\")`",
+        "type": "question"
+    },
+    {
+        "front": "DOM: select elements by name",
+        "back": "`document.getElementsByName(\"name\")`",
+        "type": "question"
+    },
+    {
+        "front": "DOM: select elements by tag name",
+        "back": "`document.getElementsByTagName(\"tag\")`",
+        "type": "question"
+    },
+    {
+        "front": "DOM: access a form control by form name + element name (pattern)",
+        "back": "`document.formName.elementName`",
+        "type": "question"
+    },
+    {
+        "front": "JS event: fires on click",
+        "back": "`onClick`",
+        "type": "question"
+    },
+    {
+        "front": "JS event: fires on submit",
+        "back": "`onSubmit`",
+        "type": "question"
+    },
+    {
+        "front": "JS event: fires when element gains focus",
+        "back": "`onFocus`",
+        "type": "question"
+    },
+    {
+        "front": "JS event: fires when element loses focus",
+        "back": "`onBlur`",
+        "type": "question"
+    },
+    {
+        "front": "PHP open/close tag block",
+        "back": "```php\n<?php\n// code\n?>\n```",
+        "type": "question"
+    },
+    {
+        "front": "PHP single-line comment (style 1)",
+        "back": "`// comment`",
+        "type": "question"
+    },
+    {
+        "front": "PHP single-line comment (style 2)",
+        "back": "`# comment`",
+        "type": "question"
+    },
+    {
+        "front": "PHP multi-line comment syntax",
+        "back": "`/* comment */`",
+        "type": "question"
+    },
+    {
+        "front": "PHP output: echo",
+        "back": "`echo \"Hi\";`",
+        "type": "question"
+    },
+    {
+        "front": "PHP output: print (returns 1)",
+        "back": "`print \"Hi\";`",
+        "type": "question"
+    },
+    {
+        "front": "PHP variable prefix",
+        "back": "`$`",
+        "type": "question"
+    },
+    {
+        "front": "PHP constant definition",
+        "back": "```php\ndefine(\"NAME\", \"value\");\n```",
+        "type": "question"
+    },
+    {
+        "front": "PHP string concatenation operator",
+        "back": "`.`",
+        "type": "question"
+    },
+    {
+        "front": "PHP concatenate-and-assign operator",
+        "back": "`.=`",
+        "type": "question"
+    },
+    {
+        "front": "PHP strict comparison (value + type)",
+        "back": "`===`",
+        "type": "question"
+    },
+    {
+        "front": "PHP foreach loop pattern",
+        "back": "```php\nforeach($arr as $value){ }\n```",
+        "type": "question"
+    },
+    {
+        "front": "PHP function declaration keyword",
+        "back": "`function`",
+        "type": "question"
+    },
+    {
+        "front": "PHP return statement",
+        "back": "`return $value;`",
+        "type": "question"
+    },
+    {
+        "front": "PHP superglobal for POST form data",
+        "back": "`$_POST`",
+        "type": "question"
+    },
+    {
+        "front": "PHP superglobal for GET query data",
+        "back": "`$_GET`",
+        "type": "question"
+    },
+    {
+        "front": "PHP superglobal for uploaded file data",
+        "back": "`$_FILES`",
+        "type": "question"
+    },
+    {
+        "front": "PHP superglobal for session storage",
+        "back": "`$_SESSION`",
+        "type": "question"
+    },
+    {
+        "front": "PHP check variable/key exists and not NULL",
+        "back": "`isset($var)`",
+        "type": "question"
+    },
+    {
+        "front": "PHP start session (must be before output)",
+        "back": "`session_start();`",
+        "type": "question"
+    },
+    {
+        "front": "PHP remove one session variable",
+        "back": "`unset($_SESSION[\"key\"]);`",
+        "type": "question"
+    },
+    {
+        "front": "PHP destroy session",
+        "back": "`session_destroy();`",
+        "type": "question"
+    },
+    {
+        "front": "PHP set a cookie (core function name)",
+        "back": "`setcookie()`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi connect signature",
+        "back": "```php\n$con = mysqli_connect($host,$user,$pass,$db);\n```",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi connection error function",
+        "back": "`mysqli_connect_error()`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi select database function",
+        "back": "`mysqli_select_db($link,\"dbname\")`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi query execution function",
+        "back": "`mysqli_query($link,\"SQL\")`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi count rows in result",
+        "back": "`mysqli_num_rows($result)`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi fetch numeric row array",
+        "back": "`mysqli_fetch_row($result)`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi fetch associative row array",
+        "back": "`mysqli_fetch_assoc($result)`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi fetch array (assoc/numeric/both)",
+        "back": "`mysqli_fetch_array($result)`",
+        "type": "question"
+    },
+    {
+        "front": "MySQLi close connection",
+        "back": "`mysqli_close($link)`",
+        "type": "question"
+    }
+]

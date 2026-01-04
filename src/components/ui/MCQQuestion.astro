@@ -9,6 +9,7 @@ export interface Props {
 }
 
 const { options, questionIndex } = Astro.props;
+import { formatText } from '../../utils';
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 ---
 
@@ -16,7 +17,7 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
     {options.map((opt, idx) => (
         <div class="option" data-idx={idx}>
             <span class="option-marker">{LETTERS[idx]}</span>
-            <span class="option-text">{opt}</span>
+            <span class="option-text">{formatText(opt)}</span>
         </div>
     ))}
 </div>
