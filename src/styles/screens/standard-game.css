@@ -1,0 +1,63 @@
+/* Standard Game Screen Styles */
+.sg-screen {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+}
+
+.sg-hud-panel {
+    border: 2px solid var(--border);
+    background: var(--bg-card);
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sg-hud-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sg-hud-mode-badge {
+    background: var(--primary);
+    color: black;
+    padding: 5px 10px;
+    font-weight: 900;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.sg-spacer {
+    height: 20px;
+}
+
+/* Game Controls (Refactored from inline component) */
+.sg-controls-card {
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+    padding: 15px;
+    background: var(--bg-card);
+}
+
+.sg-controls-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.sg-skip-btn {
+    margin-right: auto;
+}
+
+.sg-hint-btn {
+    margin-right: 10px;
+}
+
+.hidden {
+    display: none !important;
+}

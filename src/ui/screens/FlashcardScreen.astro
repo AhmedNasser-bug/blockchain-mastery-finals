@@ -63,6 +63,7 @@
 <script>
     import type { SubjectData as Subject } from "../../data/subjects/Subject";
     import { UserProgressService } from "../../storage/UserProgress";
+    import { escapeHtml } from '../../utils';
 
     // Self-contained Flashcard Controller
     class FlashcardController {
@@ -86,7 +87,25 @@
             // @ts-ignore
             window.game.flipFlashcard = this.flip.bind(this);
             // @ts-ignore
+            // @ts-ignore
             window.game.nextFlashcard = this.next.bind(this);
+
+            // Keyboard Support
+            document.addEventListener('keydown', this.handleKey.bind(this));
+        }
+
+        handleKey(e: KeyboardEvent) {
+            // Only active if screen is visible
+            if (!document.getElementById('flashcardScreen')?.classList.contains('active')) return;
+
+            if (e.code === 'Space' || e.key === 'Enter') {
+                this.flip();
+                e.preventDefault(); 
+            }
+            if (e.key === '1') this.next('bad');
+            if (e.key === '2') this.next('hard');
+            if (e.key === '3') this.next('good');
+            if (e.key === '4') this.next('easy');
         }
 
         start(mode: "terminology" | "questionBank") {
@@ -99,8 +118,9 @@
                 this.flashcards = Object.entries(this.subject.terminology).map(
                     ([term, data]) => ({
                         front: term.replace(/_/g, " "),
-                        back: data.Meaning,
+                        back: escapeHtml(data.Meaning),
                         type: "term",
+                        isHtml: false
                     }),
                 );
             } else {
@@ -117,6 +137,7 @@
                         front: q.question,
                         back: `<strong>Answer:</strong> ${answerText}<br><br><em>${q.explanation}</em>`,
                         type: "question",
+                        isHtml: q.isHtml
                     };
                 });
             }
@@ -154,7 +175,13 @@
             const card = this.flashcards[this.currentIndex];
 
             const termEl = document.getElementById("fcTerm");
-            if (termEl) termEl.textContent = card.front;
+            if (termEl) {
+                if (card.isHtml) {
+                    termEl.innerHTML = card.front;
+                } else {
+                    termEl.textContent = card.front;
+                }
+            }
 
             const contentEl = document.getElementById("fcContent");
             if (contentEl) contentEl.innerHTML = card.back;
@@ -200,8 +227,6 @@
         }
     }
 
-    // Initialize on load
-    document.addEventListener("DOMContentLoaded", () => {
-        new FlashcardController();
-    });
+    // Initialize immediately
+    new FlashcardController();
 </script>

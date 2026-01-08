@@ -1,0 +1,224 @@
+---
+interface Props {
+  id?: string;
+  className?: string;
+}
+const { id = "activeQuestion", className = "" } = Astro.props;
+---
+
+<div class={`card question-container ${className}`} id={id}>
+    <div class="question-header">
+        <span class="question-number q-counter"></span>
+        <span class="question-category q-category"></span>
+    </div>
+    
+    <div class="question-text q-text"></div>
+
+    <!-- Options Container -->
+    <div class="options-grid q-options"></div>
+    
+    <!-- Feedback Section -->
+    <div class="feedback q-feedback"></div>
+
+    <!-- Hidden Template for Option Items (Standard & Multi) -->
+    <template class="option-template">
+        <div class="option">
+            <span class="marker"></span>
+            <span class="text"></span>
+            <div class="checkbox-indicator hidden"></div>
+        </div>
+    </template>
+
+    <!-- Hidden Template for TF Grid -->
+    <template class="tf-template">
+        <div class="tf-grid">
+             <div class="option tf-option" data-value="true">
+                <span class="marker">✓</span>
+                <span class="text">TRUE</span>
+            </div>
+            <div class="option tf-option" data-value="false">
+                 <span class="marker">✗</span>
+                <span class="text">FALSE</span>
+            </div>
+        </div>
+    </template>
+</div>
+
+<style>
+.question-container {
+    padding: 0;
+    margin-bottom: 20px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 15px;
+    font-weight: 800;
+}
+
+.question-text {
+    font-size: 2.2rem;
+    line-height: 1.1;
+    font-weight: 800;
+    min-height: 100px;
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* Options Grid */
+.options-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+    .options-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Option Styles */
+.option {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    padding: 25px 30px;
+    border-radius: 0px; /* Brutalist */
+    cursor: pointer;
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+    min-height: 80px;
+}
+
+.option:hover {
+    border-color: var(--text-primary);
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.8);
+    background: var(--bg-card-hover);
+    z-index: 10;
+}
+
+.option:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+}
+
+.option.selected {
+    border-color: var(--primary);
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 6px 6px 0px var(--primary);
+}
+
+/* FEEDBACK STATES - High Contrast */
+.option.correct {
+    border-color: var(--accent-green) !important;
+    background: rgba(34, 197, 94, 0.2) !important; /* Green tint */
+    box-shadow: 6px 6px 0px var(--accent-green) !important;
+    color: white;
+}
+.option.incorrect {
+    border-color: var(--accent-red) !important;
+    background: rgba(239, 68, 68, 0.2) !important; /* Red tint */
+    box-shadow: 6px 6px 0px var(--accent-red) !important;
+    color: white;
+}
+
+/* Markers */
+.option .marker {
+    background: var(--bg-dark);
+    color: var(--text-muted);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px; /* Square */
+    font-weight: 800;
+    font-size: 1.2rem;
+    border: 2px solid var(--border);
+}
+
+.option.selected .marker {
+    background: var(--primary);
+    color: black;
+    border-color: var(--primary);
+}
+
+.option.correct .marker {
+    background: var(--accent-green);
+    color: black;
+    border-color: var(--accent-green);
+    content: "✓"; 
+}
+
+.option.incorrect .marker {
+    background: var(--accent-red);
+    color: white;
+    border-color: var(--accent-red);
+    content: "✗";
+}
+
+.option .text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* TF Specifics */
+.tf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+}
+
+.tf-option {
+    justify-content: center;
+    height: 120px;
+    font-size: 2rem;
+    text-transform: uppercase;
+}
+
+/* Feedback Text Container */
+.feedback {
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: 2px solid transparent;
+    display: none; /* Hidden by default */
+}
+.feedback.correct {
+    display: block;
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+    background: rgba(34, 197, 94, 0.1);
+}
+.feedback.incorrect {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.hidden {
+    display: none !important;
+}
+</style>

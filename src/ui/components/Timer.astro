@@ -1,0 +1,28 @@
+---
+interface Props {
+  id?: string;
+  initialTime?: number;
+}
+const { id = "timer", initialTime = "00:00" } = Astro.props;
+---
+
+<div class="timer-display" id={id}>{initialTime}</div>
+
+<style>
+  .timer-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: var(--text-primary);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: color 0.3s ease;
+  }
+  .timer-display.warning { color: var(--primary); }
+  .timer-display.danger { color: var(--accent-red); animation: pulse 1s infinite; }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+</style>

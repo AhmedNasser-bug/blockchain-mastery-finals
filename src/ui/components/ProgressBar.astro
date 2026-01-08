@@ -1,0 +1,51 @@
+---
+interface Props {
+  id?: string;
+  progress?: number;
+}
+const { id = "progressBar", progress = 0 } = Astro.props;
+---
+
+<div class="progress-container">
+    <div class="progress-bar" id={id} style={`width:${progress}%`}></div>
+</div>
+
+<style>
+.progress-container {
+    background: var(--bg-dark); /* Darker track */
+    border-radius: 0;           /* Sharp */
+    height: 16px;              /* Thicker */
+    overflow: hidden;
+    margin: 20px 0;
+    border: 2px solid var(--border); /* Visible Border */
+    position: relative;
+}
+
+/* Optional: Tick marks background */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: linear-gradient(90deg, transparent 98%, var(--bg-dark) 98%);
+    background-size: 5% 100%; /* 20 ticks */
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary); /* Solid Primary Color */
+    border-radius: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    /* Striped filling */
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--primary),
+        var(--primary) 10px,
+        var(--primary-hover) 10px,
+        var(--primary-hover) 20px
+    );
+}
+</style>

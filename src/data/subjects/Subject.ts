@@ -142,6 +142,15 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
             CONTEXT: ${context}
         `
     },
+    survival: {
+        id: 'survival',
+        label: 'Survival',
+        description: 'Time decreases as you gain XP.',
+        icon: '☠️',
+        componentId: 'SurvivalScreen',
+        schema: z.array(QuestionSchema),
+        promptStrategy: (context) => `...`
+    },
     practice: {
         id: 'practice',
         label: 'Practice',

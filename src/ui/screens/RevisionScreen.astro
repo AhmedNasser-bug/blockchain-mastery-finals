@@ -15,17 +15,142 @@
             />
         </div>
     </div>
-    <div class="container" style="padding-top:0">
+    <div class="container container-no-pad-top">
         <button
-            class="btn btn-secondary"
+            class="btn btn-secondary back-btn"
             onclick="window.game.goHome()"
-            style="margin-bottom:20px"
         >
             ← Back to Home
         </button>
         <div id="revisionContent" class="revision-grid"></div>
     </div>
 </div>
+
+<style>
+    .revision-header {
+        background: var(--bg-card);
+        border-bottom: 2px solid var(--border);
+        padding: 20px;
+        margin-bottom: 0;
+    }
+
+    .revision-title {
+        font-size: 3rem;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .search-container {
+        margin-top: 15px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.2rem;
+        border: 2px solid var(--border);
+        background: var(--bg-main);
+        color: var(--text-primary);
+        font-family: inherit;
+        border-radius: 0;
+    }
+
+    .container-no-pad-top {
+        padding-top: 0;
+    }
+
+    .back-btn {
+        margin-bottom: 20px;
+        width: auto;
+        display: inline-block;
+    }
+
+    .revision-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        padding-bottom: 40px;
+    }
+
+    .category-section {
+        border: 2px solid var(--border);
+        background: var(--bg-card);
+    }
+
+    .category-header {
+        background: var(--primary);
+        color: black;
+        padding: 10px 20px;
+        margin: 0;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .term-card {
+        padding: 0;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .term-card:last-child {
+        border-bottom: none;
+    }
+
+    .term-card:hover {
+        background: var(--bg-card-hover);
+    }
+
+    .term-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+    }
+
+    .term-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-transform: capitalize;
+    }
+    
+    .expand-icon {
+        font-weight: bold;
+    }
+
+    .term-preview {
+        padding: 0 20px 15px;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .term-details {
+        display: none;
+        padding: 20px;
+        border-top: 1px solid var(--border);
+        background: rgba(0,0,0,0.1);
+    }
+
+    .term-card.expanded .term-details {
+        display: block;
+    }
+    
+    .term-card.expanded .expand-icon {
+        transform: rotate(180deg);
+    }
+
+    .analogy-box {
+        margin-top: 10px;
+        padding: 10px;
+        border-left: 4px solid var(--accent-purple);
+        background: rgba(128, 0, 128, 0.1);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>
 
 <script>
     import type { SubjectData as Subject } from "../../data/subjects/Subject";
@@ -80,7 +205,7 @@
                     (cat) => `
                 <div class="category-section">
                     <h3 class="category-header">${escapeHtml(cat)}</h3>
-                    <div class="revision-grid">
+                    <div class=""> <!-- Inner grid helper if needed -->
                         ${categorized[cat]
                             .map(
                                 (term) => `
@@ -129,11 +254,12 @@
         private filterTerms(query: string): void {
             document.querySelectorAll(".term-card").forEach((card: any) => {
                 const text = card.dataset.term;
-                // Fix: map uses data-term which is already lowered key.
-                // But we should probably check content if we want deeper search?
-                // Original code checked card.textContent.
                 const content = card.textContent.toLowerCase();
-                card.style.display = content.includes(query) ? "block" : "none";
+                if (content.includes(query)) {
+                    card.classList.remove("hidden");
+                } else {
+                    card.classList.add("hidden");
+                }
             });
         }
     }

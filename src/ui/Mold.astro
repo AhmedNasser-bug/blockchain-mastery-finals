@@ -1,6 +1,7 @@
 ---
 import HomeScreen from "./screens/HomeScreen.astro";
-import QuizScreen from "./screens/QuizScreen.astro";
+import StandardGameScreen from "./screens/StandardGameScreen.astro";
+import SurvivalScreen from "./screens/SurvivalScreen.astro";
 import FlashcardScreen from "./screens/FlashcardScreen.astro";
 import ResultsScreen from "./screens/ResultsScreen.astro";
 import RevisionScreen from "./screens/RevisionScreen.astro";
@@ -20,7 +21,8 @@ const { subject } = Astro.props;
         subjectName={subject.name}
         description={subject.config.description}
     />
-    <QuizScreen />
+    <StandardGameScreen />
+    <SurvivalScreen />
     <FlashcardScreen />
     <ResultsScreen />
     <RevisionScreen />

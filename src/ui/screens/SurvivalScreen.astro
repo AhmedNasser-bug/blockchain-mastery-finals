@@ -1,0 +1,427 @@
+---
+import Timer from '../components/Timer.astro';
+import ProgressBar from '../components/ProgressBar.astro';
+import QuestionDisplay from '../components/QuestionDisplay.astro';
+import ScoreDisplay from '../components/ScoreDisplay.astro';
+import GameControls from '../components/GameControls.astro';
+---
+
+<div class="screen" id="survivalScreen">
+    <div class="survival-status-bar">
+        <div class="mode-indicator">
+            <span class="pulse-dot"></span>
+            SURVIVAL PROTOCOL
+        </div>
+        <div class="stat-box">
+             <span class="label">WAVE</span>
+             <span class="value" id="survivalWave">1</span>
+        </div>
+        <div class="stat-box big-score">
+             <span class="label">SCORE</span>
+             <span class="value" id="survivalScore">0</span>
+        </div>
+    </div>
+
+    <!-- STRESS TIMER -->
+    <div class="stress-timer-container">
+        <div class="stress-bar" id="stressBar"></div>
+        <div class="stress-overlay" id="stressOverlay"></div>
+    </div>
+
+    <!-- PROGRESS (Experience/Level) -->
+    <div class="xp-container">
+        <div class="xp-bar" id="survivalProgress"></div>
+    </div>
+
+    <QuestionDisplay id="survivalQuestion" />
+    <GameControls />
+</div>
+
+<style>
+    #survivalScreen {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .survival-status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-card);
+        border: 2px solid var(--border);
+        padding: 15px 30px;
+        margin-bottom: 20px;
+        box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+    }
+
+    .mode-indicator {
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 800;
+        font-size: 2rem;
+        color: var(--accent-red);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        letter-spacing: 2px;
+    }
+
+    .pulse-dot {
+        width: 12px;
+        height: 12px;
+        background: var(--accent-red);
+        border-radius: 50%;
+        animation: pulse 1s infinite;
+    }
+
+    .stat-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .stat-box.big-score .value {
+        font-size: 2.5rem;
+        color: var(--primary);
+    }
+
+    .stat-box .label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .stat-box .value {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    /* STRESS TIMER */
+    .stress-timer-container {
+        position: relative;
+        height: 20px;
+        background: #1a1a1a;
+        border: 2px solid var(--border);
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .stress-bar {
+        height: 100%;
+        width: 100%;
+        background: var(--primary);
+        transform-origin: left;
+        transition: width 0.1s linear, background-color 0.3s;
+    }
+
+    .stress-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(0,0,0,0.2) 10px,
+            rgba(0,0,0,0.2) 20px
+        );
+        opacity: 0.5;
+    }
+
+    .stress-critical {
+        animation: shake 0.5s infinite;
+    }
+    
+    .screen.active{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Hide generic question header in Survival to use custom status bar */
+    #survivalScreen .question-header {
+        display: none !important;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.2); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes shake {
+        0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -2px) rotate(-1deg); }
+        20% { transform: translate(-3px, 0px) rotate(1deg); }
+        30% { transform: translate(3px, 2px) rotate(0deg); }
+        40% { transform: translate(1px, -1px) rotate(1deg); }
+        50% { transform: translate(-1px, 2px) rotate(-1deg); }
+        60% { transform: translate(-3px, 1px) rotate(0deg); }
+        70% { transform: translate(3px, 1px) rotate(-1deg); }
+        80% { transform: translate(-1px, -1px) rotate(1deg); }
+        90% { transform: translate(1px, 2px) rotate(0deg); }
+        100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+</style>
+
+<script>
+    import type { SubjectData, Question } from "../../data/subjects/Subject";
+    import { escapeHtml } from '../../utils';
+    import { QuestionRenderer } from '../scripts/QuestionRenderer';
+
+    class SurvivalController {
+        private subject: SubjectData;
+        private currentQuestion: Question | null = null;
+        private score: number = 0;
+        private timeLimit: number = 30; // Base time
+        private timer: any = null;
+        private timeLeft: number = 0;
+        private selectedOptions: any[] = [];
+        private isAnswered: boolean = false;
+        private answers: any[] = []; // Track for review if needed
+        private renderer: QuestionRenderer | null = null;
+        
+        constructor() {
+            // @ts-ignore
+            this.subject = window.subjectData;
+            this.bindEvents();
+        }
+
+        bindEvents() {
+            // @ts-ignore
+            window.game = window.game || {};
+            // Register survival start
+            // @ts-ignore
+            window.game.startSurvival = this.startSurvival.bind(this);
+            // @ts-ignore
+            window.game.showHint = this.showHint.bind(this);
+            
+            // Binding selection events globally since these methods are called by HTML onclick attrs
+            // @ts-ignore
+            if(!window.game.selectMCQ) window.game.selectMCQ = (idx) => {}; 
+        }
+
+        startSurvival() {
+           this.activateScreen();
+           this.score = 0;
+           this.answers = [];
+           this.updateStats();
+           this.nextQuestion();
+        }
+
+        activateScreen() {
+             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+             document.getElementById('survivalScreen')?.classList.add('active');
+             
+             if(!this.renderer) {
+                 this.renderer = new QuestionRenderer('survivalQuestion');
+             }
+
+             // Take over controls
+             const game = window.game as any;
+             game.submitAnswer = this.submitAnswer.bind(this);
+             game.nextQuestion = this.nextQuestion.bind(this);
+             game.skipQuestion = this.skip.bind(this);
+             game.selectMCQ = this.selectOption.bind(this);
+             game.selectMulti = this.selectMulti.bind(this);
+             game.selectTF = this.selectTF.bind(this);
+        }
+
+        nextQuestion() {
+            this.calculateTimeLimit();
+            this.startTimer();
+            // Pick random question
+            const q = this.subject.questions[Math.floor(Math.random() * this.subject.questions.length)];
+            this.currentQuestion = q;
+            this.isAnswered = false;
+            this.selectedOptions = [];
+            
+            // Reset UI
+            const btn = document.getElementById("submitBtn") as HTMLButtonElement;
+            if(btn) { btn.disabled = true; btn.style.display = ''; btn.classList.remove('hidden'); }
+            
+            // Ensure Next is hidden, Hint is visible
+            const next = document.getElementById("nextBtn");
+            if(next) next.classList.add('hidden');
+            
+            const hintBtn = document.getElementById("hintBtn");
+            if(hintBtn) hintBtn.classList.remove('hidden');
+
+            this.updateStats();
+            this.renderQuestion(q);
+        }
+
+        calculateTimeLimit() {
+            // @ts-ignore
+            const xp = window.playerXP || 0; 
+            // Gets harder as score increases
+            const difficultyFactor = Math.floor(this.score / 5); 
+            this.timeLimit = Math.max(5, 20 - difficultyFactor); // Starts at 20s, drops to 5s
+            this.timeLeft = this.timeLimit;
+        }
+
+        startTimer() {
+            clearInterval(this.timer);
+            this.updateTimerDisplay();
+            
+            const bar = document.getElementById('stressBar');
+            const overlay = document.getElementById('stressOverlay');
+            
+            this.timer = setInterval(() => {
+                this.timeLeft -= 0.1; // Smooth update
+                if(this.timeLeft <= 0) {
+                    this.timeLeft = 0;
+                    this.updateTimerDisplay();
+                    this.gameOver("Time's Up!");
+                    return;
+                }
+                this.updateTimerDisplay();
+            }, 100);
+        }
+
+        updateTimerDisplay() {
+            const bar = document.getElementById('stressBar');
+            if(!bar) return;
+
+            const pct = (this.timeLeft / this.timeLimit) * 100;
+            bar.style.width = `${pct}%`;
+
+            // Stress Colors & Effects
+            if(pct < 30) {
+                bar.style.backgroundColor = 'var(--accent-red)';
+                document.getElementById('survivalScreen')?.classList.add('stress-critical');
+            } else if (pct < 60) {
+                bar.style.backgroundColor = '#fbbf24'; // Warning yellow
+                document.getElementById('survivalScreen')?.classList.remove('stress-critical');
+            } else {
+                bar.style.backgroundColor = 'var(--primary)';
+                document.getElementById('survivalScreen')?.classList.remove('stress-critical');
+            }
+        }
+
+        updateStats() {
+            const scoreEl = document.getElementById('survivalScore');
+            const waveEl = document.getElementById('survivalWave');
+            if(scoreEl) scoreEl.textContent = this.score.toString();
+            if(waveEl) waveEl.textContent = (this.score + 1).toString();
+        }
+
+        gameOver(reason: string) {
+            clearInterval(this.timer);
+            document.getElementById('survivalScreen')?.classList.remove('stress-critical');
+            
+            const results = {
+                score: this.score,
+                total: this.score + 1, 
+                time: 0, 
+                answers: this.answers,
+                maxStreak: this.score,
+                mode: 'survival'
+            };
+
+            // @ts-ignore
+            if(window.game.showResults) window.game.showResults(results);
+        }
+        
+        renderQuestion(q: Question) {
+             if(this.renderer) {
+                 this.renderer.render(q, this.score, 999);
+             }
+        }
+        
+        selectOption(idx: number) {
+            if (this.isAnswered) return;
+            document.querySelectorAll(".option").forEach((opt) => opt.classList.remove("selected"));
+            document.querySelector(`.option[data-idx="${idx}"]`)?.classList.add("selected");
+            this.selectedOptions = [idx];
+            const btn = document.getElementById("submitBtn") as HTMLButtonElement;
+            if (btn) btn.disabled = false;
+        }
+
+        selectMulti(idx: number) {
+            if (this.isAnswered) return;
+            const optEl = document.querySelector(`.option[data-idx="${idx}"]`);
+            if (optEl) optEl.classList.toggle("selected");
+
+            if (this.selectedOptions.includes(idx)) {
+                this.selectedOptions = this.selectedOptions.filter(i => i !== idx);
+            } else {
+                this.selectedOptions.push(idx);
+            }
+            this.selectedOptions.sort((a, b) => a - b);
+            
+            const btn = document.getElementById("submitBtn") as HTMLButtonElement;
+            if (btn) btn.disabled = this.selectedOptions.length === 0;
+        }
+
+        selectTF(val: boolean) {
+             if (this.isAnswered) return;
+            document.querySelectorAll(".tf-option").forEach((opt) => opt.classList.remove("selected"));
+            document.querySelector(`.tf-option[data-value="${val}"]`)?.classList.add("selected");
+            this.selectedOptions = [val];
+            const btn = document.getElementById("submitBtn") as HTMLButtonElement;
+            if (btn) btn.disabled = false;
+        }
+
+        submitAnswer() {
+             if(this.isAnswered || !this.currentQuestion) return;
+             
+             const q = this.currentQuestion;
+             let isCorrect = false;
+
+             if (q.type === "mcq" || q.type === "tf") {
+                isCorrect = this.selectedOptions[0] === q.correct;
+             } else if (q.type === "multi") {
+                 const correctArr = (q.correct as number[]).sort((a, b) => a - b);
+                 isCorrect = JSON.stringify(this.selectedOptions) === JSON.stringify(correctArr);
+             }
+             
+             this.answers.push({
+                question: q.question,
+                correct: isCorrect,
+                userAnswer: this.selectedOptions,
+                correctAnswer: q.correct,
+                explanation: q.explanation,
+            });
+
+             if(isCorrect) {
+                 this.score++;
+                 // Brief delay to show green? Or instant? 
+                 // Survival usually is fast.
+                 // Let's show visual feedback for a brief moment then next.
+                 
+                 // Show feedback in place?
+                 if(this.renderer) this.renderer.showFeedback(true, "Correct!", this.selectedOptions, q.correct);
+                 this.isAnswered = true;
+                 clearInterval(this.timer);
+                 
+                 setTimeout(() => {
+                     this.nextQuestion();
+                 }, 800);
+                 
+             } else {
+                 if(this.renderer) this.renderer.showFeedback(false, q.explanation, this.selectedOptions, q.correct);
+                 this.isAnswered = true;
+                 clearInterval(this.timer);
+                 setTimeout(() => {
+                    this.gameOver("Incorrect Answer");
+                 }, 2000);
+             }
+        }
+        
+        skip() {
+            this.gameOver("Skipped in Survival");
+        }
+        
+        showHint() {
+            const q = this.currentQuestion;
+            if (!q) return;
+            const hintText = (q as any).hint || `Category: ${q.category}. Trust your instincts.`;
+            alert(hintText);
+        }
+    }
+
+    new SurvivalController();
+</script>

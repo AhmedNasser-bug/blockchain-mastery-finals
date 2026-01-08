@@ -19,6 +19,61 @@ A powerful, extensible platform for mastering subjects through gamified quizzes,
 
 ---
 
+## 🧬 Workflow: Adding Your Own Material
+
+This guide details exactly how to take this project and make it your own, from the very first step of cloning to choosing how you input your data.  
+
+### 🛑 Step 1: Cloning the Repository
+First, you need the codebase on your local machine.
+1.  **Clone**: `git clone https://github.com/your-repo/mold-v2.git`
+2.  **Navigate**: `cd mold-v2`
+3.  **Install**: `npm install`
+4.  **Verify**: Run `npm run dev` and open `localhost:4321` to see the base app.
+
+### 🛣️ Step 2: Choose Your Path (Manual vs. Workflow)
+
+You have two options for adding your study material:
+
+#### Option A: The "Manual Artisan" (JSON)
+*Best for: Users who want 100% control and are comfortable with JSON syntax.*
+
+1.  Navigate to `src/data/subjects/`.
+2.  Create a new folder (e.g., `OrganicChemistry`).
+3.  Create `meta.json` inside it (copy the structure from `Web Programming/meta.json`).
+4.  Create `questions.json` and manually type your questions following the schema below.
+5.  **Pros**: precision, no external dependencies.
+6.  **Cons**: tedious, prone to comma errors.
+
+#### Option B: The "AI Workflow" (Recommended)
+*Best for: Rapidly converting notes/PDFs into a playable game.*
+
+1.  **Prepare your source**: Have your notes ready as text or a PDF.
+2.  **Use an AI Tool (ChatGPT/Gemini/Claude)**:
+    *   **Prompt**: "Convert these notes into a JSON question bank for a quiz app. Use the following schema: `[{ id: 'q1', type: 'mcq', question: '...', options: [...], correct: 0, explanation: '...' }]`."
+    *   *Tip*: Ask for 20 questions at a time to avoid truncation.
+3.  **Validate**: Copy the JSON output.
+4.  **Paste**: Create `questions.json` in your subject folder and paste the result.
+
+### ⚠️ Possible Failures & Fallbacks
+
+**1. "The App Crushed / Blank Screen!"**
+*   **Cause**: Invalid JSON. A missing comma `,` or unclosed bracket `}` is usually the culprit.
+*   **Fallback**: Paste your JSON into [jsonlint.com](https://jsonlint.com) to find the syntax error.
+
+**2. "My Subject Doesn't Show Up"**
+*   **Cause**: Missing or Invalid `meta.json`.
+*   **Fallback**: Ensure `meta.json` exists in your folder and has valid `config` and `subject` fields. Check the console for "Error loading subject".
+
+**3. "Questions Are Out of Order"**
+*   **Cause**: Standard modes shuffle questions.
+*   **Fallback**: Use **Full Revision Mode** if you need strict sequential ordering (e.g., for storytelling or cumulative logic).
+
+**4. "Images Aren't Loading"**
+*   **Cause**: Incorrect paths or missing files in `public/`.
+*   **Fallback**: Use absolute paths starting with `/` (e.g., `/images/cell_diagram.png`) and ensure the file is physically in the `public` folder.
+
+---
+
 ## 📚 How to Add a New Subject ("Mold")
 
 A **Mold** is a self-contained subject package (e.g., *Blockchain*, *Web Programming*). To add a new subject, you simply create a folder and add JSON files.

@@ -1,0 +1,376 @@
+---
+import Timer from '../components/Timer.astro';
+import ProgressBar from '../components/ProgressBar.astro';
+import QuestionDisplay from '../components/QuestionDisplay.astro';
+import ScoreDisplay from '../components/ScoreDisplay.astro';
+import HintPopup from '../components/HintPopup.astro';
+import '../../styles/screens/standard-game.css';
+---
+
+<div class="screen sg-screen" id="sg-screen">
+    <div class="sg-hud-panel">
+        <div class="sg-hud-top-row">
+             <span id="sg-mode-label" class="sg-hud-mode-badge">SPEEDRUN MODE</span>
+             <Timer id="sg-timer" initialTime="00:00" />
+        </div>
+        <ProgressBar id="sg-progress" />
+        <ScoreDisplay current={1} total={10} idPrefix="sg-" />
+    </div>
+
+    <div class="sg-spacer"></div>
+
+    <QuestionDisplay id="sg-question-display" />
+
+    <!-- Inlined Game Controls for Encapsulation & Unique IDs -->
+    <div class="card sg-controls-card">
+        <div class="sg-controls-container">
+            <button
+                class="btn btn-secondary sg-skip-btn"
+                id="sg-skip-btn"
+                title="Skip Question (S)"
+            >
+                Skip <span class="hot-key">S</span>
+            </button>
+            <button
+                class="btn btn-secondary sg-hint-btn hidden"
+                id="sg-hint-btn"
+            >
+                💡 Hint
+            </button>
+            <button
+                class="btn btn-primary sg-submit-btn"
+                id="sg-submit-btn"
+                disabled
+            >
+                Submit <span class="hot-key">Enter</span>
+            </button>
+            <button
+                class="btn btn-secondary sg-next-btn hidden"
+                id="sg-next-btn"
+            >
+                Next <span class="hot-key">→</span>
+            </button>
+        </div>
+    </div>
+
+    <HintPopup id="sg-hint-popup" />
+</div>
+
+<script>
+    import type { SubjectData, Question } from '../../data/subjects/Subject';
+    import { QuestionRenderer } from '../scripts/QuestionRenderer';
+
+    class StandardGame {
+        private renderer: QuestionRenderer | null = null;
+        private subject: SubjectData;
+        private currentQuestions: Question[] = [];
+        private currentIndex: number = 0;
+        private score: number = 0;
+        private streak: number = 0;
+        private maxStreak: number = 0;
+        private timer: any = null;
+        private seconds: number = 0;
+        private mode: string = 'speedrun';
+        private selectedOptions: any[] = [];
+        private isAnswered: boolean = false;
+        private answers: any[] = [];
+
+        constructor() {
+            // @ts-ignore
+            this.subject = window.subjectData;
+            this.bindEvents();
+        }
+
+        bindEvents() {
+            // @ts-ignore
+            window.game = window.game || {};
+            // @ts-ignore
+            window.game.startStandardGame = this.startGame.bind(this);
+            
+            // Local Event Listeners (No global window.game.xyz calls if possible, or bind them for external triggers)
+            document.getElementById('sg-skip-btn')?.addEventListener('click', () => this.skip());
+            document.getElementById('sg-hint-btn')?.addEventListener('click', () => this.showHint());
+            document.getElementById('sg-submit-btn')?.addEventListener('click', () => this.submitAnswer());
+            document.getElementById('sg-next-btn')?.addEventListener('click', () => this.nextQuestion());
+
+            // We still need global helpers for the Renderer to call back if it generates HTML with onclicks?
+            // Actually QuestionRenderer works with standard classes.
+            // But we need to handle option selection.
+            // Option selection is usually done via window.game.selectMCQ
+            // We should intercept clicks on the container instead of relying on global onclicks if we want full encapsulation.
+            // BUT QuestionDisplay/Renderer might be generating `onclick="window.game.selectMCQ..."`.
+            // Let's check QuestionRenderer... 
+            // If it generates inline onclicks, we must still expose methods to window.game or Refactor Renderer.
+            // Refactoring Renderer is out of scope unless strict.
+            // User said "COMPLETELY REMOVE THE CONTROLLER...".
+            // I will expose the selection methods to window.game but scoped to this logical unit.
+            
+            // @ts-ignore
+            window.game.selectMCQ = this.selectOption.bind(this);
+            // @ts-ignore
+            window.game.selectMulti = this.selectMulti.bind(this);
+            // @ts-ignore
+            window.game.selectTF = this.selectTF.bind(this);
+
+            // Keyboard Controls
+            document.addEventListener('keydown', (e) => this.handleKey(e));
+        }
+
+        handleKey(e: KeyboardEvent) {
+            if (!document.getElementById('sg-screen')?.classList.contains('active')) return;
+
+            // Number Keys 1-4
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                const idx = parseInt(e.key) - 1;
+                const q = this.currentQuestions[this.currentIndex];
+                if (q.type === 'tf') {
+                    if (idx === 0) this.selectTF(true);
+                    if (idx === 1) this.selectTF(false);
+                } else {
+                    if (idx === 0) this.selectMCQCombo(0);
+                    if (idx === 1) this.selectMCQCombo(1);
+                    if (idx === 2) this.selectMCQCombo(2);
+                    if (idx === 3) this.selectMCQCombo(3);
+                }
+            }
+
+            // Enter
+            if (e.key === 'Enter') {
+                const nextBtn = document.getElementById("sg-next-btn");
+                const submitBtn = document.getElementById("sg-submit-btn") as HTMLButtonElement;
+
+                if (nextBtn && !nextBtn.classList.contains('hidden')) {
+                    this.nextQuestion();
+                } else if (submitBtn && !submitBtn.classList.contains('hidden') && !submitBtn.disabled) {
+                    this.submitAnswer();
+                }
+            }
+            
+            // S for Skip
+            if (e.key.toLowerCase() === 's') {
+                 // Check if skip is visible/allowed?
+                 this.skip();
+            }
+        }
+
+        selectMCQCombo(idx: number) {
+            const q = this.currentQuestions[this.currentIndex];
+            if (q.type === 'multi') this.selectMulti(idx);
+            else this.selectOption(idx);
+        }
+
+        startGame(mode: string) {
+            this.mode = mode;
+            const label = document.getElementById('sg-mode-label');
+            if (label) label.textContent = mode.toUpperCase();
+
+            this.activateScreen();
+            this.prepareQuestions(mode);
+            this.currentIndex = 0;
+            this.score = 0;
+            this.streak = 0;
+            this.maxStreak = 0;
+            this.seconds = 0;
+            this.answers = [];
+
+            this.renderQuestion();
+            this.startTimer();
+        }
+
+        activateScreen() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('sg-screen')?.classList.add('active');
+
+            if (!this.renderer) {
+                this.renderer = new QuestionRenderer('sg-question-display');
+            }
+        }
+
+        prepareQuestions(mode: string) {
+            let questions = [...this.subject.questions];
+            if (mode === 'full-revision') {
+                this.currentQuestions = questions;
+            } else {
+                this.currentQuestions = this.shuffleArray(questions);
+            }
+
+            const totalEl = document.getElementById("sg-totalQ");
+            if (totalEl) totalEl.textContent = this.currentQuestions.length.toString();
+        }
+
+        startTimer() {
+            if (this.timer) clearInterval(this.timer);
+            this.timer = setInterval(() => {
+                this.seconds++;
+                const el = document.getElementById('sg-timer'); // Component ID
+                if (el) {
+                    const m = Math.floor(this.seconds / 60);
+                    const s = this.seconds % 60;
+                    el.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        renderQuestion() {
+            const q = this.currentQuestions[this.currentIndex];
+            if (this.renderer && q) {
+                this.renderer.render(q, this.currentIndex, this.currentQuestions.length);
+            }
+            this.resetState();
+        }
+
+        resetState() {
+            this.selectedOptions = [];
+            this.isAnswered = false;
+            
+            const currentQ = document.getElementById("sg-currentQ"); // ScoreDisplay ID
+            if (currentQ) currentQ.textContent = (this.currentIndex + 1).toString();
+
+            const btn = document.getElementById("sg-submit-btn") as HTMLButtonElement;
+            if (btn) { btn.disabled = true; btn.classList.remove('hidden'); }
+
+            const next = document.getElementById("sg-next-btn");
+            if (next) next.classList.add('hidden');
+
+            const hintBtn = document.getElementById("sg-hint-btn");
+            if (hintBtn) hintBtn.classList.remove('hidden');
+        }
+
+        selectOption(idx: number) {
+            if (this.isAnswered) return;
+            document.querySelectorAll(".option").forEach((opt) => opt.classList.remove("selected"));
+            document.querySelector(`.option[data-idx="${idx}"]`)?.classList.add("selected");
+            this.selectedOptions = [idx];
+            
+            const btn = document.getElementById("sg-submit-btn") as HTMLButtonElement;
+            if (btn) btn.disabled = false;
+        }
+
+        selectMulti(idx: number) {
+            if (this.isAnswered) return;
+            const optEl = document.querySelector(`.option[data-idx="${idx}"]`);
+            if (optEl) optEl.classList.toggle("selected");
+
+            if (this.selectedOptions.includes(idx)) {
+                this.selectedOptions = this.selectedOptions.filter(i => i !== idx);
+            } else {
+                this.selectedOptions.push(idx);
+            }
+            this.selectedOptions.sort((a, b) => a - b);
+
+            const btn = document.getElementById("sg-submit-btn") as HTMLButtonElement;
+            if (btn) btn.disabled = this.selectedOptions.length === 0;
+        }
+
+        selectTF(val: boolean) {
+            if (this.isAnswered) return;
+            document.querySelectorAll(".tf-option").forEach((opt) => opt.classList.remove("selected"));
+            document.querySelector(`.tf-option[data-value="${val}"]`)?.classList.add("selected");
+            this.selectedOptions = [val];
+            const btn = document.getElementById("sg-submit-btn") as HTMLButtonElement;
+            if (btn) btn.disabled = false;
+        }
+
+        submitAnswer() {
+            if (this.isAnswered || this.selectedOptions.length === 0) return;
+            this.isAnswered = true;
+
+            const q = this.currentQuestions[this.currentIndex];
+            let isCorrect = false;
+
+            if (q.type === "mcq" || q.type === "tf") {
+                isCorrect = this.selectedOptions[0] === q.correct;
+            } else if (q.type === "multi") {
+                const correctArr = (q.correct as number[]).sort((a, b) => a - b);
+                isCorrect = JSON.stringify(this.selectedOptions) === JSON.stringify(correctArr);
+            }
+
+            if (isCorrect) {
+                this.score++;
+                this.streak++;
+                const scoreEl = document.getElementById('sg-liveScore');
+                if(scoreEl) scoreEl.textContent = this.score.toString();
+
+                if (this.streak > this.maxStreak) this.maxStreak = this.streak;
+            } else {
+                this.streak = 0;
+            }
+
+            this.answers.push({
+                question: q.question,
+                correct: isCorrect,
+                userAnswer: this.selectedOptions,
+                correctAnswer: q.correct,
+                explanation: q.explanation,
+            });
+
+            const btn = document.getElementById("sg-submit-btn");
+            if (btn) btn.classList.add('hidden');
+            const next = document.getElementById("sg-next-btn");
+            if (next) next.classList.remove('hidden');
+
+            if (this.renderer && q) {
+                this.renderer.showFeedback(isCorrect, q.explanation || '', this.selectedOptions, q.correct);
+            }
+        }
+
+        showHint() {
+            const q = this.currentQuestions[this.currentIndex];
+            const hintText = (q as any).hint || `Category: ${q?.category}. Recall what you learned about this topic.`;
+
+            const popup = document.getElementById('sg-hint-popup');
+            const textEl = document.getElementById('sg-hint-popup-text'); // HintPopup generated ID. HintPopup takes 'id' prop.
+            
+            // HintPopup generates inner IDs: id, id+"-text"
+            // So if id="sg-hint-popup", text id is "sg-hint-popup-text".
+            if (popup && textEl) {
+                textEl.textContent = hintText;
+                popup.classList.remove('hidden');
+            } else {
+                alert(hintText);
+            }
+        }
+
+        skip() {
+            const q = this.currentQuestions[this.currentIndex];
+            this.answers.push({
+                question: q.question,
+                correct: false,
+                userAnswer: null,
+                correctAnswer: q.correct,
+                explanation: "Skipped",
+            });
+            this.streak = 0;
+            this.nextQuestion();
+        }
+
+        nextQuestion() {
+            this.currentIndex++;
+            if (this.currentIndex < this.currentQuestions.length) {
+                this.renderQuestion();
+            } else {
+                this.finishGame();
+            }
+        }
+
+        finishGame() {
+            clearInterval(this.timer);
+            const results = {
+                score: this.score,
+                total: this.currentQuestions.length,
+                time: this.seconds,
+                answers: this.answers,
+                maxStreak: this.maxStreak,
+                mode: this.mode
+            };
+            // @ts-ignore
+            if (window.game.showResults) window.game.showResults(results);
+        }
+
+        shuffleArray(array: any[]) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+    }
+
+    new StandardGame();
+</script>

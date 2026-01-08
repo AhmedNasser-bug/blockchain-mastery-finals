@@ -1,0 +1,321 @@
+---
+---
+<div class="screen" id="resultsScreen">
+    <div class="container container-narrow">
+        <div class="card results-container">
+            <div class="results-header">
+                <div>
+                    <h2 class="mission-title">MISSION REPORT</h2>
+                    <p class="mission-status">CLEARANCE LEVEL: MAX</p>
+                </div>
+                <div class="grade-box">
+                    <div class="grade-label">GRADE</div>
+                    <div id="finalGrade" class="grade-value">?</div>
+                </div>
+            </div>
+            
+            <div class="report-grid">
+                <!-- Accuracy -->
+                <div class="report-cell cell-border-right cell-border-bottom">
+                    <div class="stat-lbl text-muted">ACCURACY</div>
+                    <div id="finalScore" class="stat-val">0%</div>
+                </div>
+                <!-- Time -->
+                <div class="report-cell cell-border-bottom">
+                    <div class="stat-lbl text-muted">DURATION</div>
+                    <div id="finalTime" class="stat-val">00:00</div>
+                </div>
+                 <!-- Correct -->
+                <div class="report-cell cell-border-right">
+                    <div class="stat-lbl text-success">SUCCESSFUL</div>
+                    <div id="correctCount" class="stat-val">0</div>
+                </div>
+                <!-- Incorrect -->
+                <div class="report-cell">
+                    <div class="stat-lbl text-error">FAILED</div>
+                    <div id="incorrectCount" class="stat-val">0</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                 <button class="btn btn-secondary review-btn" onclick="window.game.showReview()">
+                    REVIEW LOGS
+                </button>
+                <button class="btn btn-primary return-btn" onclick="window.game.goHome()">
+                    RETURN TO BASE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card review-container hidden" id="reviewContainer">
+        <div class="review-header">
+             <h3 class="review-title">MISSION DEBRIEF</h3>
+        </div>
+        <div id="reviewContent" class="review-content"></div>
+         <button class="btn btn-secondary close-btn" onclick="document.getElementById('reviewContainer').classList.add('hidden')">CLOSE DEBRIEF</button>
+    </div>
+</div>
+
+<style>
+    .container-narrow {
+        max-width: 800px;
+    }
+
+    .results-container {
+        text-align: left; 
+        padding: 40px; 
+        border: 4px solid var(--text-primary);
+    }
+
+    .results-header {
+        border-bottom: 2px solid var(--text-primary); 
+        padding-bottom: 20px; 
+        margin-bottom: 30px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: flex-end;
+    }
+
+    .mission-title {
+        font-size: 3rem; 
+        margin: 0; 
+        line-height: 1;
+    }
+
+    .mission-status {
+        margin: 0; 
+        color: var(--text-secondary); 
+        letter-spacing: 1px;
+    }
+
+    .grade-box {
+        text-align: right;
+    }
+
+    .grade-label {
+        font-size: 1.2rem; 
+        font-weight: bold;
+    }
+
+    .grade-value {
+        font-size: 4rem; 
+        line-height: 1; 
+        font-weight: 900; 
+        color: var(--primary);
+    }
+    
+    /* Dynamic colors for grade can use utility classes or JS style setting if highly dynamic. */
+    .grade-s-plus, .grade-s { color: var(--primary); }
+    .grade-a-plus, .grade-a { color: var(--success); }
+    .grade-b { color: var(--accent-blue); }
+    .grade-c { color: var(--text-primary); }
+    .grade-d { color: var(--accent-purple); }
+    .grade-f { color: var(--text-muted); }
+
+    .report-grid {
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 0; 
+        border: 2px solid var(--border);
+    }
+
+    .report-cell {
+        padding: 20px;
+    }
+
+    .cell-border-right {
+        border-right: 2px solid var(--border);
+    }
+
+    .cell-border-bottom {
+        border-bottom: 2px solid var(--border);
+    }
+
+    .stat-lbl {
+        font-size: 0.9rem; 
+        text-transform: uppercase;
+    }
+    
+    .text-muted { color: var(--text-muted); }
+    .text-success { color: var(--success); font-weight: bold; }
+    .text-error { color: var(--error); font-weight: bold; }
+
+    .stat-val {
+        font-size: 2.5rem; 
+        font-weight: 800;
+    }
+
+    .action-buttons {
+        margin-top: 40px; 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 20px;
+    }
+
+    .review-btn, .return-btn, .close-btn {
+        width: 100%;
+    }
+
+    .review-container {
+        margin-top: 20px; 
+        border: 2px solid var(--border); 
+        padding: 0;
+    }
+
+    .review-header {
+        padding: 20px; 
+        background: var(--bg-card-hover); 
+        border-bottom: 2px solid var(--border);
+    }
+
+    .review-title {
+        margin: 0;
+    }
+
+    .review-content {
+        padding: 20px;
+    }
+    
+    .close-btn {
+        border-top: 2px solid var(--border);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+    
+    /* Styles for dynamic content injected via JS */
+    :global(.review-explanation) {
+        margin-top: 5px;
+        font-style: italic;
+    }
+</style>
+
+
+<script>
+    import { GameProgressService } from '../../storage/GameProgress';
+
+    export interface QuizResults {
+        score: number;
+        total: number;
+        time: number;
+        answers: any[];
+        maxStreak: number;
+        mode?: string;
+    }
+
+    class ResultsScreenController {
+        constructor() {
+            // @ts-ignore
+            window.game = window.game || {};
+            // @ts-ignore
+            window.game.showResults = this.display.bind(this);
+            // @ts-ignore
+            window.game.showReview = this.showReview.bind(this);
+        }
+
+        display(results: QuizResults): void {
+            this.showScreen('resultsScreen');
+
+            const percentage = Math.round((results.score / results.total) * 100);
+            
+             // @ts-ignore
+            window.lastQuizResults = results;
+            
+            // SAVE PROGRESS
+            // @ts-ignore
+            const subjectId = window.subjectData.config.storageKey || window.subjectData.id;
+            // @ts-ignore
+            const definedAchievements = window.subjectData.achievements || [];
+            
+            const run = {
+                date: Date.now(),
+                mode: results.mode || 'quiz',
+                score: percentage,
+                rawScore: results.score,
+                total: results.total,
+                time: results.time,
+                streak: results.maxStreak
+            };
+            
+            const progress = GameProgressService.addRun(subjectId, run, definedAchievements);
+            
+            if(progress.newUnlocks && progress.newUnlocks.length > 0) {
+                alert(`🏆 ${progress.newUnlocks.length} New Achievement(s) Unlocked!`);
+            }
+
+            const elFinalScore = document.getElementById('finalScore');
+            if (elFinalScore) elFinalScore.textContent = percentage + '%';
+
+            const elCorrect = document.getElementById('correctCount');
+            if (elCorrect) elCorrect.textContent = results.score.toString();
+
+            const elIncorrect = document.getElementById('incorrectCount');
+            if (elIncorrect) elIncorrect.textContent = (results.total - results.score).toString();
+
+            const elTime = document.getElementById('finalTime');
+            if (elTime) elTime.textContent = this.formatTime(results.time);
+
+            this.updateGrade(percentage);
+        }
+
+        showScreen(id: string) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id)?.classList.add('active');
+        }
+
+        showReview(): void {
+            // @ts-ignore
+            const results = window.lastQuizResults;
+            if(!results) return;
+
+            const container = document.getElementById('reviewContainer');
+            if (container) container.classList.remove('hidden');
+
+            const content = document.getElementById('reviewContent');
+            if (content) {
+                content.innerHTML = results.answers.map((ans: any, idx: number) => `
+                    <div class="review-item ${ans.correct ? 'review-correct' : 'review-incorrect'}">
+                        <div class="review-question">${idx + 1}. ${ans.question}</div>
+                        <div class="review-answer">Your Answer: ${JSON.stringify(ans.userAnswer)}</div>
+                        <div class="review-answer">Correct: ${JSON.stringify(ans.correctAnswer)}</div>
+                        <div class="review-explanation">${ans.explanation}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        private updateGrade(score: number): void {
+            const el = document.getElementById('finalGrade');
+            if (!el) return;
+            
+            // Usage of classes for colors
+            el.className = 'grade-value'; // reset
+            
+            let grade = 'F';
+            let gradeClass = 'grade-f';
+            
+            if (score >= 97) { grade = 'S+'; gradeClass = 'grade-s-plus'; }
+            else if (score >= 93) { grade = 'S'; gradeClass = 'grade-s'; }
+            else if (score >= 90) { grade = 'A+'; gradeClass = 'grade-a-plus'; }
+            else if (score >= 87) { grade = 'A'; gradeClass = 'grade-a'; }
+            else if (score >= 80) { grade = 'B'; gradeClass = 'grade-b'; }
+            else if (score >= 70) { grade = 'C'; gradeClass = 'grade-c'; }
+            else if (score >= 60) { grade = 'D'; gradeClass = 'grade-d'; }
+            
+            el.textContent = grade;
+            el.classList.add(gradeClass);
+        }
+
+        private formatTime(secs: number): string {
+            const m = Math.floor(secs / 60);
+            const s = secs % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        new ResultsScreenController();
+    });
+</script>

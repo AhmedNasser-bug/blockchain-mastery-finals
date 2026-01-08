@@ -1,0 +1,19 @@
+---
+interface Props {
+  id?: string;
+  className?: string;
+}
+const { id = "questionContainer", className = "" } = Astro.props;
+---
+
+<div class={`card question-container ${className}`} id={id}>
+    <!-- Question content renders here dynamically -->
+</div>
+
+<style>
+.question-container {
+    padding: 30px;
+    margin-bottom: 20px;
+    min-height: 200px; /* Preserve space */
+}
+</style>

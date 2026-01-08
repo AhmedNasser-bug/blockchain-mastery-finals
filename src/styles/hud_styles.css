@@ -1,0 +1,29 @@
+/* HUD Panel Styles */
+.hud-panel {
+    border: 2px solid var(--border);
+    background: var(--bg-card);
+    padding: 24px;
+    margin-bottom: 40px;
+    border-top: 4px solid var(--primary);
+    /* Accent Top */
+}
+
+.hud-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 15px;
+}
+
+.hud-mode-badge {
+    background: var(--primary);
+    color: black;
+    padding: 4px 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed', sans-serif;
+}

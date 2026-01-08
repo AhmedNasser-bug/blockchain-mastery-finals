@@ -1,0 +1,40 @@
+---
+interface Props {
+  current?: number;
+  total?: number;
+  idPrefix?: string;
+}
+const { current = 1, total = 0, idPrefix = "" } = Astro.props;
+---
+
+<div class="score-display">
+    <span class="q-count"><span id={`${idPrefix}currentQ`}>{current}</span> / <span id={`${idPrefix}totalQ`}>{total}</span></span>
+    <span class="score-text">Score: <strong id={`${idPrefix}liveScore`} style="color:var(--primary)">0</strong></span>
+</div>
+
+<style>
+.score-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border); /* Separation line */
+    font-family: 'Roboto Mono', monospace; /* Technical Font */
+    letter-spacing: -0.5px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.q-count {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.score-text strong {
+    color: var(--primary);
+    background: rgba(255, 215, 0, 0.1);
+    padding: 2px 6px;
+    border: 1px solid var(--primary);
+}
+</style>

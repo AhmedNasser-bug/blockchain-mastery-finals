@@ -4,19 +4,18 @@
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which tag is used to place document metadata inside the page head?",
+        "question": "Which HTML tag is used to create a form?",
         "options": [
-            "<meta>",
-            "<data>",
-            "<info>",
-            "<header>"
+            "<form>",
+            "<input>",
+            "<fieldset>",
+            "<submit>"
         ],
         "correct": 0,
-        "explanation": "<meta> defines metadata such as charset and name/content pairs. <data> is for machine-readable values, <info> is not an HTML tag, and <header> is a visible semantic section, not metadata.",
+        "explanation": "<form> defines the form container. <input> is a control inside a form, <fieldset> groups controls, and <submit> is not a valid HTML tag.",
         "relatedTerms": [
-            "<meta>",
-            "head",
-            "metadata"
+            "<form>",
+            "Forms"
         ]
     },
     {
@@ -24,21 +23,18 @@
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which <meta> attribute is used to name a metadata field like description/keywords/author?",
+        "question": "Which tag is used to add metadata like description, keywords, and author?",
         "options": [
-            "name",
-            "id",
-            "rel",
-            "type"
+            "<meta>",
+            "<p>",
+            "<img>",
+            "<caption>"
         ],
         "correct": 0,
-        "explanation": "For common metadata you use name=\"description|keywords|author\" and content=\"...\". id identifies an element, rel is for <link>, and type is not used this way on <meta> in the given notes.",
+        "explanation": "<meta> holds document metadata (often in <head>). <p> is text content, <img> embeds images, and <caption> labels a table.",
         "relatedTerms": [
-            "meta",
-            "name",
-            "description",
-            "keywords",
-            "author"
+            "<meta>",
+            "metadata"
         ]
     },
     {
@@ -46,18 +42,19 @@
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which tag creates a paragraph?",
+        "question": "In <meta>, which attribute stores the type of metadata (e.g., \"description\")?",
         "options": [
-            "<p>",
-            "<h3>",
-            "<ol>",
-            "<img>"
+            "name",
+            "content",
+            "href",
+            "src"
         ],
         "correct": 0,
-        "explanation": "<p> defines a paragraph block. <h3> is a heading, <ol> is a list container, and <img> embeds an image.",
+        "explanation": "name identifies the metadata field (description/keywords/author). content holds the value. href is for links; src is for embedded resources.",
         "relatedTerms": [
-            "<p>",
-            "paragraph"
+            "meta",
+            "name",
+            "content"
         ]
     },
     {
@@ -65,19 +62,18 @@
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which tag range represents headings from largest to smallest?",
+        "question": "Which attribute of <meta> stores the metadata value text?",
         "options": [
-            "<h1>.. <h6>",
-            "<h0>.. <h5>",
-            "<head1>.. <head6>",
-            "<title1>.. <title6>"
+            "content",
+            "name",
+            "align",
+            "method"
         ],
         "correct": 0,
-        "explanation": "Headings are <h1> to <h6>. The other ranges are not valid HTML tags.",
+        "explanation": "content contains the metadata value string. name is the label; align is legacy layout; method is for forms.",
         "relatedTerms": [
-            "headings",
-            "<h1>",
-            "<h6>"
+            "meta",
+            "content"
         ]
     },
     {
@@ -85,18 +81,18 @@
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which attribute specifies the image file in <img>?",
+        "question": "Which tag creates a paragraph?",
         "options": [
-            "src",
-            "href",
-            "action",
-            "method"
+            "<p>",
+            "<h1>",
+            "<ol>",
+            "<tr>"
         ],
         "correct": 0,
-        "explanation": "src points to the image URL/file. href is for links, action/method are for forms.",
+        "explanation": "<p> is a paragraph. <h1> is a heading, <ol> is an ordered list, and <tr> is a table row.",
         "relatedTerms": [
-            "<img>",
-            "src"
+            "<p>",
+            "Paragraphs"
         ]
     },
     {
@@ -104,86 +100,295 @@
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which attribute provides alternative text for an image?",
+        "question": "Which tags represent headings?",
         "options": [
-            "alt",
-            "align",
-            "border",
-            "face"
+            "<h1> to <h6>",
+            "<p1> to <p6>",
+            "<head1> to <head6>",
+            "<title1> to <title6>"
         ],
         "correct": 0,
-        "explanation": "alt is the text alternative used for accessibility and fallback. align and border are legacy layout/presentation attributes; face is for the deprecated <font> tag.",
+        "explanation": "HTML headings are <h1> through <h6>. The other tag ranges do not exist in HTML.",
         "relatedTerms": [
-            "alt",
-            "accessibility",
-            "<img>"
+            "<h1>",
+            "<h6>",
+            "Headings"
         ]
     },
     {
         "id": "q_html_007",
         "category": "HTML Fundamentals",
         "type": "mcq",
-        "difficulty": "Intermediate",
-        "question": "Which HTML correctly creates a hyperlink to page1.html with visible text \"Page 1\"?",
+        "difficulty": "Novice",
+        "question": "Which tag embeds an image?",
         "options": [
-            "<a href=\"page1.html\">Page 1</a>",
-            "<a src=\"page1.html\">Page 1</a>",
-            "<link href=\"page1.html\">Page 1</link>",
-            "<a action=\"page1.html\">Page 1</a>"
+            "<img>",
+            "<image>",
+            "<src>",
+            "<pic>"
         ],
         "correct": 0,
-        "explanation": "Anchors use href for the destination. src is for embedded resources (e.g., img/script), <link> does not create clickable text, and action belongs to <form>.",
+        "explanation": "<img> is the correct HTML element. <image>, <src>, and <pic> are not standard HTML tags for images.",
         "relatedTerms": [
-            "<a>",
-            "href",
-            "links"
+            "<img>",
+            "Images"
         ]
     },
     {
         "id": "q_html_008",
         "category": "HTML Fundamentals",
         "type": "mcq",
-        "difficulty": "Intermediate",
-        "question": "You want an ordered list to start at 4. Which attribute do you add to <ol>?",
+        "difficulty": "Novice",
+        "question": "Which attribute specifies the file/URL of an image?",
         "options": [
-            "start=\"4\"",
-            "value=\"4\"",
-            "begin=\"4\"",
-            "index=\"4\""
+            "src",
+            "href",
+            "action",
+            "value"
         ],
         "correct": 0,
-        "explanation": "<ol start=\"4\"> sets the starting number. value is not the <ol> start control in the provided summary; begin/index are invalid attributes here.",
+        "explanation": "src points to the image resource. href is for links, action is for form submission target, and value is for form controls.",
         "relatedTerms": [
-            "<ol>",
-            "start"
+            "img",
+            "src"
         ]
     },
     {
         "id": "q_html_009",
         "category": "HTML Fundamentals",
         "type": "mcq",
-        "difficulty": "Intermediate",
-        "question": "Which <ol> type value produces lowercase Roman numerals?",
+        "difficulty": "Novice",
+        "question": "Which attribute provides alternative text for an image?",
         "options": [
-            "i",
-            "I",
-            "a",
-            "A"
+            "alt",
+            "border",
+            "align",
+            "face"
         ],
         "correct": 0,
-        "explanation": "type=\"i\" is lowercase Roman numerals; \"I\" is uppercase Roman; \"a\"/\"A\" are lettered lists.",
+        "explanation": "alt provides text fallback and accessibility. border/align are legacy presentational attributes; face is for deprecated <font>.",
         "relatedTerms": [
-            "<ol>",
-            "type",
-            "lower-roman"
+            "alt",
+            "accessibility"
         ]
     },
     {
         "id": "q_html_010",
         "category": "HTML Fundamentals",
         "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which tag creates a hyperlink?",
+        "options": [
+            "<a>",
+            "<link>",
+            "<href>",
+            "<url>"
+        ],
+        "correct": 0,
+        "explanation": "<a> creates a clickable hyperlink. <link> references external resources, and <href>/<url> are not tags.",
+        "relatedTerms": [
+            "<a>",
+            "href"
+        ]
+    },
+    {
+        "id": "q_html_011",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which attribute of <a> specifies the destination?",
+        "options": [
+            "href",
+            "src",
+            "action",
+            "method"
+        ],
+        "correct": 0,
+        "explanation": "href is the link target. src is for embedded resources, action/method are for form submission.",
+        "relatedTerms": [
+            "<a>",
+            "href"
+        ]
+    },
+    {
+        "id": "q_html_012",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which tag creates an ordered (numbered) list?",
+        "options": [
+            "<ol>",
+            "<ul>",
+            "<li>",
+            "<dl>"
+        ],
+        "correct": 0,
+        "explanation": "<ol> is ordered list. <ul> is unordered list, <li> is list item, <dl> is definition list (not in notes).",
+        "relatedTerms": [
+            "<ol>",
+            "Lists"
+        ]
+    },
+    {
+        "id": "q_html_013",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which tag creates an unordered (bulleted) list?",
+        "options": [
+            "<ul>",
+            "<ol>",
+            "<li>",
+            "<table>"
+        ],
+        "correct": 0,
+        "explanation": "<ul> is unordered list. <ol> is ordered; <li> is an item; <table> is tabular data.",
+        "relatedTerms": [
+            "<ul>",
+            "Lists"
+        ]
+    },
+    {
+        "id": "q_html_014",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which tag creates a table?",
+        "options": [
+            "<table>",
+            "<td>",
+            "<tr>",
+            "<th>"
+        ],
+        "correct": 0,
+        "explanation": "<table> is the container. <tr> is a row, <td> a data cell, and <th> a header cell.",
+        "relatedTerms": [
+            "<table>",
+            "Tables"
+        ]
+    },
+    {
+        "id": "q_html_015",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which tag defines a table row?",
+        "options": [
+            "<tr>",
+            "<td>",
+            "<th>",
+            "<caption>"
+        ],
+        "correct": 0,
+        "explanation": "<tr> creates a row. <td>/<th> are cells, and <caption> labels the table.",
+        "relatedTerms": [
+            "<tr>",
+            "Tables"
+        ]
+    },
+    {
+        "id": "q_html_016",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which tag defines a table data cell?",
+        "options": [
+            "<td>",
+            "<tr>",
+            "<th>",
+            "<head>"
+        ],
+        "correct": 0,
+        "explanation": "<td> is a data cell. <tr> is the row container, <th> is header cell, and <head> is document metadata container.",
+        "relatedTerms": [
+            "<td>",
+            "Tables"
+        ]
+    },
+    {
+        "id": "q_html_017",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "In a table, which attribute controls the spacing between cells (not inside them)?",
+        "question": "Which attribute of <form> specifies where to send form data?",
+        "options": [
+            "action",
+            "method",
+            "target",
+            "name"
+        ],
+        "correct": 0,
+        "explanation": "action is the URL of the server script. method chooses GET/POST. target affects where response opens. name labels the form.",
+        "relatedTerms": [
+            "form",
+            "action"
+        ]
+    },
+    {
+        "id": "q_html_018",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which method sends form data in the URL?",
+        "options": [
+            "GET",
+            "POST",
+            "SEND",
+            "REQUEST"
+        ],
+        "correct": 0,
+        "explanation": "GET appends data to the URL query string. POST sends in the request body. SEND/REQUEST are not HTML form methods.",
+        "relatedTerms": [
+            "GET",
+            "POST",
+            "forms"
+        ]
+    },
+    {
+        "id": "q_html_019",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which HTML input type hides typed characters?",
+        "options": [
+            "password",
+            "text",
+            "hidden",
+            "file"
+        ],
+        "correct": 0,
+        "explanation": "type=\"password\" masks input. text shows characters; hidden is not user-editable; file opens a file picker.",
+        "relatedTerms": [
+            "input",
+            "password"
+        ]
+    },
+    {
+        "id": "q_html_020",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which <input> attribute becomes the key name sent to the server?",
+        "options": [
+            "name",
+            "id",
+            "value",
+            "type"
+        ],
+        "correct": 0,
+        "explanation": "name is the submitted key (e.g., $_POST['fname']). id is for DOM/CSS hooks, value is the data, and type defines control kind.",
+        "relatedTerms": [
+            "input",
+            "name",
+            "forms"
+        ]
+    },
+    {
+        "id": "q_html_021",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which table attribute controls space BETWEEN cells?",
         "options": [
             "cellspacing",
             "cellpadding",
@@ -191,139 +396,242 @@
             "bgcolor"
         ],
         "correct": 0,
-        "explanation": "cellspacing sets space between cells; cellpadding sets padding inside cells; border sets border thickness; bgcolor sets background color (legacy).",
+        "explanation": "cellspacing is between cells. cellpadding is inside each cell. border sets border thickness. bgcolor sets background color (legacy).",
         "relatedTerms": [
-            "<table>",
+            "table",
             "cellspacing",
             "cellpadding"
         ]
     },
     {
-        "id": "q_html_011",
+        "id": "q_html_022",
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which tag creates a form input where the typed characters are masked?",
+        "question": "Which table attribute controls padding INSIDE cells?",
         "options": [
-            "<input type=\"password\">",
-            "<input type=\"text\">",
-            "<textarea type=\"password\">",
-            "<select type=\"password\">"
-        ],
-        "correct": 0,
-        "explanation": "Password fields are <input type=\"password\">. text shows characters; textarea/select don’t take a type=\"password\" behavior like that.",
-        "relatedTerms": [
-            "<input>",
-            "type",
-            "password"
-        ]
-    },
-    {
-        "id": "q_html_012",
-        "category": "HTML Fundamentals",
-        "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "A page uses <p ALIGN=\"CENTER\">Text</p>. Which statement is best?",
-        "options": [
-            "It works but is legacy; prefer CSS text-align:center;",
-            "It will not render centered in any browser",
-            "ALIGN only works on <h1> tags",
-            "ALIGN is required for <p> to display"
-        ],
-        "correct": 0,
-        "explanation": "The ALIGN attribute may still work in many browsers but is deprecated/legacy; modern practice is CSS (p {text-align:center;}). The other statements are false.",
-        "relatedTerms": [
-            "<p>",
-            "ALIGN",
-            "CSS",
-            "text-align"
-        ]
-    },
-    {
-        "id": "q_html_013",
-        "category": "HTML Fundamentals",
-        "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "What is a common accessibility/SEO issue with using <font> for styling?",
-        "options": [
-            "It mixes presentation with structure and is deprecated; use CSS instead",
-            "It automatically breaks all headings",
-            "It prevents <meta> tags from working",
-            "It is required to make text visible"
-        ],
-        "correct": 0,
-        "explanation": "<font> is deprecated and embeds presentation in HTML; CSS should control style. It does not break headings, meta tags, nor is it required for visibility.",
-        "relatedTerms": [
-            "<font>",
-            "CSS",
-            "semantics"
-        ]
-    },
-    {
-        "id": "q_html_014",
-        "category": "HTML Fundamentals",
-        "type": "multi",
-        "difficulty": "Advanced",
-        "question": "Which table attributes in the notes are mainly presentational (legacy) rather than semantic data structure?",
-        "options": [
-            "bgcolor",
-            "border",
-            "colspan",
-            "cellpadding"
-        ],
-        "correct": [
-            0,
-            1,
-            3
-        ],
-        "explanation": "bgcolor/border/cellpadding are presentational (visual). colspan is structural because it changes the table’s cell spanning across columns.",
-        "relatedTerms": [
-            "<table>",
-            "bgcolor",
-            "border",
             "cellpadding",
+            "cellspacing",
+            "rowspan",
             "colspan"
+        ],
+        "correct": 0,
+        "explanation": "cellpadding adds inner space. cellspacing is between cells. rowspan/colspan merge cells.",
+        "relatedTerms": [
+            "table",
+            "cellpadding"
         ]
     },
     {
-        "id": "q_html_015",
+        "id": "q_html_023",
         "category": "HTML Fundamentals",
         "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "A form uses method=\"post\" and action=\"apply-now.php\" with <input name=\"email\">. Which PHP expression reads the submitted email?",
+        "difficulty": "Intermediate",
+        "question": "Which attribute merges cells vertically in an HTML table?",
         "options": [
-            "$_POST[\"email\"]",
-            "$_GET[\"email\"]",
-            "$_REQUEST.email",
-            "$POST(\"email\")"
+            "rowspan",
+            "colspan",
+            "cellpadding",
+            "valign"
         ],
         "correct": 0,
-        "explanation": "POST data is accessed via $_POST['email']. $_GET is for query string, $_REQUEST.email is invalid syntax, and $POST(...) is not a PHP function.",
+        "explanation": "rowspan merges rows (vertical span). colspan merges columns. cellpadding adds spacing. valign aligns content vertically but doesn’t merge cells.",
         "relatedTerms": [
+            "rowspan",
+            "tables"
+        ]
+    },
+    {
+        "id": "q_html_024",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which attribute merges cells horizontally in an HTML table?",
+        "options": [
+            "colspan",
+            "rowspan",
+            "align",
+            "width"
+        ],
+        "correct": 0,
+        "explanation": "colspan spans multiple columns. rowspan spans multiple rows. align/width don’t merge cells.",
+        "relatedTerms": [
+            "colspan",
+            "tables"
+        ]
+    },
+    {
+        "id": "q_html_025",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which tag creates a dropdown list?",
+        "options": [
+            "<select>",
+            "<option>",
+            "<input>",
+            "<textarea>"
+        ],
+        "correct": 0,
+        "explanation": "<select> is the list container. <option> is a choice inside it. <input>/<textarea> are different control types.",
+        "relatedTerms": [
+            "select",
+            "option"
+        ]
+    },
+    {
+        "id": "q_html_026",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which attribute allows selecting multiple options in a <select>?",
+        "options": [
+            "multiple",
+            "size",
+            "selected",
+            "value"
+        ],
+        "correct": 0,
+        "explanation": "multiple enables multi-select. size controls visible rows. selected selects a specific option. value sets the submitted value of an option.",
+        "relatedTerms": [
+            "select",
+            "multiple"
+        ]
+    },
+    {
+        "id": "q_html_027",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which tag creates a multi-line text input?",
+        "options": [
+            "<textarea>",
+            "<input type=\"text\">",
+            "<select>",
+            "<legend>"
+        ],
+        "correct": 0,
+        "explanation": "<textarea> is multi-line. <input type=\"text\"> is single-line. <select> is list. <legend> labels a fieldset.",
+        "relatedTerms": [
+            "textarea",
+            "forms"
+        ]
+    },
+    {
+        "id": "q_html_028",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which tag groups related form controls with a border/box?",
+        "options": [
+            "<fieldset>",
             "<form>",
-            "method",
-            "action",
-            "$_POST"
+            "<frame>",
+            "<caption>"
+        ],
+        "correct": 0,
+        "explanation": "<fieldset> groups related controls. <form> is overall container, <frame> is legacy frames, <caption> labels a table.",
+        "relatedTerms": [
+            "fieldset",
+            "legend"
         ]
     },
     {
-        "id": "q_html_016",
+        "id": "q_html_029",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "A page uses `<p ALIGN=\"CENTER\">`. Best modern replacement?",
+        "options": [
+            "CSS: p { text-align: center; }",
+            "HTML: <p center>",
+            "CSS: p { align: center; }",
+            "HTML: <center><p>"
+        ],
+        "correct": 0,
+        "explanation": "ALIGN is legacy; modern styling uses CSS text-align. <p center> is invalid, align is not a CSS property, and <center> is deprecated/legacy.",
+        "relatedTerms": [
+            "ALIGN",
+            "text-align",
+            "CSS"
+        ]
+    },
+    {
+        "id": "q_html_030",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "Why is using `<font>` discouraged today?",
+        "options": [
+            "It mixes presentation into HTML; use CSS instead",
+            "It prevents images from loading",
+            "It disables <meta> tags",
+            "It is required for headings"
+        ],
+        "correct": 0,
+        "explanation": "<font> is deprecated; CSS should handle presentation. It doesn’t control image loading or meta behavior, and headings don’t require it.",
+        "relatedTerms": [
+            "font",
+            "CSS",
+            "deprecated"
+        ]
+    },
+    {
+        "id": "q_html_031",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "Which is the main accessibility purpose of the `alt` attribute?",
+        "options": [
+            "Provides text alternative for screen readers/fallback",
+            "Controls image border thickness",
+            "Sets the image file path",
+            "Sets image alignment"
+        ],
+        "correct": 0,
+        "explanation": "alt provides an accessible text alternative and fallback. border/src/align serve different roles.",
+        "relatedTerms": [
+            "alt",
+            "accessibility"
+        ]
+    },
+    {
+        "id": "q_html_032",
         "category": "HTML Fundamentals",
         "type": "mcq",
         "difficulty": "Full Stack",
-        "question": "Why might using method=\"get\" for a login form be a security problem?",
+        "question": "A form uses `method=\"post\"` and `<input name=\"fname\">`. Which PHP expression reads it?",
         "options": [
-            "Credentials appear in the URL/history/logs",
-            "GET cannot send any data",
-            "GET always encrypts the request body",
-            "POST forces SQL injection automatically"
+            "$_POST['fname']",
+            "$_GET['fname']",
+            "$POST['fname']",
+            "$_REQUEST.fname"
         ],
         "correct": 0,
-        "explanation": "GET puts parameters in the URL, which can leak through browser history, referrers, and logs. GET can send data, it does not encrypt anything, and POST does not force SQL injection.",
+        "explanation": "POST data is in $_POST. $_GET is for query string. $POST is not a superglobal. $_REQUEST.fname is invalid syntax (must use ['fname']).",
         "relatedTerms": [
-            "GET",
-            "POST",
+            "$_POST",
             "forms",
+            "method"
+        ]
+    },
+    {
+        "id": "q_html_033",
+        "category": "HTML Fundamentals",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "Which method is generally more secure for sending passwords from a form?",
+        "options": [
+            "POST",
+            "GET",
+            "Both equally secure",
+            "Neither can send passwords"
+        ],
+        "correct": 0,
+        "explanation": "POST avoids putting data in the URL. GET exposes data in URL/history/logs. Both still need HTTPS for real confidentiality; 'neither' is false.",
+        "relatedTerms": [
+            "POST",
+            "GET",
             "security"
         ]
     },
@@ -332,19 +640,18 @@
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which CSS selector targets an element with id=\"p1\"?",
+        "question": "Which selector targets elements with class=\"myinfo\"?",
         "options": [
-            "#p1",
-            ".p1",
-            "p1",
-            "*p1"
+            ".myinfo",
+            "#myinfo",
+            "myinfo",
+            "*myinfo"
         ],
         "correct": 0,
-        "explanation": "#p1 targets id=\"p1\". .p1 targets class=\"p1\"; p1 would target a <p1> tag (not standard); *p1 is not valid selector syntax.",
+        "explanation": ".class selects by class. #myinfo selects id. myinfo would select a tag named <myinfo>. *myinfo is invalid.",
         "relatedTerms": [
-            "CSS",
-            "ID selector",
-            "#p1"
+            ".myinfo",
+            "class selector"
         ]
     },
     {
@@ -352,19 +659,18 @@
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which CSS selector targets elements with class=\"myinfo\"?",
+        "question": "Which selector targets the element with id=\"p1\"?",
         "options": [
-            ".myinfo",
-            "#myinfo",
-            "myinfo",
-            "p.myinfo#"
+            "#p1",
+            ".p1",
+            "p1",
+            "@p1"
         ],
         "correct": 0,
-        "explanation": ".myinfo targets a class. #myinfo targets an id. myinfo would target a tag name. p.myinfo# is invalid.",
+        "explanation": "#id selects by id. .p1 selects class, p1 selects a tag name, and @p1 is not valid selector syntax.",
         "relatedTerms": [
-            "CSS",
-            "class selector",
-            ".myinfo"
+            "#p1",
+            "id selector"
         ]
     },
     {
@@ -372,46 +678,7 @@
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which property changes text color?",
-        "options": [
-            "color",
-            "background-color",
-            "font-style",
-            "text-decoration"
-        ],
-        "correct": 0,
-        "explanation": "color sets the text foreground color. background-color colors the background; font-style controls italic/normal; text-decoration controls underline/line-through/overline.",
-        "relatedTerms": [
-            "CSS",
-            "color"
-        ]
-    },
-    {
-        "id": "q_css_004",
-        "category": "CSS & Responsive Design",
-        "type": "mcq",
-        "difficulty": "Novice",
-        "question": "Which property underlines text?",
-        "options": [
-            "text-decoration: underline;",
-            "font-style: underline;",
-            "font-weight: underline;",
-            "text-align: underline;"
-        ],
-        "correct": 0,
-        "explanation": "Underline is controlled by text-decoration. font-style is italic/normal, font-weight is bold/normal, and text-align positions text (left/center/right/justify).",
-        "relatedTerms": [
-            "CSS",
-            "text-decoration",
-            "underline"
-        ]
-    },
-    {
-        "id": "q_css_005",
-        "category": "CSS & Responsive Design",
-        "type": "mcq",
-        "difficulty": "Novice",
-        "question": "Which selector matches every element on a page?",
+        "question": "Which selector matches every element?",
         "options": [
             "*",
             "body",
@@ -419,11 +686,48 @@
             "all"
         ],
         "correct": 0,
-        "explanation": "* is the universal selector. body/html match specific elements; all is not a CSS selector keyword.",
+        "explanation": "* is the universal selector. body/html target specific elements; all is not a CSS selector.",
         "relatedTerms": [
-            "CSS",
-            "universal selector",
-            "*"
+            "*",
+            "universal selector"
+        ]
+    },
+    {
+        "id": "q_css_004",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which property sets text color?",
+        "options": [
+            "color",
+            "background-color",
+            "font-style",
+            "text-align"
+        ],
+        "correct": 0,
+        "explanation": "color sets text color. background-color colors the background. font-style sets italic/normal. text-align sets alignment.",
+        "relatedTerms": [
+            "color",
+            "CSS"
+        ]
+    },
+    {
+        "id": "q_css_005",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which property sets the background color?",
+        "options": [
+            "background-color",
+            "color",
+            "bgcolor",
+            "font-color"
+        ],
+        "correct": 0,
+        "explanation": "background-color is the CSS property. bgcolor is an old HTML attribute. font-color is not a standard CSS property; color is text color.",
+        "relatedTerms": [
+            "background-color",
+            "CSS"
         ]
     },
     {
@@ -431,17 +735,16 @@
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which property controls the font family used to render text?",
+        "question": "Which property sets the font family?",
         "options": [
             "font-family",
-            "font-size",
-            "font-weight",
-            "background-image"
+            "font-face",
+            "font-style",
+            "font-weight"
         ],
         "correct": 0,
-        "explanation": "font-family sets the font choice. font-size controls size, font-weight controls boldness, background-image is for backgrounds.",
+        "explanation": "font-family chooses fonts. font-face is not a property (there is @font-face rule). font-style italic/normal. font-weight bold/normal.",
         "relatedTerms": [
-            "CSS",
             "font-family"
         ]
     },
@@ -449,8 +752,157 @@
         "id": "q_css_007",
         "category": "CSS & Responsive Design",
         "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which property underlines text?",
+        "options": [
+            "text-decoration",
+            "font-style",
+            "text-align",
+            "background-repeat"
+        ],
+        "correct": 0,
+        "explanation": "text-decoration controls underline/overline/line-through. font-style controls italic. text-align aligns. background-repeat is for backgrounds.",
+        "relatedTerms": [
+            "text-decoration",
+            "underline"
+        ]
+    },
+    {
+        "id": "q_css_008",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which property aligns text horizontally (left/center/right/justify)?",
+        "options": [
+            "text-align",
+            "align",
+            "font-align",
+            "text-position"
+        ],
+        "correct": 0,
+        "explanation": "text-align is correct CSS. align is legacy HTML attribute and not a CSS property. The others are not valid properties.",
+        "relatedTerms": [
+            "text-align"
+        ]
+    },
+    {
+        "id": "q_css_009",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which property sets a background image?",
+        "options": [
+            "background-image",
+            "image-background",
+            "background-src",
+            "src"
+        ],
+        "correct": 0,
+        "explanation": "background-image is the CSS property. The others are not valid CSS properties (src is an HTML attribute).",
+        "relatedTerms": [
+            "background-image"
+        ]
+    },
+    {
+        "id": "q_css_010",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which function syntax is used for background images in CSS?",
+        "options": [
+            "url(\"images/draft.jpg\")",
+            "src(\"images/draft.jpg\")",
+            "file(\"images/draft.jpg\")",
+            "img(\"images/draft.jpg\")"
+        ],
+        "correct": 0,
+        "explanation": "CSS uses url(...). src/file/img are not CSS functions for background-image.",
+        "relatedTerms": [
+            "url()",
+            "background-image"
+        ]
+    },
+    {
+        "id": "q_css_011",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Given CSS: h1,h2,h3,h4,h5,h6{background-color:purple;} h2{background-color:yellow;} What background color will an <h2> have?",
+        "question": "Which background-repeat value repeats only horizontally?",
+        "options": [
+            "repeat-x",
+            "repeat-y",
+            "no-repeat",
+            "repeat-xy"
+        ],
+        "correct": 0,
+        "explanation": "repeat-x repeats on x-axis. repeat-y repeats vertically. no-repeat disables repetition. repeat-xy is invalid.",
+        "relatedTerms": [
+            "background-repeat",
+            "repeat-x"
+        ]
+    },
+    {
+        "id": "q_css_012",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which background-repeat value disables repeating?",
+        "options": [
+            "no-repeat",
+            "repeat",
+            "repeat-x",
+            "repeat-y"
+        ],
+        "correct": 0,
+        "explanation": "no-repeat means the image is shown once. repeat repeats both axes. repeat-x/y repeat one axis.",
+        "relatedTerms": [
+            "background-repeat",
+            "no-repeat"
+        ]
+    },
+    {
+        "id": "q_css_013",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which property positions a background image (e.g., \"370px 20px\")?",
+        "options": [
+            "background-position",
+            "background-location",
+            "position",
+            "bg-position"
+        ],
+        "correct": 0,
+        "explanation": "background-position sets where the background is placed. position is for element positioning, not backgrounds. Others aren’t valid properties.",
+        "relatedTerms": [
+            "background-position"
+        ]
+    },
+    {
+        "id": "q_css_014",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which property changes list marker style (disc/square/lower-roman)?",
+        "options": [
+            "list-style-type",
+            "marker-type",
+            "list-type",
+            "text-decoration"
+        ],
+        "correct": 0,
+        "explanation": "list-style-type controls bullets/numbering styles. marker-type/list-type aren’t standard properties. text-decoration affects text lines.",
+        "relatedTerms": [
+            "list-style-type",
+            "lists"
+        ]
+    },
+    {
+        "id": "q_css_015",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Given: `h1,h2{background-color:purple;} h2{background-color:yellow;}`. What is h2's background?",
         "options": [
             "yellow",
             "purple",
@@ -458,180 +910,204 @@
             "green"
         ],
         "correct": 0,
-        "explanation": "Both rules match <h2>, but h2 is more specific than the grouped selector, so yellow wins. transparent/green are not selected by these rules.",
+        "explanation": "Both rules match h2, but the `h2` selector is more specific than the grouped selector, so yellow wins. Others are not set by these rules.",
         "relatedTerms": [
-            "CSS",
-            "grouped selector",
-            "specificity"
+            "specificity",
+            "grouped selector"
         ]
     },
     {
-        "id": "q_css_008",
+        "id": "q_css_016",
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which value makes text justified (flush left and right)?",
+        "question": "Which is NOT a component of Responsive Web Design (RWD)?",
         "options": [
-            "justify",
-            "center",
-            "right",
-            "baseline"
+            "JavaScript functions",
+            "Flexible grid layout",
+            "Flexible images",
+            "Media queries"
         ],
         "correct": 0,
-        "explanation": "text-align: justify; stretches spacing so both edges align. center/right align text accordingly; baseline is not a text-align value.",
+        "explanation": "RWD core components include flexible grids, flexible images, and media queries. JavaScript can help UX but isn't a core RWD component in the classic definition.",
         "relatedTerms": [
-            "CSS",
-            "text-align",
-            "justify"
+            "RWD",
+            "media queries",
+            "flexible images"
         ]
     },
     {
-        "id": "q_css_009",
+        "id": "q_css_017",
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "You want a background image to repeat only horizontally. Which setting is correct?",
+        "question": "Bootstrap is primarily a:",
         "options": [
-            "background-repeat: repeat-x;",
-            "background-repeat: repeat-y;",
-            "background-repeat: no-repeat;",
-            "background-repeat: repeat-xy;"
+            "CSS framework",
+            "Database system",
+            "Back-end framework",
+            "Operating system"
         ],
         "correct": 0,
-        "explanation": "repeat-x repeats across x-axis only. repeat-y repeats vertically, no-repeat disables repetition, repeat-xy is invalid.",
+        "explanation": "Bootstrap provides CSS (and optional JS) components for responsive layouts. It is not a DB, backend framework, or OS.",
         "relatedTerms": [
-            "CSS",
-            "background-repeat",
-            "repeat-x"
+            "Bootstrap"
         ]
     },
     {
-        "id": "q_css_010",
+        "id": "q_css_018",
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which declaration correctly sets a background image as in the notes?",
+        "question": "How many columns does Bootstrap’s grid system have (Bootstrap 3/4/5 concept)?",
         "options": [
-            "background-image: url(\"images/draft.jpg\");",
-            "background-image: src(\"images/draft.jpg\");",
-            "background-src: url(\"images/draft.jpg\");",
-            "image-background: url(\"images/draft.jpg\");"
+            "12",
+            "10",
+            "16",
+            "24"
         ],
         "correct": 0,
-        "explanation": "CSS uses background-image: url(...). src is an HTML attribute; background-src/image-background are not CSS properties.",
+        "explanation": "Bootstrap’s grid is 12 columns. Other numbers are common distractors but not Bootstrap’s standard grid.",
         "relatedTerms": [
-            "CSS",
-            "background-image",
-            "url()"
+            "Bootstrap",
+            "grid",
+            "12 columns"
         ]
     },
     {
-        "id": "q_css_011",
+        "id": "q_css_019",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "What does `col-sm-4` mean?",
+        "options": [
+            "Spans 4 columns on small screens and up",
+            "Spans 4 rows on small screens",
+            "Adds 4px padding on small screens",
+            "Sets width to 4% on small screens"
+        ],
+        "correct": 0,
+        "explanation": "col-sm-4 is a grid column that takes 4/12 width at the small breakpoint and above. It does not control rows, padding, or percent directly.",
+        "relatedTerms": [
+            "Bootstrap",
+            "col-sm-4"
+        ]
+    },
+    {
+        "id": "q_css_020",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "In Bootstrap, what does `glyphicon` refer to (Bootstrap 3)?",
+        "options": [
+            "A set of icons",
+            "A grid system",
+            "A JavaScript build tool",
+            "A CSS animation engine"
+        ],
+        "correct": 0,
+        "explanation": "Glyphicons are icon fonts used by Bootstrap 3. They are not the grid, build tools, or animation engines.",
+        "relatedTerms": [
+            "Bootstrap",
+            "glyphicon"
+        ]
+    },
+    {
+        "id": "q_css_021",
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Advanced",
-        "question": "Two rules apply: *{font-weight:bold;} p{font-weight:normal;} What is the computed font-weight of <p> text?",
+        "question": "Two rules apply: `*{font-weight:bold;} p{font-weight:normal;}`. What is the computed weight for <p>?",
         "options": [
             "normal",
             "bold",
-            "inherited",
+            "both (browser chooses randomly)",
             "undefined"
         ],
         "correct": 0,
-        "explanation": "Both match, but p selector is more specific than universal selector, so normal wins. inherited/undefined do not apply here because explicit rules exist.",
+        "explanation": "p is more specific than * so it overrides to normal. CSS does not randomly choose, and the result is defined by cascade/specificity.",
         "relatedTerms": [
-            "CSS",
             "specificity",
-            "universal selector",
-            "font-weight"
+            "universal selector"
         ]
     },
     {
-        "id": "q_css_012",
+        "id": "q_css_022",
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Advanced",
-        "question": "Why is using IDs (#p1) for styling often harder to maintain than classes?",
+        "question": "Why do ID selectors often cause 'specificity wars'?",
         "options": [
-            "IDs have higher specificity, making overrides harder",
-            "IDs cannot be selected by CSS",
-            "Classes only work on <div> elements",
-            "IDs automatically change across page reloads"
+            "They are highly specific and hard to override",
+            "They cannot be overridden by any CSS",
+            "They only apply to <div> tags",
+            "They only work in Bootstrap"
         ],
         "correct": 0,
-        "explanation": "ID selectors are very specific and can cause “specificity wars” when you try to override later. CSS can select IDs, classes work on any element, and IDs do not change automatically.",
+        "explanation": "#id selectors have high specificity, so later overrides need even more specificity. They can be overridden (e.g., inline styles/!important), apply to any element, and are not Bootstrap-specific.",
         "relatedTerms": [
-            "CSS",
-            "ID selector",
+            "#id",
             "specificity"
         ]
     },
     {
-        "id": "q_css_013",
-        "category": "CSS & Responsive Design",
-        "type": "multi",
-        "difficulty": "Advanced",
-        "question": "Which units/values listed are valid for font-size in the notes?",
-        "options": [
-            "16px",
-            "2em",
-            "24pt",
-            "370px 20px"
-        ],
-        "correct": [
-            0,
-            1,
-            2
-        ],
-        "explanation": "16px, 2em, and 24pt are font-size values. \"370px 20px\" is a two-value pair used for background-position, not font-size.",
-        "relatedTerms": [
-            "CSS",
-            "font-size",
-            "px",
-            "em",
-            "pt"
-        ]
-    },
-    {
-        "id": "q_css_014",
+        "id": "q_css_023",
         "category": "CSS & Responsive Design",
         "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "You use Bootstrap but images overflow their columns on small screens. Which CSS rule from the notes helps fix this?",
+        "difficulty": "Advanced",
+        "question": "Which rule makes images scale down to fit their container (from notes)?",
         "options": [
             "img{max-width:100%;}",
+            "img{min-width:100%;}",
             "img{width:100px;}",
-            "img{position:fixed;}",
-            "img{display:none;}"
+            "img{position:absolute;}"
         ],
         "correct": 0,
-        "explanation": "max-width:100% lets images shrink within their container, preventing overflow. Fixed width can still overflow; fixed positioning changes layout; display:none hides the image.",
+        "explanation": "max-width:100% prevents overflow by limiting image width to its container. min-width forces at least full width, fixed width can overflow, and positioning doesn't solve scaling.",
         "relatedTerms": [
-            "Bootstrap",
-            "CSS",
-            "responsive images",
-            "max-width"
+            "max-width",
+            "responsive images"
         ]
     },
     {
-        "id": "q_css_015",
+        "id": "q_css_024",
         "category": "CSS & Responsive Design",
         "type": "mcq",
         "difficulty": "Full Stack",
-        "question": "A link looks underlined because of CSS: a{text-decoration:underline;} In Bootstrap you want a button-like link; what is the most appropriate approach?",
+        "question": "You built an HTML page with a large image and Bootstrap columns. Which fix best prevents the image from breaking the layout?",
         "options": [
-            "Add Bootstrap btn classes to the <a> and let Bootstrap style it",
-            "Replace <a> with <meta>",
-            "Set href to an empty string to remove underline",
-            "Use <font> to remove underline"
+            "Add `img{max-width:100%;}`",
+            "Set `<img WIDTH=\"225\">` everywhere",
+            "Wrap image in `<font>`",
+            "Use `<frameset>` for layout"
         ],
         "correct": 0,
-        "explanation": "Bootstrap provides btn classes for links to look like buttons. <meta> is not a clickable element, href does not control underline, and <font> is deprecated and unrelated to underline removal.",
+        "explanation": "Responsive images use CSS max-width:100% (or Bootstrap's responsive image classes). Fixed WIDTH attributes aren’t responsive; <font> and <frameset> are unrelated/legacy.",
         "relatedTerms": [
             "Bootstrap",
-            "a",
-            "text-decoration",
-            "btn"
+            "CSS",
+            "images"
+        ]
+    },
+    {
+        "id": "q_css_025",
+        "category": "CSS & Responsive Design",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "Which snippet correctly includes Bootstrap CSS?",
+        "options": [
+            "<link rel=\"stylesheet\" href=\"./bootstrap/css/bootstrap.min.css\">",
+            "<script rel=\"stylesheet\" src=\"./bootstrap/css/bootstrap.min.css\"></script>",
+            "<link src=\"./bootstrap/css/bootstrap.min.css\">",
+            "<style href=\"./bootstrap/css/bootstrap.min.css\"></style>"
+        ],
+        "correct": 0,
+        "explanation": "Bootstrap CSS is included with a <link rel=\"stylesheet\" href=\"...\"> tag. <script> is for JS, <link> uses href not src, and <style> cannot load external files via href.",
+        "relatedTerms": [
+            "Bootstrap",
+            "<link>",
+            "rel",
+            "href"
         ]
     },
     {
@@ -639,19 +1115,18 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which operator computes the remainder of division?",
+        "question": "Which method returns the character at a specific index in a string?",
         "options": [
-            "%",
-            "/",
-            "*",
-            "++"
+            "charAt()",
+            "indexOf()",
+            "substring()",
+            "slice()"
         ],
         "correct": 0,
-        "explanation": "% is modulus (remainder). / divides, * multiplies, ++ increments by 1.",
+        "explanation": "charAt(index) returns a single character. indexOf finds a position, substring extracts a range, and slice (not in notes) extracts ranges too but isn't the asked method.",
         "relatedTerms": [
-            "JS",
-            "operators",
-            "%"
+            "charAt",
+            "String"
         ]
     },
     {
@@ -659,7 +1134,26 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which operator means logical AND?",
+        "question": "What does \"hello\".charAt(1) return?",
+        "options": [
+            "\"e\"",
+            "\"h\"",
+            "\"l\"",
+            "\"o\""
+        ],
+        "correct": 0,
+        "explanation": "Indexing is 0-based: h(0), e(1). Other options are other characters in the string.",
+        "relatedTerms": [
+            "charAt",
+            "0-based indexing"
+        ]
+    },
+    {
+        "id": "q_js_core_003",
+        "category": "JavaScript Core",
+        "type": "mcq",
+        "difficulty": "Novice",
+        "question": "Which operator is logical AND in JavaScript?",
         "options": [
             "&&",
             "||",
@@ -669,28 +1163,8 @@
         "correct": 0,
         "explanation": "&& is logical AND. || is OR, ! is NOT, = is assignment.",
         "relatedTerms": [
-            "JS",
-            "logical operators",
-            "&&"
-        ]
-    },
-    {
-        "id": "q_js_core_003",
-        "category": "JavaScript Core",
-        "type": "mcq",
-        "difficulty": "Novice",
-        "question": "Which function shows a message in a modal dialog box?",
-        "options": [
-            "alert(\"message\")",
-            "print(\"message\")",
-            "echo(\"message\")",
-            "write(\"message\")"
-        ],
-        "correct": 0,
-        "explanation": "alert() is a built-in browser function. print/echo are not JS browser dialog functions (echo is PHP). write() is document.write, not a modal dialog.",
-        "relatedTerms": [
-            "JS",
-            "alert"
+            "&&",
+            "operators"
         ]
     },
     {
@@ -698,19 +1172,18 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which String property returns the number of characters in a string?",
+        "question": "Which loop executes at least once even if the condition is false?",
         "options": [
-            "length",
-            "size",
-            "count",
-            "len()"
+            "do...while",
+            "for",
+            "while",
+            "for...in"
         ],
         "correct": 0,
-        "explanation": "In JavaScript, \"abc\".length is 3. size/count aren’t standard string properties here, and len() is not JS.",
+        "explanation": "do...while runs the body once before checking the condition. for/while may run zero times, and for...in iterates properties.",
         "relatedTerms": [
-            "JS",
-            "String",
-            "length"
+            "do...while",
+            "loops"
         ]
     },
     {
@@ -718,19 +1191,18 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which Date method returns the full year (e.g., 2026)?",
+        "question": "Which built-in function shows a message box with an OK button?",
         "options": [
-            "getFullYear()",
-            "getYear()",
-            "getMonth()",
-            "getDate()"
+            "alert()",
+            "confirm()",
+            "prompt()",
+            "parseInt()"
         ],
         "correct": 0,
-        "explanation": "getFullYear() returns the 4-digit year. getMonth() is month index, getDate() is day of month, and getYear() is legacy/non-recommended.",
+        "explanation": "alert shows a message with OK. confirm is OK/Cancel, prompt asks for input, parseInt parses numbers.",
         "relatedTerms": [
-            "JS",
-            "Date",
-            "getFullYear"
+            "alert",
+            "built-in functions"
         ]
     },
     {
@@ -738,40 +1210,37 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which keyword exits a switch case to prevent fall-through?",
+        "question": "Which built-in function asks the user to input a value?",
         "options": [
-            "break;",
-            "stop;",
-            "exit;",
-            "return;"
+            "prompt()",
+            "alert()",
+            "confirm()",
+            "isNaN()"
         ],
         "correct": 0,
-        "explanation": "break; ends the current case. stop/exit are not switch keywords in JS; return exits a function, not specifically a switch (though it would exit if inside a function).",
+        "explanation": "prompt(message, default) collects user input. alert/confirm are dialogs without text entry; isNaN checks numeric validity.",
         "relatedTerms": [
-            "JS",
-            "switch",
-            "break"
+            "prompt",
+            "built-in functions"
         ]
     },
     {
         "id": "q_js_core_007",
         "category": "JavaScript Core",
         "type": "mcq",
-        "difficulty": "Intermediate",
-        "question": "What is the result of: var x=5; x+=2; x*=3; x;",
+        "difficulty": "Novice",
+        "question": "Which method returns the index of the first occurrence of a substring?",
         "options": [
-            "21",
-            "11",
-            "17",
-            "9"
+            "indexOf()",
+            "charAt()",
+            "toLowerCase()",
+            "getTime()"
         ],
         "correct": 0,
-        "explanation": "x starts 5; x+=2 → 7; x*=3 → 21. The other values come from skipping or misordering operations.",
+        "explanation": "indexOf finds a substring position. charAt returns a character, toLowerCase changes casing, getTime is Date.",
         "relatedTerms": [
-            "JS",
-            "assignment operators",
-            "+=",
-            "*="
+            "indexOf",
+            "String"
         ]
     },
     {
@@ -779,19 +1248,18 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "What does parseInt(\"12.9\") return?",
+        "question": "What is the result of \"Hello\".indexOf(\"l\")?",
         "options": [
-            "12",
-            "12.9",
-            "13",
-            "NaN"
+            "2",
+            "1",
+            "3",
+            "4"
         ],
         "correct": 0,
-        "explanation": "parseInt stops at the decimal and parses the integer part → 12. parseFloat would return 12.9; rounding to 13 doesn’t happen automatically; NaN is for non-numeric input.",
+        "explanation": "\"Hello\" has 'l' at indexes 2 and 3; indexOf returns the first, which is 2. Other numbers reflect off-by-one or choosing the second 'l'.",
         "relatedTerms": [
-            "JS",
-            "parseInt",
-            "parseFloat"
+            "indexOf",
+            "String"
         ]
     },
     {
@@ -799,19 +1267,18 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "What does \"Hello\".substring(1,4) return?",
+        "question": "Which method returns the current year (4 digits) from a Date object?",
         "options": [
-            "ell",
-            "ello",
-            "Hel",
-            "lo"
+            "getFullYear()",
+            "getYear()",
+            "getMonth()",
+            "getDay()"
         ],
         "correct": 0,
-        "explanation": "substring(from,to) returns characters from index 1 up to (not including) 4: e(1),l(2),l(3) → \"ell\". Other outputs reflect off-by-one misunderstandings.",
+        "explanation": "getFullYear() returns the 4-digit year. getMonth/getDay are month/day-of-week; getYear is legacy and not the method listed in notes.",
         "relatedTerms": [
-            "JS",
-            "String",
-            "substring"
+            "Date",
+            "getFullYear"
         ]
     },
     {
@@ -819,123 +1286,190 @@
         "category": "JavaScript Core",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Given var s=\"AbC\"; s.toLowerCase(); what is returned?",
+        "question": "What is the output of this code?\nvar x=5;\ndo{document.write(x);x--;}\nwhile(x>3);",
         "options": [
-            "\"abc\"",
-            "\"AbC\"",
-            "\"ABC\"",
-            "\"aBc\""
+            "54",
+            "543",
+            "5",
+            "5432"
         ],
         "correct": 0,
-        "explanation": "toLowerCase returns a new lowercase string \"abc\". It does not keep original casing, uppercase it, or alternate casing.",
+        "explanation": "The loop writes 5 then 4; after decrement to 3, condition x>3 is false, so it stops. Other options include extra iterations or missing one output.",
         "relatedTerms": [
-            "JS",
-            "String",
-            "toLowerCase"
+            "do...while",
+            "document.write"
         ]
     },
     {
         "id": "q_js_core_011",
         "category": "JavaScript Core",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "Why can using eval(userInput) be dangerous?",
+        "difficulty": "Intermediate",
+        "question": "Which loop is specifically used to iterate over object properties?",
         "options": [
-            "It can execute arbitrary code supplied by the user",
-            "It automatically encrypts user input",
-            "It makes numbers parse faster than parseInt",
-            "It converts strings to lowercase"
+            "for...in",
+            "for",
+            "while",
+            "do...while"
         ],
         "correct": 0,
-        "explanation": "eval executes code, so user input could run malicious JavaScript. It does not encrypt, is not a faster numeric parser, and does not lowercase strings.",
+        "explanation": "for...in iterates enumerable keys in an object. for/while/do...while are general loops but not the object-property-specific construct from the notes.",
         "relatedTerms": [
-            "JS",
-            "eval",
-            "security"
+            "for...in",
+            "objects"
         ]
     },
     {
         "id": "q_js_core_012",
         "category": "JavaScript Core",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "In JavaScript, what is the common pitfall with using == instead of ===?",
+        "difficulty": "Intermediate",
+        "question": "Given:\nvar obj={a:1,b:2};\nfor(var key in obj){document.write(key);}\nWhat is the output?",
         "options": [
-            "== performs type coercion, causing unexpected true comparisons",
-            "== compares object references only",
-            "== is only valid for numbers",
-            "== always throws an error on strings"
+            "ab",
+            "12",
+            "a:1b:2",
+            "undefined"
         ],
         "correct": 0,
-        "explanation": "== coerces types (e.g., \"5\"==5 is true), whereas === compares both type and value. The other claims are incorrect.",
+        "explanation": "for...in writes the property names (keys): a then b. 12 would be values, a:1b:2 would require writing both key and value, undefined is incorrect.",
         "relatedTerms": [
-            "JS",
-            "==",
-            "===",
-            "type coercion"
+            "for...in",
+            "document.write"
         ]
     },
     {
         "id": "q_js_core_013",
         "category": "JavaScript Core",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "Which expression is true?",
+        "difficulty": "Intermediate",
+        "question": "Which loop is best for iterating an array when you need the index?",
         "options": [
-            "\"0\"==0",
-            "\"0\"===0",
-            "NaN==NaN",
-            "null===undefined"
+            "for",
+            "for...in",
+            "while",
+            "do...while"
         ],
         "correct": 0,
-        "explanation": "\"0\"==0 is true due to coercion. \"0\"===0 is false (string vs number). NaN is never equal to itself. null===undefined is false (different types).",
+        "explanation": "A classic for loop gives direct index control. for...in is for object properties and can be problematic for arrays. while/do...while can work but are not the typical index-focused choice.",
         "relatedTerms": [
-            "JS",
-            "comparison",
-            "==",
-            "===",
-            "NaN"
+            "for",
+            "arrays"
         ]
     },
     {
         "id": "q_js_core_014",
         "category": "JavaScript Core",
         "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "A form field value is a string \"20\". You need numeric addition with 5 in JS. Which is best?",
+        "difficulty": "Intermediate",
+        "question": "Which statement stops a switch case from falling through to the next case?",
         "options": [
-            "parseInt(value)+5",
-            "value+5",
-            "eval(value)+5",
-            "value.concat(5)"
+            "break;",
+            "stop;",
+            "exit;",
+            "continue;"
         ],
         "correct": 0,
-        "explanation": "parseInt converts to a number so 20+5=25. value+5 would concatenate to \"205\". eval is risky and unnecessary. concat performs string concatenation.",
+        "explanation": "break; exits the switch case block. stop/exit aren’t JS switch keywords, and continue affects loops, not switches (unless inside a loop).",
         "relatedTerms": [
-            "JS",
-            "forms",
-            "parseInt",
-            "type coercion"
+            "switch",
+            "break"
         ]
     },
     {
         "id": "q_js_core_015",
         "category": "JavaScript Core",
         "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "You validate a form with confirm(\"Submit?\"). If user clicks Cancel, what should your code do to stop submission?",
+        "difficulty": "Advanced",
+        "question": "Why is using eval(userInput) risky?",
         "options": [
-            "Return false from the submit handler",
-            "Call document.write(\"stop\")",
-            "Use alert(\"blocked\") only",
-            "Change document.title"
+            "It can execute arbitrary code",
+            "It forces strict type checking",
+            "It automatically sanitizes input",
+            "It only works on numbers"
         ],
         "correct": 0,
-        "explanation": "Returning false (or preventDefault in modern handlers) stops form submission. document.write/alert/title changes do not stop the default submit action.",
+        "explanation": "eval executes the string as code, so malicious input can run scripts. It doesn’t sanitize, doesn’t enforce strict typing, and isn’t limited to numbers.",
         "relatedTerms": [
-            "JS",
+            "eval",
+            "security"
+        ]
+    },
+    {
+        "id": "q_js_core_016",
+        "category": "JavaScript Core",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "What does isNaN(\"12\") return in JavaScript?",
+        "options": [
+            "false",
+            "true",
+            "\"12\"",
+            "NaN"
+        ],
+        "correct": 0,
+        "explanation": "\"12\" can be converted to a number, so it is not NaN and returns false. true would be for non-numeric strings, and the other options aren’t boolean returns.",
+        "relatedTerms": [
+            "isNaN",
+            "type coercion"
+        ]
+    },
+    {
+        "id": "q_js_core_017",
+        "category": "JavaScript Core",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "What common bug happens if you do `\"20\" + 5` in JS when you intended arithmetic?",
+        "options": [
+            "It becomes string concatenation \"205\"",
+            "It throws a syntax error",
+            "It becomes 25 automatically",
+            "It becomes NaN"
+        ],
+        "correct": 0,
+        "explanation": "+ concatenates if either operand is a string, producing \"205\". It doesn’t error; it won’t auto-coerce to numeric addition reliably; it’s not NaN here.",
+        "relatedTerms": [
+            "+",
+            "type coercion",
+            "parseInt"
+        ]
+    },
+    {
+        "id": "q_js_core_018",
+        "category": "JavaScript Core",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "You read an age from an <input> as a string and need numeric math. Which is best?",
+        "options": [
+            "parseInt(ageStr)",
+            "ageStr.toUpperCase()",
+            "ageStr.substring(0,2)",
+            "eval(ageStr)"
+        ],
+        "correct": 0,
+        "explanation": "parseInt converts a numeric string to an integer. toUpperCase is for letters, substring slices strings (not numeric conversion), and eval is dangerous/unnecessary.",
+        "relatedTerms": [
+            "parseInt",
+            "forms"
+        ]
+    },
+    {
+        "id": "q_js_core_019",
+        "category": "JavaScript Core",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "A confirm() dialog is used before submitting a form. What should your handler return to cancel submission when user clicks Cancel?",
+        "options": [
+            "false",
+            "true",
+            "null",
+            "\"cancel\""
+        ],
+        "correct": 0,
+        "explanation": "Returning false from an onsubmit handler cancels submission. true allows it. null/\"cancel\" are not the expected boolean return for inline handlers.",
+        "relatedTerms": [
             "confirm",
-            "form submission",
+            "onsubmit",
             "return false"
         ]
     },
@@ -944,15 +1478,15 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which DOM method selects an element by its id?",
+        "question": "Which method is used to access an element by its ID?",
         "options": [
-            "document.getElementById(\"id\")",
-            "document.getElementsByName(\"id\")",
-            "document.getElementsByTagName(\"id\")",
-            "document.formName.id"
+            "getElementById()",
+            "querySelector()",
+            "getElementsByClassName()",
+            "getElementsByTagName()"
         ],
         "correct": 0,
-        "explanation": "getElementById targets a unique id. getElementsByName targets name attributes, getElementsByTagName targets tags, and document.formName.id is not the general syntax shown (it’s document.formName.elementName).",
+        "explanation": "getElementById returns the element with a given id. querySelector can also select by CSS but wasn't the method asked. getElementsByClassName/tagName return collections.",
         "relatedTerms": [
             "DOM",
             "getElementById"
@@ -963,18 +1497,18 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which DOM method returns a collection of elements by tag name?",
+        "question": "Which event handler runs when a page finishes loading?",
         "options": [
-            "document.getElementsByTagName(\"p\")",
-            "document.getElementById(\"p\")",
-            "document.getElementsByName(\"p\")",
-            "document.write(\"p\")"
+            "onload",
+            "onunload",
+            "onclick",
+            "onsubmit"
         ],
         "correct": 0,
-        "explanation": "getElementsByTagName returns a list of matching elements. The others search by id/name or write text to the document.",
+        "explanation": "onload fires when the page finishes loading. onunload fires when leaving, onclick on click, onsubmit on form submission.",
         "relatedTerms": [
-            "DOM",
-            "getElementsByTagName"
+            "onload",
+            "events"
         ]
     },
     {
@@ -982,18 +1516,18 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which event commonly fires when a user clicks an element?",
+        "question": "Which event handler is used to validate a form before submission?",
         "options": [
-            "onClick",
-            "onLoad",
-            "onChange",
-            "onBlur"
+            "onsubmit",
+            "onclick",
+            "onload",
+            "onchange"
         ],
         "correct": 0,
-        "explanation": "onClick is for clicks. onLoad is when a page/resource loads, onChange is when a value changes, onBlur is when an element loses focus.",
+        "explanation": "onsubmit is triggered at submission time and can block submission by returning false. onclick is not guaranteed (submit via Enter). onload is page load. onchange is per-field changes.",
         "relatedTerms": [
-            "events",
-            "onClick"
+            "onsubmit",
+            "validation"
         ]
     },
     {
@@ -1001,18 +1535,17 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which event fires when the page finishes loading?",
+        "question": "DOM stands for:",
         "options": [
-            "onLoad",
-            "onSubmit",
-            "onMouseOver",
-            "onFocus"
+            "Document Object Model",
+            "Data Object Memory",
+            "Document Oriented Markup",
+            "Dynamic Object Method"
         ],
         "correct": 0,
-        "explanation": "onLoad runs after load completes. onSubmit is for forms, onMouseOver is pointer hover, onFocus is entering focus.",
+        "explanation": "DOM is Document Object Model. The other expansions are incorrect and not used in web development.",
         "relatedTerms": [
-            "events",
-            "onLoad"
+            "DOM"
         ]
     },
     {
@@ -1020,19 +1553,19 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which object is at the top of the DOM hierarchy listed in the notes?",
+        "question": "In the notes, what is the DOM hierarchy order?",
         "options": [
-            "window",
-            "document",
-            "form",
-            "element"
+            "window -> document -> form -> element",
+            "document -> window -> element -> form",
+            "window -> element -> document -> form",
+            "form -> document -> window -> element"
         ],
         "correct": 0,
-        "explanation": "The given hierarchy is window → document → form → element, so window is the top.",
+        "explanation": "The notes explicitly show window → document → form → element. The other orders are incorrect.",
         "relatedTerms": [
-            "DOM",
             "window",
-            "document"
+            "document",
+            "DOM hierarchy"
         ]
     },
     {
@@ -1040,17 +1573,16 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which document property provides the page title?",
+        "question": "Which document property stores the page title?",
         "options": [
             "document.title",
             "document.location",
             "document.lastModified",
-            "document.fgColor"
+            "document.bgColor"
         ],
         "correct": 0,
-        "explanation": "document.title is the title. location is the URL, lastModified is the last modified timestamp string, fgColor is a legacy color property.",
+        "explanation": "document.title is the title. location is the URL, lastModified is a timestamp string, bgColor is a legacy background-color property.",
         "relatedTerms": [
-            "DOM",
             "document.title"
         ]
     },
@@ -1058,20 +1590,18 @@
         "id": "q_js_dom_007",
         "category": "JavaScript DOM & Events",
         "type": "mcq",
-        "difficulty": "Intermediate",
-        "question": "Assume <input id=\"Name\" value=\"Alaa\">. What does document.getElementById(\"Name\").value return?",
+        "difficulty": "Novice",
+        "question": "Which document method writes raw HTML/text into the page?",
         "options": [
-            "\"Alaa\"",
-            "\"Name\"",
-            "undefined",
-            "null"
+            "document.write()",
+            "document.alert()",
+            "document.print()",
+            "document.value()"
         ],
         "correct": 0,
-        "explanation": "The element exists and has value=\"Alaa\", so .value returns \"Alaa\". \"Name\" is the id string, and undefined/null would be for missing elements or properties.",
+        "explanation": "document.write outputs to the document stream. alert is window.alert, print is window.print, and value is not a document method.",
         "relatedTerms": [
-            "DOM",
-            "getElementById",
-            "value"
+            "document.write"
         ]
     },
     {
@@ -1079,19 +1609,18 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which event is best for validating a form right before it submits?",
+        "question": "What does `document.forms[0]` refer to?",
         "options": [
-            "onSubmit",
-            "onUnload",
-            "onMouseOut",
-            "onLoad"
+            "The first form in the document",
+            "All forms in the document",
+            "The form with id=\"0\"",
+            "The form named \"0\""
         ],
         "correct": 0,
-        "explanation": "onSubmit is designed for submission-time checks. onUnload is leaving the page, mouse events are pointer movement, and onLoad is page load.",
+        "explanation": "forms is an HTMLCollection indexed in document order, so [0] is the first form element. It is not “all forms,” nor does it match id/name \"0\".",
         "relatedTerms": [
-            "events",
-            "onSubmit",
-            "validation"
+            "document.forms",
+            "forms"
         ]
     },
     {
@@ -1099,19 +1628,18 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "What does document.writeln(\"Hi\") do compared to document.write(\"Hi\")?",
+        "question": "Which property is commonly used to change the HTML content inside an element?",
         "options": [
-            "It writes text and also adds a newline",
-            "It writes only to the console",
-            "It clears the DOM without writing",
-            "It only works inside <head>"
+            "innerHTML",
+            "content",
+            "value",
+            "documentHTML"
         ],
         "correct": 0,
-        "explanation": "writeln writes and appends a newline in the document stream. It does not write to the console, does not necessarily clear the DOM (though document.write after load can replace content), and it is not restricted to <head>.",
+        "explanation": "innerHTML sets/retrieves the HTML markup inside an element. content isn’t a general DOM property, value is for form fields, and documentHTML is not standard.",
         "relatedTerms": [
-            "DOM",
-            "document.write",
-            "document.writeln"
+            "innerHTML",
+            "DOM"
         ]
     },
     {
@@ -1119,124 +1647,158 @@
         "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which access pattern matches the notes for reaching a form control via the form name?",
+        "question": "What does `document.body.bgColor = \"yellow\";` do (legacy DOM)?",
         "options": [
-            "document.myForm.email",
-            "document.forms[\"myForm\"].email",
-            "document.getElementById(\"myForm\").email",
-            "window.form.email"
+            "Changes page background color",
+            "Changes text color",
+            "Changes button color",
+            "Nothing (invalid property)"
         ],
         "correct": 0,
-        "explanation": "The notes include document.formName.elementName (e.g., document.myForm.email). document.forms[...] is also valid JS but not the specific pattern asked. getElementById(\"myForm\") requires the form to have id and does not directly expose controls. window.form.email is not correct.",
+        "explanation": "bgColor is a legacy property that sets the document background color. It does not set foreground text color, button color, and it is valid in older DOM models.",
         "relatedTerms": [
-            "DOM",
-            "forms",
-            "document.formName.elementName"
+            "bgColor",
+            "DOM properties"
         ]
     },
     {
         "id": "q_js_dom_011",
         "category": "JavaScript DOM & Events",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "Why is using document.write() after the page has loaded considered problematic?",
+        "difficulty": "Intermediate",
+        "question": "Which method returns a collection of elements by tag name?",
         "options": [
-            "It can overwrite the entire document, destroying existing DOM",
-            "It automatically sanitizes user input",
-            "It makes CSS load faster",
-            "It converts all events to onLoad"
+            "document.getElementsByTagName()",
+            "document.getElementsByName()",
+            "document.getElementById()",
+            "document.write()"
         ],
         "correct": 0,
-        "explanation": "Calling document.write after load can replace the document, removing DOM and event handlers. It does not sanitize input, improve CSS loading, or rewrite events.",
+        "explanation": "getElementsByTagName returns a list of matching tags. getElementsByName targets name attribute, getElementById targets one id, write outputs text/HTML.",
         "relatedTerms": [
-            "DOM",
-            "document.write",
-            "debugging"
+            "getElementsByTagName",
+            "DOM"
         ]
     },
     {
         "id": "q_js_dom_012",
         "category": "JavaScript DOM & Events",
-        "type": "multi",
-        "difficulty": "Advanced",
-        "question": "Which event handlers from the notes are focus-related?",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which event is best for reacting when a form field loses focus?",
         "options": [
-            "onFocus",
-            "onBlur",
-            "onChange",
-            "onMouseOver"
+            "onblur",
+            "onfocus",
+            "onclick",
+            "onload"
         ],
-        "correct": [
-            0,
-            1
-        ],
-        "explanation": "onFocus fires when an element gains focus; onBlur when it loses focus. onChange is value change, onMouseOver is pointer hover.",
+        "correct": 0,
+        "explanation": "onblur fires when focus leaves the element. onfocus fires when focus enters. onclick is mouse click. onload is page load.",
         "relatedTerms": [
-            "events",
-            "onFocus",
-            "onBlur"
+            "onBlur",
+            "events"
         ]
     },
     {
         "id": "q_js_dom_013",
         "category": "JavaScript DOM & Events",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "You attach onChange to an <input>. Why might it not fire on every keystroke?",
+        "difficulty": "Intermediate",
+        "question": "Which event is best for reacting when a user clicks a button?",
         "options": [
-            "onChange typically fires when the element loses focus after the value changes",
-            "onChange only fires for <select> elements",
-            "onChange fires only on mouse clicks",
-            "onChange fires only when document.bgColor changes"
+            "onclick",
+            "onchange",
+            "onunload",
+            "onmouseover"
         ],
         "correct": 0,
-        "explanation": "For many input types, onChange triggers when the control is committed (often on blur) rather than each keystroke. It’s not limited to <select>, not only mouse clicks, and unrelated to bgColor.",
+        "explanation": "onclick is the click handler. onchange is value change. onunload is leaving page. onmouseover is hover.",
         "relatedTerms": [
-            "events",
-            "onChange",
-            "inputs"
+            "onClick",
+            "events"
         ]
     },
     {
         "id": "q_js_dom_014",
         "category": "JavaScript DOM & Events",
         "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "A form posts to PHP. You use JS onSubmit to validate. What is the correct approach to prevent PHP from receiving invalid data?",
+        "difficulty": "Advanced",
+        "question": "Why is document.write() after page load often considered a bug?",
         "options": [
-            "Return false from onSubmit when validation fails",
-            "Use document.location to redirect to PHP anyway",
-            "Only show alert() and allow submit",
-            "Set document.fgColor to red"
+            "It can overwrite the entire document",
+            "It automatically fixes CSS specificity",
+            "It securely sanitizes user input",
+            "It converts HTML to JSON"
         ],
         "correct": 0,
-        "explanation": "Returning false (or preventing default) stops the browser from submitting, so PHP won’t receive the request. Redirecting still sends/changes navigation; alert alone does not stop submission; fgColor is unrelated.",
+        "explanation": "Calling document.write after load can replace the existing document, wiping DOM and handlers. It does not fix specificity, sanitize, or convert formats.",
         "relatedTerms": [
-            "onSubmit",
-            "validation",
-            "PHP",
-            "forms"
+            "document.write",
+            "DOM debugging"
         ]
     },
     {
         "id": "q_js_dom_015",
         "category": "JavaScript DOM & Events",
+        "type": "multi",
+        "difficulty": "Advanced",
+        "question": "Which are valid ways listed to access elements (per notes)?",
+        "options": [
+            "document.getElementById(\"id\")",
+            "document.getElementsByName(\"name\")",
+            "document.querySelector(\"#id\")",
+            "document.formName.elementName"
+        ],
+        "correct": [
+            0,
+            1,
+            3
+        ],
+        "explanation": "The notes list getElementById, getElementsByName, getElementsByTagName, and document.formName.elementName. querySelector is valid JS but not part of the provided lecture summary list.",
+        "relatedTerms": [
+            "DOM access",
+            "getElementById",
+            "getElementsByName",
+            "document.formName.elementName"
+        ]
+    },
+    {
+        "id": "q_js_dom_016",
+        "category": "JavaScript DOM & Events",
         "type": "mcq",
         "difficulty": "Full Stack",
-        "question": "You want a “Back to top” link to scroll to an element with id=\"top\". Which HTML+JS approach best matches the notes (no extra libraries)?",
+        "question": "You validate a form in JavaScript. What must still be done on the PHP server?",
         "options": [
-            "Use <a href=\"#top\">Top</a> and ensure an element has id=\"top\"",
-            "Use document.write(\"#top\") on click",
-            "Use <meta name=\"#top\">",
-            "Use <frameset rows=\"#top\">"
+            "Validate again server-side",
+            "Skip validation because JS already ran",
+            "Only change CSS if invalid",
+            "Only log to console"
         ],
         "correct": 0,
-        "explanation": "Bookmarking uses href=\"#id\" with a matching id in the page. document.write/meta/frameset do not create in-page anchor navigation.",
+        "explanation": "Client-side JS can be bypassed, so PHP must revalidate for security. Skipping validation is insecure; CSS/console logs do not enforce rules on the server.",
         "relatedTerms": [
-            "HTML bookmarks",
-            "id",
-            "href",
-            "#fragment"
+            "validation",
+            "PHP",
+            "security"
+        ]
+    },
+    {
+        "id": "q_js_dom_017",
+        "category": "JavaScript DOM & Events",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "Which event handler is the best single place to block form submission if required fields are empty?",
+        "options": [
+            "onsubmit",
+            "onload",
+            "onunload",
+            "onmouseover"
+        ],
+        "correct": 0,
+        "explanation": "onsubmit can prevent the submit action (return false / preventDefault). Others are not tied to submission.",
+        "relatedTerms": [
+            "onsubmit",
+            "forms"
         ]
     },
     {
@@ -1244,18 +1806,18 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which tag starts a PHP code block in a .php file?",
+        "question": "Which extension is used for PHP files?",
         "options": [
-            "<?php",
-            "<php>",
-            "<?=",
-            "<script php>"
+            ".php",
+            ".html",
+            ".js",
+            ".css"
         ],
         "correct": 0,
-        "explanation": "Standard PHP blocks start with <?php. <php> and <script php> are not PHP syntax. <?= is shorthand echo and not the general opening tag taught here.",
+        "explanation": ".php indicates PHP scripts. .html is markup, .js is JavaScript, .css is styles.",
         "relatedTerms": [
             "PHP",
-            "<?php ?>"
+            ".php"
         ]
     },
     {
@@ -1263,18 +1825,17 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which symbol begins a PHP variable name?",
+        "question": "Which symbol must start a variable name in PHP?",
         "options": [
             "$",
-            "@",
             "#",
-            "%"
+            "@",
+            "&"
         ],
         "correct": 0,
-        "explanation": "PHP variables start with $. The other symbols are not variable prefixes in PHP.",
+        "explanation": "PHP variables start with $. #/@ are used in other contexts, & is an operator, not a variable prefix.",
         "relatedTerms": [
-            "PHP",
-            "variables",
+            "PHP variables",
             "$"
         ]
     },
@@ -1283,18 +1844,18 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which statement outputs text in PHP?",
+        "question": "Which can output text in PHP?",
         "options": [
-            "echo \"Hello\";",
-            "print(\"Hello\")?;",
-            "alert(\"Hello\");",
-            "console.log(\"Hello\");"
+            "Both echo and print",
+            "echo only",
+            "print only",
+            "console.log"
         ],
         "correct": 0,
-        "explanation": "echo outputs text in PHP. print(\"Hello\")?; is invalid syntax as written; alert and console.log are JavaScript functions, not PHP output.",
+        "explanation": "echo and print both output text. console.log is JavaScript. Saying only one works is incorrect.",
         "relatedTerms": [
-            "PHP",
-            "echo"
+            "echo",
+            "print"
         ]
     },
     {
@@ -1302,19 +1863,18 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which function defines a constant in PHP?",
+        "question": "Which operator concatenates strings in PHP?",
         "options": [
-            "define()",
-            "const()",
-            "setconst()",
-            "constantize()"
+            ".",
+            "+",
+            "||",
+            "&"
         ],
         "correct": 0,
-        "explanation": "define(\"NAME\", value) creates a constant. The other options are not correct PHP functions for this purpose.",
+        "explanation": "PHP string concatenation uses dot (.). + is numeric addition, || is logical OR, & is bitwise AND.",
         "relatedTerms": [
-            "PHP",
-            "define",
-            "constants"
+            "PHP concatenation",
+            "."
         ]
     },
     {
@@ -1322,19 +1882,18 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which operator concatenates strings in PHP?",
+        "question": "Which superglobal contains form data sent via POST?",
         "options": [
-            ".",
-            "+",
-            "&",
-            ".."
+            "$_POST",
+            "$_GET",
+            "$_REQUEST",
+            "$_FORM"
         ],
         "correct": 0,
-        "explanation": "PHP uses the dot (.) for string concatenation. + adds numbers (and does not concatenate strings reliably), & is bitwise AND, and .. is not a PHP concatenation operator.",
+        "explanation": "POST form fields are in $_POST. $_GET is query string, $_REQUEST may include multiple sources, and $_FORM is not a PHP superglobal.",
         "relatedTerms": [
-            "PHP",
-            "concatenation",
-            "."
+            "$_POST",
+            "superglobals"
         ]
     },
     {
@@ -1342,39 +1901,36 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which data type represents true/false in PHP?",
+        "question": "Which function checks if a variable is set (not NULL)?",
         "options": [
-            "boolean",
-            "integer",
-            "float",
-            "resource"
+            "isset()",
+            "exist()",
+            "not_empty()",
+            "defined_var()"
         ],
         "correct": 0,
-        "explanation": "boolean is true/false. integer/float are numeric; resource is a handle to an external resource such as a DB connection.",
+        "explanation": "isset checks if a variable is set and not NULL. The other names are not correct PHP functions for this purpose.",
         "relatedTerms": [
-            "PHP",
-            "boolean",
-            "types"
+            "isset"
         ]
     },
     {
         "id": "q_php_007",
         "category": "PHP Basics",
         "type": "mcq",
-        "difficulty": "Intermediate",
-        "question": "What is the result of PHP: $txt=\"Hi\"; $txt.=\" there\"; echo $txt;",
+        "difficulty": "Novice",
+        "question": "What type of array uses named keys?",
         "options": [
-            "Hi there",
-            "Hi",
-            "there",
-            "Hi+there"
+            "Associative array",
+            "Indexed array",
+            "Numeric array",
+            "Character array"
         ],
         "correct": 0,
-        "explanation": ".= appends to the existing string, so output is \"Hi there\". The other outputs reflect misunderstanding of concatenation or echo behavior.",
+        "explanation": "Associative arrays use named keys like \"a\"=>1. Indexed/numeric arrays use numeric indexes. 'Character array' isn't a standard PHP array type.",
         "relatedTerms": [
-            "PHP",
-            ".=",
-            "echo"
+            "associative array",
+            "array()"
         ]
     },
     {
@@ -1382,19 +1938,18 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which comparison checks both value AND type in PHP?",
+        "question": "What is the output of:\n$arr=array(1,2,3);\necho $arr[1];",
         "options": [
-            "===",
-            "==",
-            "=",
-            "<>"
+            "2",
+            "1",
+            "3",
+            "Error"
         ],
         "correct": 0,
-        "explanation": "=== is identical (value and type). == is loose equality, = is assignment, and <> is not-equal.",
+        "explanation": "Arrays are 0-based: $arr[0]=1, $arr[1]=2. The other answers come from off-by-one or assuming 1-based indexing.",
         "relatedTerms": [
-            "PHP",
-            "===",
-            "comparison"
+            "arrays",
+            "indexing"
         ]
     },
     {
@@ -1402,19 +1957,18 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "What does this output? $x=0; while($x<=2){ echo $x; $x++; }",
+        "question": "What is the result of \"10\" == 10 in PHP?",
         "options": [
-            "012",
-            "123",
-            "01",
-            "0"
+            "true",
+            "false",
+            "Error",
+            "NULL"
         ],
         "correct": 0,
-        "explanation": "The loop runs for x=0,1,2 and echoes each, producing 012. Other answers come from off-by-one errors or starting at 1.",
+        "explanation": "== is loose equality and does type coercion, so \"10\" == 10 is true. false would be strict comparison with ===. Error/NULL are incorrect.",
         "relatedTerms": [
-            "PHP",
-            "while",
-            "++"
+            "==",
+            "type coercion"
         ]
     },
     {
@@ -1422,128 +1976,160 @@
         "category": "PHP Basics",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which loop is designed to iterate over each element in an array?",
+        "question": "What does `.=` do in PHP?",
         "options": [
-            "foreach",
-            "for...in",
-            "do...while",
-            "switch"
+            "Concatenate and assign",
+            "Add and assign",
+            "Compare and assign",
+            "Modulo and assign"
         ],
         "correct": 0,
-        "explanation": "foreach iterates array elements in PHP. for...in is JavaScript, do...while is conditional looping but not specialized for arrays, and switch is selection not iteration.",
+        "explanation": ".= appends a string to an existing string variable. += is add-and-assign for numbers. The others are not PHP operators.",
         "relatedTerms": [
-            "PHP",
-            "foreach",
-            "arrays"
+            ".=",
+            "concatenation"
         ]
     },
     {
         "id": "q_php_011",
         "category": "PHP Basics",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "Why is using $_REQUEST sometimes discouraged compared to $_POST/$_GET?",
+        "difficulty": "Intermediate",
+        "question": "What is the output of this associative foreach?\n$arr=array(\"a\"=>1,\"b\"=>2);\nforeach($arr as $key=>$value){echo \"$key:$value \";}",
         "options": [
-            "It mixes sources (GET/POST/cookie), making input origin unclear",
-            "It prevents forms from submitting",
-            "It automatically escapes SQL queries",
-            "It only works with file uploads"
+            "a:1 b:2 ",
+            "0:a 1:b ",
+            "1 2 ",
+            "Error"
         ],
         "correct": 0,
-        "explanation": "$_REQUEST can include GET, POST, and cookies, so you may accidentally accept data from an unintended source. It doesn’t prevent submission, doesn’t escape SQL, and is not specific to uploads.",
+        "explanation": "foreach with $key=>$value prints key:value pairs. 0:a 1:b confuses keys/values, '1 2' prints only values, and there is no syntax error.",
         "relatedTerms": [
-            "PHP",
-            "$_REQUEST",
-            "security"
+            "foreach",
+            "associative array"
         ]
     },
     {
         "id": "q_php_012",
         "category": "PHP Basics",
-        "type": "multi",
-        "difficulty": "Advanced",
-        "question": "Which are PHP superglobals listed in the notes?",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "What is the output?\nfunction test(&$x){$x=10;}\n$y=5; test($y); echo $y;",
         "options": [
-            "$_SERVER",
-            "$_SESSION",
-            "$_POST",
-            "$SESSION"
+            "10",
+            "5",
+            "NULL",
+            "Error"
         ],
-        "correct": [
-            0,
-            1,
-            2
-        ],
-        "explanation": "$_SERVER, $_SESSION, and $_POST are superglobals. $SESSION is not a valid superglobal name (missing underscore and wrong symbol usage).",
+        "correct": 0,
+        "explanation": "& passes by reference, so changes inside test affect $y, producing 10. Without &, it would stay 5. NULL/Error do not apply.",
         "relatedTerms": [
-            "PHP",
-            "superglobals",
-            "$_SERVER",
-            "$_SESSION",
-            "$_POST"
+            "pass by reference",
+            "&",
+            "functions"
         ]
     },
     {
         "id": "q_php_013",
         "category": "PHP Basics",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "What common bug occurs if you access $_POST['email'] when the form was submitted with method=\"get\"?",
+        "difficulty": "Intermediate",
+        "question": "Which operator checks both value and type in PHP?",
         "options": [
-            "The index may be undefined/empty because data is in $_GET",
-            "PHP automatically moves it into $_POST",
-            "The browser refuses to send the request",
-            "The server converts it into $_SESSION"
+            "===",
+            "==",
+            "=",
+            "<>"
         ],
         "correct": 0,
-        "explanation": "GET submissions place data in the query string, so PHP populates $_GET, not $_POST. PHP does not auto-migrate between them; the browser does send the request; sessions are unrelated.",
+        "explanation": "=== is strict/identical (value and type). == is loose equality, = assigns, <> is not-equal.",
         "relatedTerms": [
-            "PHP",
-            "$_POST",
-            "$_GET",
-            "forms"
+            "===",
+            "comparison"
         ]
     },
     {
         "id": "q_php_014",
         "category": "PHP Basics",
-        "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "An HTML form has <input name=\"fname\"> and method=\"post\". Which PHP snippet safely checks it exists before reading?",
+        "type": "multi",
+        "difficulty": "Advanced",
+        "question": "Which are valid PHP comment syntaxes from the notes?",
         "options": [
-            "if(isset($_POST['fname'])){$name=$_POST['fname'];}",
-            "if(isset($POST['fname'])){$name=$POST['fname'];}",
-            "if($_POST.exists('fname')){$name=$_POST['fname'];}",
-            "if(isset($_GET['fname'])){$name=$_GET['fname'];}"
+            "// comment",
+            "# comment",
+            "<!-- comment -->",
+            "/* comment */"
         ],
-        "correct": 0,
-        "explanation": "isset($_POST['fname']) checks the key is set before reading. $POST is invalid, $_POST.exists is not a PHP method, and $_GET is wrong for method=post.",
+        "correct": [
+            0,
+            1,
+            3
+        ],
+        "explanation": "PHP supports //, #, and /* */. <!-- --> is an HTML comment and is not a PHP comment syntax.",
         "relatedTerms": [
-            "PHP",
-            "isset",
-            "$_POST",
-            "forms"
+            "comments",
+            "//",
+            "#",
+            "/* */"
         ]
     },
     {
         "id": "q_php_015",
         "category": "PHP Basics",
         "type": "mcq",
-        "difficulty": "Full Stack",
-        "question": "A page uses JS to validate a numeric field, but you still validate in PHP. Why?",
+        "difficulty": "Advanced",
+        "question": "Why is using $_REQUEST often discouraged compared to $_POST/$_GET?",
         "options": [
-            "Client-side checks can be bypassed; server must enforce rules",
-            "PHP cannot read form fields without JS",
-            "JS validation automatically updates MySQL tables",
-            "Server validation is only for styling"
+            "It mixes sources and can accept unexpected input",
+            "It prevents file uploads",
+            "It automatically sanitizes SQL",
+            "It only works for GET"
         ],
         "correct": 0,
-        "explanation": "Users can disable/modify JS, so PHP must validate to ensure correctness/security. PHP can read forms without JS, JS does not auto-update databases, and validation is not styling.",
+        "explanation": "$_REQUEST can include GET/POST/cookie data, making input origin unclear and potentially unsafe. It doesn’t block uploads, sanitize SQL, or limit to GET.",
         "relatedTerms": [
-            "validation",
-            "JS",
-            "PHP",
+            "$_REQUEST",
             "security"
+        ]
+    },
+    {
+        "id": "q_php_016",
+        "category": "PHP Basics",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "In PHP form handling, what should you do before reading $_POST['fname'] to avoid notices?",
+        "options": [
+            "Use isset($_POST['fname'])",
+            "Use $_POST.fname",
+            "Use echo($_POST['fname']) without checks",
+            "Use document.getElementById('fname')"
+        ],
+        "correct": 0,
+        "explanation": "isset checks the key exists. $_POST.fname is invalid PHP. Echoing without checks can raise undefined index notices. document.getElementById is JavaScript, not PHP.",
+        "relatedTerms": [
+            "isset",
+            "$_POST",
+            "forms"
+        ]
+    },
+    {
+        "id": "q_php_017",
+        "category": "PHP Basics",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "Which PHP line correctly outputs: Welcome {fname} {lname}! in an <h1>?",
+        "options": [
+            "echo '<h1>Welcome '.$fname.' '.$lname.'!</h1>';",
+            "echo '<h1>Welcome '+$fname+' '+$lname+'!</h1>';",
+            "print('<h1>Welcome '.$fname,$lname.'</h1>');",
+            "echo \"<h1>Welcome \"+$fname+\" \"+$lname+\"!</h1>\";"
+        ],
+        "correct": 0,
+        "explanation": "PHP concatenates strings with '.', so option 1 is correct. Using + is numeric addition/type coercion and incorrect for string building. print syntax in option 3 is wrong/mixed. Option 4 uses + and $ inside string incorrectly.",
+        "relatedTerms": [
+            "echo",
+            "concatenation",
+            "."
         ]
     },
     {
@@ -1551,20 +2137,18 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which function starts or resumes a session so $_SESSION can be used?",
+        "question": "What is a session in PHP?",
         "options": [
-            "session_start()",
-            "session_open()",
-            "start_session()",
-            "init_session()"
+            "Server-stored temporary user data",
+            "A file stored on the client",
+            "A database table",
+            "A PHP output function"
         ],
         "correct": 0,
-        "explanation": "session_start() is the correct PHP function. The other names are not the standard function in PHP.",
+        "explanation": "Sessions store state on the server (associated with a session id). Cookies/files on client are different; a DB table is not required; output functions are echo/print.",
         "relatedTerms": [
-            "PHP",
             "sessions",
-            "session_start",
-            "$_SESSION"
+            "state"
         ]
     },
     {
@@ -1572,20 +2156,18 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which function sends a cookie to the client?",
+        "question": "Which function starts a session?",
         "options": [
-            "setcookie()",
-            "getcookie()",
-            "cookie_set()",
-            "$_COOKIE()"
+            "session_start()",
+            "session_begin()",
+            "start_session()",
+            "session_create()"
         ],
         "correct": 0,
-        "explanation": "setcookie() sets a cookie via HTTP headers. $_COOKIE is an array of received cookies, not a function; the others are not correct PHP functions.",
+        "explanation": "session_start() begins/resumes a session. The other names are not the standard PHP function for starting sessions.",
         "relatedTerms": [
-            "PHP",
-            "cookies",
-            "setcookie",
-            "$_COOKIE"
+            "session_start",
+            "$_SESSION"
         ]
     },
     {
@@ -1593,19 +2175,18 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which function opens a MySQL connection using MySQLi?",
+        "question": "What is a cookie?",
         "options": [
-            "mysqli_connect()",
-            "mysql_connect()",
-            "mysqli_open()",
-            "connect_mysqli()"
+            "Small file/data stored on the client",
+            "Small file stored on the server",
+            "A database record",
+            "A PHP loop"
         ],
         "correct": 0,
-        "explanation": "mysqli_connect(host,user,pass,db) opens a connection in MySQLi. mysql_connect is deprecated old extension; the other names are not the standard function.",
+        "explanation": "Cookies are stored client-side and sent with requests. Server-side storage is sessions or DB. It is not a loop construct.",
         "relatedTerms": [
-            "PHP",
-            "MySQLi",
-            "mysqli_connect"
+            "cookies",
+            "client-side"
         ]
     },
     {
@@ -1613,19 +2194,17 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which function runs an SQL query on a MySQLi connection?",
+        "question": "Which function creates/sends a cookie in PHP?",
         "options": [
-            "mysqli_query()",
-            "mysqli_run()",
-            "mysqli_exec()",
-            "query_mysqli()"
+            "setcookie()",
+            "cookie_set()",
+            "create_cookie()",
+            "make_cookie()"
         ],
         "correct": 0,
-        "explanation": "mysqli_query($link,\"SQL\") executes a query. The other names are not the standard function in the notes.",
+        "explanation": "setcookie() sends a Set-Cookie header. The other function names are not PHP cookie APIs.",
         "relatedTerms": [
-            "PHP",
-            "MySQLi",
-            "mysqli_query"
+            "setcookie"
         ]
     },
     {
@@ -1633,39 +2212,37 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Novice",
-        "question": "Which function returns the number of rows in a MySQLi result set?",
+        "question": "What is the maximum typical size of a cookie (as in the exam)?",
         "options": [
-            "mysqli_num_rows()",
-            "mysqli_count()",
-            "mysqli_rows()",
-            "mysqli_size()"
+            "4KB",
+            "1KB",
+            "16KB",
+            "Unlimited"
         ],
         "correct": 0,
-        "explanation": "mysqli_num_rows($result) returns the row count. The other functions are not correct MySQLi API calls.",
+        "explanation": "Cookies are limited (commonly ~4KB per cookie). 1KB is too small, 16KB is too large for standard cookie limits, and unlimited is false.",
         "relatedTerms": [
-            "PHP",
-            "MySQLi",
-            "mysqli_num_rows"
+            "cookies",
+            "limits"
         ]
     },
     {
         "id": "q_php_state_006",
         "category": "PHP Database & State",
         "type": "mcq",
-        "difficulty": "Novice",
-        "question": "Which fetch function returns an associative array keyed by column names?",
+        "difficulty": "Intermediate",
+        "question": "Where must setcookie() be called in a PHP script to work reliably?",
         "options": [
-            "mysqli_fetch_assoc()",
-            "mysqli_fetch_row()",
-            "mysqli_fetch_num()",
-            "mysqli_fetch_col()"
+            "Before any output (headers)",
+            "Only inside <body>",
+            "Only after </html>",
+            "Only after mysqli_close()"
         ],
         "correct": 0,
-        "explanation": "mysqli_fetch_assoc returns associative arrays. fetch_row returns numeric array. The other names are not the standard functions listed.",
+        "explanation": "setcookie sends an HTTP header, so it must run before output. It is not tied to body/html placement or DB closing.",
         "relatedTerms": [
-            "PHP",
-            "MySQLi",
-            "mysqli_fetch_assoc"
+            "setcookie",
+            "headers"
         ]
     },
     {
@@ -1673,19 +2250,18 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Why must session_start() be called before any HTML output?",
+        "question": "Why must session_start() be called before output?",
         "options": [
-            "Sessions require headers; output can prevent header sending",
-            "Sessions only work inside <head>",
-            "session_start() runs only after mysqli_close()",
-            "$_SESSION is a client-side array"
+            "It sends/uses headers (session id cookie)",
+            "It only works in <head>",
+            "It needs JavaScript enabled",
+            "It requires mysqli_query first"
         ],
         "correct": 0,
-        "explanation": "session_start sends/uses headers (cookie/session id). Output before headers can trigger warnings and break sessions. It’s not limited to <head>, unrelated to mysqli_close, and $_SESSION is server-side.",
+        "explanation": "session_start relies on headers to manage the session id, so output can break it. It is not restricted to <head>, not JS-dependent, and unrelated to queries.",
         "relatedTerms": [
             "session_start",
-            "headers",
-            "cookies"
+            "headers"
         ]
     },
     {
@@ -1693,19 +2269,18 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "What does unset($_SESSION['views']); do?",
+        "question": "Which function connects PHP to MySQL using MySQLi (from lectures)?",
         "options": [
-            "Removes only the 'views' key from the session array",
-            "Ends the entire session and deletes all session data",
-            "Creates a new session id",
-            "Deletes cookies from the browser"
+            "mysqli_connect()",
+            "mysql_connect()",
+            "mysqli_open()",
+            "connect_mysql()"
         ],
         "correct": 0,
-        "explanation": "unset removes a specific variable. session_destroy ends the session. It does not create a new ID by itself and does not delete all browser cookies.",
+        "explanation": "mysqli_connect is the improved MySQL extension used in the notes. mysql_connect is legacy (deprecated). The other names are not correct APIs.",
         "relatedTerms": [
-            "PHP",
-            "unset",
-            "$_SESSION"
+            "mysqli_connect",
+            "MySQLi"
         ]
     },
     {
@@ -1713,19 +2288,17 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "What does session_destroy() do?",
+        "question": "Which function returns the last MySQLi connection error description?",
         "options": [
-            "Destroys all session data (ends the session)",
-            "Deletes only one $_SESSION variable",
-            "Closes a MySQL connection",
-            "Runs an SQL DELETE query"
+            "mysqli_connect_error()",
+            "mysqli_error()",
+            "mysqli_last_error()",
+            "mysql_connect_error()"
         ],
         "correct": 0,
-        "explanation": "session_destroy ends the session and removes session data. unset removes one variable. MySQL connection closing uses mysqli_close. SQL DELETE uses mysqli_query with DELETE.",
+        "explanation": "mysqli_connect_error reports connection errors. mysqli_error is for query errors on a connection, mysqli_last_error isn’t standard, and mysql_connect_error is not the MySQLi function.",
         "relatedTerms": [
-            "PHP",
-            "session_destroy",
-            "sessions"
+            "mysqli_connect_error"
         ]
     },
     {
@@ -1733,58 +2306,266 @@
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Intermediate",
-        "question": "Which is the best way to detect a failed MySQLi connection based on the notes?",
+        "question": "Which function runs an SQL query in MySQLi?",
         "options": [
-            "if(mysqli_connect_error()) die(\"Connection failed\");",
-            "if(mysqli_query()==false) die();",
-            "if(mysqli_num_rows()==0) die();",
-            "if(mysqli_fetch_assoc()==null) die();"
+            "mysqli_query()",
+            "mysqli_exec()",
+            "mysqli_run()",
+            "mysql_query()"
         ],
         "correct": 0,
-        "explanation": "mysqli_connect_error() reports connection errors. mysqli_query/num_rows/fetch_assoc relate to queries and results, not initial connection failure detection.",
+        "explanation": "mysqli_query executes SQL on a MySQLi connection. mysql_query is legacy (mysql_*). The other names are not standard functions here.",
         "relatedTerms": [
-            "MySQLi",
-            "mysqli_connect_error",
-            "error handling"
+            "mysqli_query"
         ]
     },
     {
         "id": "q_php_state_011",
         "category": "PHP Database & State",
         "type": "mcq",
-        "difficulty": "Advanced",
-        "question": "Which scenario most commonly causes the warning \"Cannot send session cookie - headers already sent\"?",
+        "difficulty": "Intermediate",
+        "question": "Which function fetches a MySQLi row as an associative array?",
         "options": [
-            "Echoing/printing (or accidental whitespace) before session_start()",
-            "Calling mysqli_close() before session_start()",
-            "Using $_SESSION inside a function",
-            "Using a foreach loop in the same file"
+            "mysqli_fetch_assoc()",
+            "mysqli_fetch_row()",
+            "mysqli_fetch_object()",
+            "mysqli_fetch_map()"
         ],
         "correct": 0,
-        "explanation": "Any output before session_start can send headers and break session header setting. Database closing, function scope, and loops do not inherently cause header issues.",
+        "explanation": "mysqli_fetch_assoc returns column-name keys. fetch_row returns numeric indexes. fetch_object isn’t listed in your notes, and fetch_map isn’t a standard function.",
         "relatedTerms": [
-            "sessions",
-            "headers already sent",
-            "session_start"
+            "mysqli_fetch_assoc"
         ]
     },
     {
         "id": "q_php_state_012",
         "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which function fetches a MySQLi row as a numeric (indexed) array?",
+        "options": [
+            "mysqli_fetch_row()",
+            "mysqli_fetch_assoc()",
+            "mysqli_fetch_array_only()",
+            "mysqli_fetch_index()"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_fetch_row returns a numeric array. fetch_assoc returns associative. The other function names are not standard.",
+        "relatedTerms": [
+            "mysqli_fetch_row"
+        ]
+    },
+    {
+        "id": "q_php_state_013",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which function returns the number of rows in a MySQLi result set?",
+        "options": [
+            "mysqli_num_rows()",
+            "mysqli_row_count()",
+            "mysqli_rows()",
+            "mysqli_count()"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_num_rows($result) returns number of rows for SELECT results. The other names are not correct MySQLi APIs.",
+        "relatedTerms": [
+            "mysqli_num_rows"
+        ]
+    },
+    {
+        "id": "q_php_state_014",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which function closes a MySQLi connection?",
+        "options": [
+            "mysqli_close()",
+            "mysqli_end()",
+            "mysqli_disconnect()",
+            "close_mysqli()"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_close closes the connection. The other names are not standard MySQLi functions.",
+        "relatedTerms": [
+            "mysqli_close"
+        ]
+    },
+    {
+        "id": "q_php_state_015",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "In legacy PHP MySQL (mysql_*), which function connects to a MySQL server (as shown in the exam)?",
+        "options": [
+            "mysql_connect()",
+            "mysqli_connect()",
+            "mysql_open()",
+            "connect_mysql()"
+        ],
+        "correct": 0,
+        "explanation": "The exam’s legacy example uses mysql_connect(). mysqli_connect() is the improved extension used in modern code; mysql_open/connect_mysql are not real PHP MySQL APIs.",
+        "relatedTerms": [
+            "mysql_connect",
+            "legacy mysql_*",
+            "MySQL"
+        ]
+    },
+    {
+        "id": "q_php_state_016",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "In legacy PHP MySQL (mysql_*), which function selects a database?",
+        "options": [
+            "mysql_select_db()",
+            "mysqli_select_db()",
+            "mysql_use_db()",
+            "select_db()"
+        ],
+        "correct": 0,
+        "explanation": "mysql_select_db() selects the active database for legacy mysql_* connections. mysqli_select_db() is the MySQLi equivalent. mysql_use_db/select_db are not standard functions.",
+        "relatedTerms": [
+            "mysql_select_db",
+            "legacy mysql_*"
+        ]
+    },
+    {
+        "id": "q_php_state_017",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which SQL statement selects all columns from a table named Food?",
+        "options": [
+            "SELECT * FROM Food",
+            "GET * FROM Food",
+            "SELECT ALL FROM Food",
+            "FIND * IN Food"
+        ],
+        "correct": 0,
+        "explanation": "SELECT * FROM table_name selects all columns. GET/FIND are not SQL keywords, and SELECT ALL FROM is not the correct syntax for selecting columns.",
+        "relatedTerms": [
+            "SQL",
+            "SELECT",
+            "*"
+        ]
+    },
+    {
+        "id": "q_php_state_018",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which MySQLi function selects the default database on an existing connection (from lectures)?",
+        "options": [
+            "mysqli_select_db($conn,\"my_db\")",
+            "mysqli_use_db(\"my_db\",$conn)",
+            "mysqli_select(\"my_db\")",
+            "mysqli_db_select($conn,\"my_db\")"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_select_db($conn,\"dbname\") is the correct MySQLi API. The others are not valid MySQLi function signatures.",
+        "relatedTerms": [
+            "mysqli_select_db",
+            "MySQLi"
+        ]
+    },
+    {
+        "id": "q_php_state_019",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "What does `mysqli_fetch_array($result)` return (per the lecture notes)?",
+        "options": [
+            "A row as numeric, associative, or both",
+            "Only a numeric array row",
+            "Only an associative array row",
+            "A boolean true/false only"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_fetch_array can return a row as an associative array, numeric array, or both depending on fetch mode. fetch_row is numeric-only; fetch_assoc is associative-only.",
+        "relatedTerms": [
+            "mysqli_fetch_array",
+            "mysqli_fetch_row",
+            "mysqli_fetch_assoc"
+        ]
+    },
+    {
+        "id": "q_php_state_020",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which function returns number of affected rows after an UPDATE in legacy mysql_* (as in the exam)?",
+        "options": [
+            "mysql_affected_rows()",
+            "mysql_num_rows()",
+            "mysql_row_count()",
+            "mysql_updated_rows()"
+        ],
+        "correct": 0,
+        "explanation": "mysql_affected_rows() reports affected rows from INSERT/UPDATE/DELETE in legacy mysql_*. mysql_num_rows() is for SELECT result row counts; the others are not standard APIs.",
+        "relatedTerms": [
+            "mysql_affected_rows",
+            "UPDATE",
+            "legacy mysql_*"
+        ]
+    },
+    {
+        "id": "q_php_state_021",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "Why can `setcookie()` fail silently if you call it after `echo` output?",
+        "options": [
+            "Because cookies are sent via HTTP headers before body output",
+            "Because cookies require JavaScript enabled",
+            "Because cookies must be written inside <head> only",
+            "Because mysqli_close() must be called first"
+        ],
+        "correct": 0,
+        "explanation": "setcookie() sends a Set-Cookie header, which must be sent before any body output. It does not depend on JS, <head>, or database functions.",
+        "relatedTerms": [
+            "setcookie",
+            "headers",
+            "output buffering"
+        ]
+    },
+    {
+        "id": "q_php_state_022",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "Which is a common security risk when you build SQL by concatenating raw $_POST values?",
+        "options": [
+            "SQL injection",
+            "CSS specificity conflict",
+            "DOM clobbering",
+            "Cookie overflow"
+        ],
+        "correct": 0,
+        "explanation": "Concatenating raw user input into SQL can allow SQL injection. The other options are unrelated to SQL query construction.",
+        "relatedTerms": [
+            "SQL injection",
+            "$_POST",
+            "mysqli_query"
+        ]
+    },
+    {
+        "id": "q_php_state_023",
+        "category": "PHP Database & State",
         "type": "multi",
         "difficulty": "Advanced",
-        "question": "Which actions in PHP must occur before output for the same 'headers' reason?",
+        "question": "Which operations must happen before output because they use headers?",
         "options": [
             "session_start()",
             "setcookie()",
-            "echo",
-            "mysqli_fetch_assoc()"
+            "mysqli_fetch_assoc()",
+            "echo"
         ],
         "correct": [
             0,
             1
         ],
-        "explanation": "session_start and setcookie send headers and must happen before output. echo is output itself. mysqli_fetch_assoc reads data from a result set and doesn’t send headers.",
+        "explanation": "session_start() and setcookie() rely on HTTP headers and must run before output. mysqli_fetch_assoc() reads result rows and doesn’t send headers; echo is output.",
         "relatedTerms": [
             "headers",
             "session_start",
@@ -1792,66 +2573,402 @@
         ]
     },
     {
-        "id": "q_php_state_013",
+        "id": "q_php_state_024",
         "category": "PHP Database & State",
-        "type": "mcq",
+        "type": "tf",
         "difficulty": "Advanced",
-        "question": "Why is it risky to build SQL like \"SELECT * FROM Users WHERE email='\".$_POST['email'].\"'\"?",
-        "options": [
-            "It can allow SQL injection if input is not sanitized/parameterized",
-            "mysqli_query cannot run SELECT statements",
-            "$_POST is always empty when using POST",
-            "Strings cannot be concatenated with . in PHP"
-        ],
-        "correct": 0,
-        "explanation": "Concatenating raw user input into SQL can allow injection. mysqli_query can run SELECT. $_POST is populated on POST. PHP concatenation uses '.' correctly.",
+        "question": "`mysqli_num_rows($result)` is used to count rows returned by a SELECT query result set.",
+        "options": [],
+        "correct": true,
+        "explanation": "For SELECT queries, mysqli_num_rows($result) returns the number of rows in the result set. It’s not the same concept as affected rows from UPDATE/DELETE.",
         "relatedTerms": [
-            "SQL injection",
-            "mysqli_query",
-            "$_POST",
-            "concatenation"
+            "mysqli_num_rows",
+            "SELECT"
         ]
     },
     {
-        "id": "q_php_state_014",
+        "id": "q_php_state_025",
+        "category": "PHP Database & State",
+        "type": "tf",
+        "difficulty": "Advanced",
+        "question": "A 4KB cookie size limit means you can store unlimited user profile data in cookies safely.",
+        "options": [],
+        "correct": false,
+        "explanation": "Cookies are small (~4KB) and sent on every request; storing lots of data is inefficient and can leak sensitive information. Use sessions/database for larger state.",
+        "relatedTerms": [
+            "cookies",
+            "4KB",
+            "state"
+        ]
+    },
+    {
+        "id": "q_php_state_026",
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Full Stack",
-        "question": "A form uploads a file (type=\"file\") and posts to PHP. Where does PHP receive uploaded file info per the notes?",
+        "question": "Given HTML: `<form action=\"welcome.php\" method=\"post\"><input name=\"fname\"><input name=\"lname\"></form>`. Which PHP prints “Welcome fname lname!”?",
+        "options": [
+            "echo \"Welcome \".$_POST['fname'].\" \".$_POST['lname'].\"!\";",
+            "echo \"Welcome \".$_GET['fname'].\" \".$_GET['lname'].\"!\";",
+            "echo \"Welcome \".POST['fname'].\" \".POST['lname'].\"!\";",
+            "echo \"Welcome \".$_POST['fname']+\" \"+$_POST['lname'].\"!\";"
+        ],
+        "correct": 0,
+        "explanation": "POST form fields are read via $_POST and concatenated with '.'. $_GET is wrong for method=post. POST[...] is invalid. Using + is incorrect for string concatenation in PHP.",
+        "relatedTerms": [
+            "forms",
+            "$_POST",
+            "echo",
+            "."
+        ]
+    },
+    {
+        "id": "q_php_state_027",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "You want to output DB results as an HTML unordered list (<ul>) in PHP. Which structure matches the provided example?",
+        "options": [
+            "echo \"<ul>\"; while($row=mysqli_fetch_assoc($result)){ echo \"<li>\".$row['Pname'].\" - \".$row['price'].\"</li>\"; } echo \"</ul>\";",
+            "echo \"<ul>\"; for($row in $result){ echo \"<li>\".$row.Pname.\"</li>\";} echo \"</ul>\";",
+            "echo \"<ul>\"; while($row=mysqli_fetch_row($result)){ echo \"<li>\".$row['Pname'].\"</li>\";} echo \"</ul>\";",
+            "echo \"<ul>\"; while($row=mysqli_fetch_assoc($result)){ echo \"<li>\".$result['Pname'].\"</li>\";} echo \"</ul>\";"
+        ],
+        "correct": 0,
+        "explanation": "The correct pattern is echo <ul>, loop fetch_assoc rows, echo <li> using $row['col'], then close </ul>. `for($row in $result)` is JS-like, fetch_row uses numeric indexes (not 'Pname'), and $result['Pname'] is wrong (should be $row).",
+        "relatedTerms": [
+            "mysqli_fetch_assoc",
+            "<ul>",
+            "echo",
+            "SQL SELECT"
+        ]
+    },
+    {
+        "id": "q_php_state_028",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "Which snippet properly checks a MySQLi connection before querying?",
+        "options": [
+            "$conn=mysqli_connect($s,$u,$p,$db); if(!$conn){die(mysqli_connect_error());}",
+            "$conn=mysqli_connect($s,$u,$p,$db); if($conn){die(mysqli_connect_error());}",
+            "if(mysqli_query($conn,\"SELECT 1\")){die(\"Connection failed\");}",
+            "$conn=mysqli_connect($s,$u,$p,$db); if(mysqli_num_rows($conn)==0){die(\"fail\");}"
+        ],
+        "correct": 0,
+        "explanation": "The standard pattern is connect, then if(!$conn) die with mysqli_connect_error(). The other options invert the condition or use query/result functions incorrectly on a connection handle.",
+        "relatedTerms": [
+            "mysqli_connect",
+            "mysqli_connect_error",
+            "error handling"
+        ]
+    },
+    {
+        "id": "q_php_state_029",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "You want to display records in an HTML table with headings Make/Model/Price/Quantity. Which approach is correct?",
+        "options": [
+            "Echo the <table> header row once, then loop rows with mysqli_fetch_assoc() creating <tr><td>...</td></tr>",
+            "Put <th> headings inside the while loop so they repeat for every record",
+            "Use <ul> instead of <table> because tables cannot show columns",
+            "Use mysqli_num_rows() to print each field without fetching rows"
+        ],
+        "correct": 0,
+        "explanation": "Correct: print table header once, then loop through fetched rows for each record. Headings inside the loop repeat incorrectly. <ul> is not tabular. num_rows counts rows but doesn’t provide field data without fetching.",
+        "relatedTerms": [
+            "<table>",
+            "mysqli_fetch_assoc",
+            "HTML output"
+        ]
+    },
+    {
+        "id": "q_php_state_030",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "In MySQLi, which mistake would cause `$row['Pname']` to fail when using `mysqli_fetch_row()`?",
+        "options": [
+            "fetch_row returns numeric indexes, not column-name keys",
+            "fetch_row returns objects, not arrays",
+            "fetch_row returns booleans only",
+            "fetch_row automatically escapes HTML"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_fetch_row() returns a numeric array (e.g., $row[0]). To use $row['Pname'], you must use mysqli_fetch_assoc().",
+        "relatedTerms": [
+            "mysqli_fetch_row",
+            "mysqli_fetch_assoc",
+            "arrays"
+        ]
+    },
+    {
+        "id": "q_php_state_031",
+        "category": "PHP Database & State",
+        "type": "multi",
+        "difficulty": "Intermediate",
+        "question": "Which of these are valid MySQLi fetch functions from the lecture notes?",
+        "options": [
+            "mysqli_fetch_row()",
+            "mysqli_fetch_assoc()",
+            "mysqli_fetch_array()",
+            "mysqli_fetch_object()"
+        ],
+        "correct": [
+            0,
+            1,
+            2
+        ],
+        "explanation": "The lecture notes list mysqli_fetch_row, mysqli_fetch_assoc, and mysqli_fetch_array. mysqli_fetch_object exists in PHP but was not included in the provided lecture summary.",
+        "relatedTerms": [
+            "MySQLi",
+            "fetch functions"
+        ]
+    },
+    {
+        "id": "q_php_state_032",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which MySQLi function closes an open database connection?",
+        "options": [
+            "mysqli_close($conn)",
+            "mysqli_end($conn)",
+            "mysqli_disconnect($conn)",
+            "close($conn)"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_close($conn) is the correct API. The other options are not valid MySQLi close functions.",
+        "relatedTerms": [
+            "mysqli_close",
+            "MySQLi"
+        ]
+    },
+    {
+        "id": "q_php_state_033",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which variable type does mysqli_connect(...) return on success (conceptually)?",
+        "options": [
+            "A connection resource/object handle",
+            "An array of rows",
+            "A boolean true",
+            "An SQL string"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_connect returns a connection handle used in subsequent DB calls. It does not return row data, a simple boolean, or an SQL statement.",
+        "relatedTerms": [
+            "mysqli_connect",
+            "resource",
+            "connection"
+        ]
+    },
+    {
+        "id": "q_php_state_034",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "A student gets 'Headers already sent' when starting sessions. What’s the most likely cause?",
+        "options": [
+            "They output whitespace/HTML before session_start()",
+            "They used mysqli_fetch_assoc() before session_start()",
+            "They used <table> tags in HTML",
+            "They called parseInt() in JavaScript"
+        ],
+        "correct": 0,
+        "explanation": "Session headers must be sent before output; stray whitespace/HTML before session_start() triggers the warning. DB fetch, HTML tags later, and JS parsing are unrelated.",
+        "relatedTerms": [
+            "session_start",
+            "headers already sent"
+        ]
+    },
+    {
+        "id": "q_php_state_035",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "You need persistent login across pages. Where should you store the user id securely for the session?",
+        "options": [
+            "$_SESSION",
+            "$_GET",
+            "$_ENV",
+            "document.location"
+        ],
+        "correct": 0,
+        "explanation": "$_SESSION stores server-side session state like user id. $_GET exposes data in URL. $_ENV is environment config. document.location is JS URL info.",
+        "relatedTerms": [
+            "$_SESSION",
+            "authentication",
+            "state"
+        ]
+    },
+    {
+        "id": "q_php_state_036",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "A file upload form uses `<input type=\"file\" name=\"avatar\">`. Which PHP superglobal contains file info?",
         "options": [
             "$_FILES",
             "$_POST",
             "$_GET",
-            "$_ENV"
+            "$_COOKIE"
         ],
         "correct": 0,
-        "explanation": "Uploaded file metadata is in $_FILES. $_POST holds regular fields, $_GET holds query parameters, and $_ENV holds environment variables.",
+        "explanation": "Uploaded file metadata is stored in $_FILES. $_POST carries normal form fields, $_GET is query params, and $_COOKIE is client cookie data.",
         "relatedTerms": [
-            "file upload",
-            "<input type=\"file\">",
-            "$_FILES"
+            "$_FILES",
+            "file upload"
         ]
     },
     {
-        "id": "q_php_state_015",
+        "id": "q_php_state_037",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "Which statement best describes the difference between cookies and sessions?",
+        "options": [
+            "Cookies are stored on the client; sessions store data on the server",
+            "Cookies are server-only; sessions are client-only",
+            "Cookies are SQL tables; sessions are HTML tags",
+            "Cookies replace HTTPS; sessions enforce HTTPS"
+        ],
+        "correct": 0,
+        "explanation": "Cookies live on the client and are sent with requests; sessions store state on the server referenced by a session id. Other statements are incorrect.",
+        "relatedTerms": [
+            "cookies",
+            "sessions",
+            "state"
+        ]
+    },
+    {
+        "id": "q_php_state_038",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "What does `mysqli_select_db($con, \"my_db\")` do?",
+        "options": [
+            "Sets the default database for the connection",
+            "Creates a new database named my_db",
+            "Runs SELECT queries automatically",
+            "Closes the connection to my_db"
+        ],
+        "correct": 0,
+        "explanation": "mysqli_select_db selects the active/default database for that connection. It does not create DBs, run queries, or close connections.",
+        "relatedTerms": [
+            "mysqli_select_db",
+            "database"
+        ]
+    },
+    {
+        "id": "q_php_state_039",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Intermediate",
+        "question": "Which is the correct parameter order for mysqli_connect() per the lecture notes?",
+        "options": [
+            "host, user, pass, db",
+            "user, host, db, pass",
+            "db, host, user, pass",
+            "host, db, user, pass"
+        ],
+        "correct": 0,
+        "explanation": "The notes show mysqli_connect(host, user, pass, db). Other orders are common student mistakes that cause connection failures.",
+        "relatedTerms": [
+            "mysqli_connect",
+            "parameters"
+        ]
+    },
+    {
+        "id": "q_php_state_040",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Advanced",
+        "question": "Why is GET considered weaker than POST for passwords?",
+        "options": [
+            "It exposes data in URL, logs, and browser history",
+            "It cannot send any data",
+            "It always truncates passwords to 4 characters",
+            "It automatically hashes passwords"
+        ],
+        "correct": 0,
+        "explanation": "GET places data in the URL query string, which can leak through history, referrers, and logs. GET can send data, does not truncate to 4 chars, and does not hash automatically.",
+        "relatedTerms": [
+            "GET",
+            "POST",
+            "security"
+        ]
+    },
+    {
+        "id": "q_php_state_041",
+        "category": "PHP Database & State",
+        "type": "tf",
+        "difficulty": "Intermediate",
+        "question": "`mysqli_query($conn,$sql)` should be called after a successful mysqli_connect().",
+        "options": [],
+        "correct": true,
+        "explanation": "You need a valid connection handle before executing queries. If the connection fails, query calls will error or return false.",
+        "relatedTerms": [
+            "mysqli_connect",
+            "mysqli_query"
+        ]
+    },
+    {
+        "id": "q_php_state_042",
+        "category": "PHP Database & State",
+        "type": "tf",
+        "difficulty": "Intermediate",
+        "question": "`mysqli_fetch_assoc($result)` returns a row with numeric indexes only.",
+        "options": [],
+        "correct": false,
+        "explanation": "mysqli_fetch_assoc returns an associative array keyed by column names. Numeric-only rows come from mysqli_fetch_row.",
+        "relatedTerms": [
+            "mysqli_fetch_assoc",
+            "mysqli_fetch_row"
+        ]
+    },
+    {
+        "id": "q_php_state_043",
         "category": "PHP Database & State",
         "type": "mcq",
         "difficulty": "Full Stack",
-        "question": "You want to keep a user logged in across multiple PHP pages and also query their data from MySQL. Which combination is most appropriate?",
+        "question": "You want to output products from table Food as `<li>Pname - price</li>`. Which SQL selects the needed columns?",
         "options": [
-            "Use session_start()+$_SESSION to store user id, then mysqli_query() to fetch user data",
-            "Store the password in a cookie and skip sessions",
-            "Use document.write() to store the user id",
-            "Use <meta keywords> to store the user id"
+            "SELECT Pname, price FROM Food",
+            "SELECT name, cost FROM Food",
+            "SELECT * FROM Pname, price",
+            "GET Pname, price IN Food"
         ],
         "correct": 0,
-        "explanation": "Sessions store server-side state like a user id; then you query MySQL with MySQLi. Storing passwords in cookies is insecure, and document.write/meta tags are not server-side state mechanisms.",
+        "explanation": "SELECT Pname, price FROM Food selects the two columns from the Food table. The other options use wrong column/table syntax or invalid SQL keywords.",
         "relatedTerms": [
-            "sessions",
-            "$_SESSION",
-            "MySQLi",
-            "mysqli_query",
-            "authentication"
+            "SQL",
+            "SELECT",
+            "Food",
+            "Pname",
+            "price"
+        ]
+    },
+    {
+        "id": "q_php_state_044",
+        "category": "PHP Database & State",
+        "type": "mcq",
+        "difficulty": "Full Stack",
+        "question": "A PHP page should output an HTML table using database fields. What is the correct place to print the header row (`<th>...</th>`) for best output?",
+        "options": [
+            "Before the while(fetch) loop",
+            "Inside the while(fetch) loop",
+            "After the while(fetch) loop",
+            "Only in JavaScript after page load"
+        ],
+        "correct": 0,
+        "explanation": "Headers should appear once, so print them before iterating rows. Printing inside the loop repeats headers per row; printing after loses header-first structure; JS is not required for server-rendered tables.",
+        "relatedTerms": [
+            "HTML table",
+            "mysqli_fetch_assoc",
+            "server-side rendering"
         ]
     }
 ]
