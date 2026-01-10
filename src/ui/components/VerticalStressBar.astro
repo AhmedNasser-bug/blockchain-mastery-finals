@@ -1,0 +1,91 @@
+---
+import '../../styles/components/vertical-stress-bar.css';
+
+interface Props {
+    duration?: number; // Total time in seconds
+}
+
+const { duration = 60 } = Astro.props;
+---
+
+<div class="stress-bar-component">
+    <div class="stress-bar-container" id="stressBar">
+        <div class="stress-icon">⚡</div>
+        <div class="stress-fill" id="stressFill" style="height: 100%;"></div>
+        <div class="stress-value" id="stressText">{duration}</div>
+    </div>
+</div>
+
+<script>
+    export class VerticalStressBar {
+        private container: HTMLElement;
+        private fill: HTMLElement;
+        private text: HTMLElement;
+        private duration: number;
+        private remaining: number;
+        private intervalId: number | null = null;
+        private onComplete?: () => void;
+
+        constructor(element: HTMLElement, duration: number) {
+            this.container = element.querySelector('#stressBar') as HTMLElement;
+            this.fill = element.querySelector('#stressFill') as HTMLElement;
+            this.text = element.querySelector('#stressText') as HTMLElement;
+            this.duration = duration;
+            this.remaining = duration;
+        }
+
+        public start(newDuration?: number, onComplete?: () => void) {
+            if (newDuration) {
+                this.duration = newDuration;
+                this.remaining = newDuration;
+            }
+            this.onComplete = onComplete;
+            this.updateVisuals();
+            this.stop(); // Clear any existing
+
+            this.intervalId = window.setInterval(() => {
+                this.remaining--;
+                this.updateVisuals();
+
+                if (this.remaining <= 0) {
+                    this.stop();
+                    if (this.onComplete) this.onComplete();
+                    this.container.dispatchEvent(new CustomEvent('time-up', { bubbles: true }));
+                }
+            }, 1000);
+        }
+
+        public stop() {
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+        }
+
+        public addTime(seconds: number) {
+            this.remaining = Math.min(this.remaining + seconds, this.duration);
+            this.updateVisuals();
+        }
+
+        private updateVisuals() {
+            const pct = (this.remaining / this.duration) * 100;
+            this.fill.style.height = `${pct}%`;
+            this.text.textContent = this.remaining.toString();
+
+            if (pct < 20) {
+                this.container.classList.add('critical');
+            } else {
+                this.container.classList.remove('critical');
+            }
+        }
+    }
+
+    // Attach to global scope or initialize if stand-alone
+    (window as any).VerticalStressBar = VerticalStressBar;
+    
+    // Auto-init for testing or simple usage
+    document.querySelectorAll('.stress-bar-component').forEach(el => {
+       // Logic usually controlled by parent, but we can expose the instance
+       (el as any).stressBarInstance = new VerticalStressBar(el as HTMLElement, parseInt(el.querySelector('#stressText')?.textContent || '60'));
+    });
+</script>

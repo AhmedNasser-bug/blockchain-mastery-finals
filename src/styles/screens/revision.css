@@ -1,0 +1,47 @@
+.revision-screen {
+    background: var(--bg-main);
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+}
+
+.revision-screen.active {
+    display: flex;
+}
+
+.revision-header {
+    padding: 20px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.revision-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.rev-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.rev-term {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.rev-def {
+    color: var(--text-primary);
+}

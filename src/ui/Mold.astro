@@ -1,8 +1,8 @@
 ---
 import HomeScreen from "./screens/HomeScreen.astro";
-import StandardGameScreen from "./screens/StandardGameScreen.astro";
-import SurvivalScreen from "./screens/SurvivalScreen.astro";
-import FlashcardScreen from "./screens/FlashcardScreen.astro";
+import SpeedrunScreen from "./screens/challenge-screens/SpeedrunScreen.astro"; // Serves as the Universal Challenge Screen
+import PracticeScreen from "./screens/practice-screens/PracticeScreen.astro";
+import FlashcardScreen from "./screens/practice-screens/FlashcardScreen.astro";
 import ResultsScreen from "./screens/ResultsScreen.astro";
 import RevisionScreen from "./screens/RevisionScreen.astro";
 import AchievementsScreen from "./screens/AchievementsScreen.astro";
@@ -16,14 +16,27 @@ interface Props {
 const { subject } = Astro.props;
 ---
 
-<div class="container">
+<div id="loading-overlay" style="position: fixed; inset: 0; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+    <div>
+        <h2>Loading Assets...</h2>
+        <p id="loading-status">Synchronizing subject data</p>
+    </div>
+</div>
+
+<div class="mold-container" style="display: none;" id="game-container">
     <HomeScreen
         subjectName={subject.name}
         description={subject.config.description}
     />
-    <StandardGameScreen />
-    <SurvivalScreen />
+    
+    <!-- Consolidated Challenge Mode Screen -->
+    <SpeedrunScreen />
+    
+    <!-- Practice Modes -->
+    <PracticeScreen />
     <FlashcardScreen />
+    
+    <!-- Utility Screens -->
     <ResultsScreen />
     <RevisionScreen />
     <AchievementsScreen />
@@ -32,6 +45,57 @@ const { subject } = Astro.props;
         <div class="combo-text" id="comboText"></div>
     </div>
 </div>
+
+<script>
+    import { Subject } from "../logic/entities/Subject";
+    
+    // Pass subject data from SSR to client logic
+    const subjectData = window.subjectData; 
+
+    async function initAssets() {
+        const statusEl = document.getElementById('loading-status');
+        if (!subjectData) {
+            console.error("No subject data found!");
+            if (statusEl) statusEl.textContent = "Error: Missing Subject Data";
+            return;
+        }
+
+        try {
+            // Instantiate with ID from SSR
+            const subject = new Subject(subjectData.id, subjectData.name);
+            
+            if (statusEl) statusEl.textContent = `Syncing ${subject.name}...`;
+            
+            // Perform Sync (API -> DB if missing)
+            const success = await subject.sync();
+            
+            if (success) {
+                // Load Data into Memory (and window.subjectData for legacy screens)
+                await subject.loadFromDB();
+                
+                // Hide loader, show game
+                const overlay = document.getElementById('loading-overlay');
+                const container = document.getElementById('game-container');
+                if (overlay) overlay.style.display = 'none';
+                if (container) container.style.display = 'block';
+                console.log("Assets loaded and synced.");
+                
+                // Dispatch Event for Components (Revision, Flashcards, etc)
+                window.dispatchEvent(new CustomEvent('game-assets-ready', { 
+                    detail: window.subjectData 
+                }));
+            } else {
+                if (statusEl) statusEl.textContent = "Failed to sync assets. Are you online?";
+            }
+        } catch (e) {
+            console.error("Asset load error:", e);
+            if (statusEl) statusEl.textContent = "Critical Error loading assets.";
+        }
+    }
+
+    // Wait for window load or just run
+    window.addEventListener('load', initAssets);
+</script>
 
 <script is:inline define:vars={{ subject }}>
     window.subjectData = subject;

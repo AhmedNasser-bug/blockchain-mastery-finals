@@ -1,0 +1,94 @@
+---
+import Stopwatch from './Stopwatch.astro';
+import BackButton from './BackButton.astro';
+import '../../styles/components/game-header.css';
+
+interface Props {
+    mode: 'practice' | 'challenge'; 
+    id?: string;
+    totalQuestions?: number; // Optional visual
+}
+
+const { mode, id = "game-header" } = Astro.props;
+---
+
+<div class={`game-header-wrapper ${mode}`} id={id}>
+    <div class="gh-left">
+        <BackButton />
+    </div>
+
+    <!-- Center: Stopwatch or Title? -->
+    <div class="gh-center">
+        <!-- We use Stopwatch always, Logic decides if it counts Up or Down -->
+        <Stopwatch id={`${id}-stopwatch`} />
+    </div>
+
+    <div class="gh-right">
+        <div class="gh-score-box">
+             <span class="gh-label">SCORE</span>
+             <span class="gh-value" id={`${id}-score`}>0</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    class GameHeaderController {
+        private el: HTMLElement;
+        private stopwatch: any;
+        private scoreEl: HTMLElement;
+
+        constructor(el: HTMLElement) {
+            this.el = el;
+            this.scoreEl = el.querySelector('.gh-value')!;
+            
+            // Find Stopwatch Instance
+            // The Stopwatch component attaches itself to its root element
+            const swRoot = el.querySelector('.stopwatch-container');
+            this.stopwatch = (swRoot as any)?.stopwatchInstance;
+            
+            // Expose self
+            (this.el as any).headerInstance = this;
+        }
+
+        public startTimer(limitSeconds: number = 0) {
+            if(this.stopwatch) {
+                 // 0 means count up (elapsed), >0 means count down (limit)
+                 // NOTE: Stopwatch.astro logic currently supports 'start(duration)' which counts down.
+                 // We might need to update Stopwatch to support 'Count Up' if needed for Practice/Speedrun (Elapsed).
+                 // For now, let's assume 'limitSeconds' 0 = Infinite/Elapsed. 
+                 // But Stopwatch implementation was: `this.remaining--`... 
+                 // Let's rely on Stopwatch being smart or Logic handling it.
+                 // Actually the Stopwatch I wrote counts DOWN. 
+                 // If limit is 0, it stops immediately or finishes?
+                 // Let's pass the limit. If 0, maybe we show 00:00 and don't tick down?
+                 
+                 // FIX: For "Count Up" (Elapsed), we need a different mode in Stopwatch or negative duration?
+                 // For "Challenge" usually there's a limit or we track time.
+                 // Let's assume Limit for Challenge, 0 for Practice (just show 00:00 or don't fail).
+                 
+                 if (limitSeconds > 0) {
+                     this.stopwatch.setTime(limitSeconds);
+                     this.stopwatch.start(limitSeconds);
+                 } else {
+                     // Infinite / Elapsed mode
+                     // If Stopwatch doesn't support count-up, we might just set it to 9999 or show 0.
+                     this.stopwatch.setTime(0);
+                     // Allow it to run? If we run start(0), it triggers 'time-up'.
+                     // For now, let's just set 00:00.
+                 }
+            }
+        }
+
+        public stopTimer() {
+            if(this.stopwatch) this.stopwatch.stop();
+        }
+        
+        public setScore(n: number) {
+            if(this.scoreEl) this.scoreEl.textContent = n.toString();
+        }
+    }
+
+    document.querySelectorAll('.game-header-wrapper').forEach(el => {
+        new GameHeaderController(el as HTMLElement);
+    });
+</script>

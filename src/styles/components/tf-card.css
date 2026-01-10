@@ -1,0 +1,113 @@
+.tf-container {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    /* max-width: 800px; */
+    /* Let it fill container naturally */
+    justify-content: center;
+}
+
+.tf-option {
+    flex: 1;
+    min-width: 160px;
+    padding: 30px 20px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    /* modern */
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    position: relative;
+    user-select: none;
+}
+
+.tf-option:hover:not(.disabled) {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.tf-option.true-option:hover:not(.disabled) {
+    border-color: var(--accent-green);
+    background: rgba(34, 197, 94, 0.05);
+}
+
+.tf-option.false-option:hover:not(.disabled) {
+    border-color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.tf-icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
+}
+
+.tf-option:hover:not(.disabled) .tf-icon {
+    transform: scale(1.1);
+}
+
+.tf-label {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+}
+
+.tf-option.true-option .tf-label {
+    color: var(--accent-green);
+}
+
+.tf-option.false-option .tf-label {
+    color: var(--accent-red);
+}
+
+/* Selected/Result States */
+.tf-option.disabled {
+    cursor: default;
+    opacity: 0.6;
+    filter: grayscale(0.8);
+}
+
+.tf-option.selected {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    filter: none;
+    border-width: 3px;
+}
+
+.tf-option.correct {
+    border-color: var(--success);
+    background: rgba(34, 197, 94, 0.2) !important;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.3) !important;
+}
+
+.tf-option.incorrect {
+    border-color: var(--error);
+    background: rgba(239, 68, 68, 0.2) !important;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3) !important;
+}
+
+@media (max-width: 600px) {
+    .tf-container {
+        flex-direction: row;
+        /* Keep row even on mobile if possible, split 50/50 */
+        gap: 12px;
+    }
+
+    .tf-option {
+        min-width: 0;
+        padding: 20px 10px;
+    }
+
+    .tf-icon {
+        font-size: 2.5rem;
+    }
+}

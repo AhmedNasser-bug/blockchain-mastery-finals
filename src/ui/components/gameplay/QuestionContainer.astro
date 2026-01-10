@@ -1,0 +1,85 @@
+---
+import QuestionDisplay from '../QuestionDisplay.astro';
+import VerticalStressBar from '../VerticalStressBar.astro';
+import '../../../styles/components/question-container.css';
+
+interface Props {
+  id?: string;
+  enableStressBar?: boolean;
+}
+
+const { id = "question-container", enableStressBar = false } = Astro.props;
+---
+
+<div class="question-container-root" id={id}>
+    <!-- Optional: Local Stress Bar for Survival Mode -->
+    <div class="qc-stress-bar-wrapper hidden">
+        <VerticalStressBar duration={15} />
+    </div>
+
+    <!-- The actual Question Renderer -->
+    <div class="qc-display-wrapper">
+         <QuestionDisplay id={`${id}-display`} />
+    </div>
+</div>
+
+<script>
+    class QuestionContainerController {
+        private el: HTMLElement;
+        private display: any;
+        private stressBar: any;
+        private stressWrapper: HTMLElement;
+
+        constructor(el: HTMLElement) {
+            this.el = el;
+            this.stressWrapper = el.querySelector('.qc-stress-bar-wrapper')!;
+            
+            // Link Internal Components
+            const displayEl = el.querySelector('.question-display-root');
+            this.display = (displayEl as any)?.questionDisplayInstance;
+            
+            const sbEl = el.querySelector('.stress-bar-component');
+            this.stressBar = (sbEl as any)?.stressBarInstance;
+            
+            // Expose Self
+            (this.el as any).containerInstance = this;
+            
+            // Forward Events if necessary or handle logic
+        }
+
+        public render(question: any) {
+            if(this.display) this.display.render(question);
+            
+            // Reset state
+            this.el.classList.remove('feedback-correct', 'feedback-incorrect');
+        }
+
+        public showFeedback(isCorrect: boolean) {
+            this.el.classList.add(isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+            if(this.display) this.display.showFeedback(isCorrect);
+        }
+        
+        public reveal() {
+            if(this.display) return this.display.reveal();
+            return false;
+        }
+
+        // Stress Bar Control
+        public enableStressBar(enabled: boolean) {
+            if(enabled) this.stressWrapper.classList.remove('hidden');
+            else this.stressWrapper.classList.add('hidden');
+        }
+
+        public startStressTimer(duration: number) {
+            if(this.stressBar) this.stressBar.start(duration);
+        }
+
+        public stopStressTimer() {
+            if(this.stressBar) this.stressBar.stop();
+        }
+    }
+
+    document.querySelectorAll('.question-container-root').forEach(el => {
+        new QuestionContainerController(el as HTMLElement);
+    });
+</script>

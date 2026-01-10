@@ -1,0 +1,62 @@
+.stress-bar-container {
+    width: 60px;
+    height: 100%;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-pill);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column-reverse;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.stress-fill {
+    width: 100%;
+    height: 100%;
+    /* Start full */
+    background: linear-gradient(to top, var(--success), var(--warning), var(--error));
+    transition: height 1s linear;
+}
+
+.stress-value {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+}
+
+.stress-icon {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    z-index: 2;
+}
+
+/* Pulse animation when critical */
+.stress-bar-container.critical {
+    border-color: var(--error);
+    box-shadow: 0 0 15px var(--error);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

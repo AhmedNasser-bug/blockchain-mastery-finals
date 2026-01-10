@@ -10,7 +10,7 @@ const { id = "hintPopup" } = Astro.props;
     <div class="hint-header">
       <span class="hint-icon">💡</span>
       <h3>HINT</h3>
-      <button class="hint-close" onclick={`document.getElementById('${id}').classList.add('hidden')`}>&times;</button>
+      <button class="hint-close" id={`${id}-close`}>&times;</button>
     </div>
     <div class="hint-body">
       <p id={`${id}-text`} class="hint-text">This is a hint.</p>
@@ -94,5 +94,53 @@ const { id = "hintPopup" } = Astro.props;
     font-size: 1.1rem;
     line-height: 1.6;
     color: var(--text-secondary);
+    white-space: pre-wrap; /* Preserve formatting */
   }
 </style>
+
+<script>
+  class HintPopup {
+      private container: HTMLElement;
+      private textEl: HTMLElement;
+
+      constructor(container: HTMLElement) {
+          this.container = container;
+          this.textEl = container.querySelector('.hint-text')!;
+          
+          this.initListeners();
+      }
+
+      private initListeners() {
+          // Listen for hint requests from Footer or Global
+          window.addEventListener('request-hint', (e: any) => {
+               // Expecting e.detail.hint
+               if(e.detail && e.detail.hint) {
+                   this.show(e.detail.hint);
+               }
+          });
+          
+          // Close button logic
+          const closeBtn = document.getElementById(`${this.container.id}-close`);
+          if(closeBtn) {
+              closeBtn.addEventListener('click', () => this.hide());
+          }
+
+          // Escape key
+          document.addEventListener('keydown', (e) => {
+              if(e.key === 'Escape') this.hide();
+          });
+      }
+
+      public show(text: string) {
+          this.textEl.textContent = text;
+          this.container.classList.remove('hidden');
+      }
+
+      public hide() {
+          this.container.classList.add('hidden');
+      }
+  }
+
+  // Init
+  document.querySelectorAll('.hint-overlay').forEach(el => new HintPopup(el as HTMLElement));
+</script>

@@ -12,4 +12,15 @@ export default defineConfig({
     build: {
         format: "file",
     },
+    vite: {
+        optimizeDeps: {
+            exclude: ['@sqlite.org/sqlite-wasm'],
+        },
+        server: {
+            headers: {
+                'Cross-Origin-Opener-Policy': 'same-origin',
+                'Cross-Origin-Embedder-Policy': 'require-corp',
+            },
+        },
+    },
 });

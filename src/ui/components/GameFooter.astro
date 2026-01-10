@@ -1,0 +1,95 @@
+---
+import '../../styles/components/game-footer.css';
+
+interface Props {
+  id?: string;
+  onHint?: string; // Optional js handler name
+}
+
+const { id = "game-footer" } = Astro.props;
+---
+
+<div class="game-footer-root" id={id}>
+    <div class="gf-left">
+        <button class="btn btn-secondary footer-btn" id={`${id}-hint`}>
+            <span>💡</span> Hint
+        </button>
+        <button class="btn btn-danger footer-btn" id={`${id}-skip`}>
+            <span>⏩</span> Skip
+        </button>
+    </div>
+
+    <div class="gf-right">
+        <button class="btn btn-primary footer-btn" id={`${id}-submit`} disabled>
+            Submit
+        </button>
+        <button class="btn btn-primary footer-btn hidden" id={`${id}-next`}>
+            Next <span>➜</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    class GameFooterController {
+        private el: HTMLElement;
+        private submitBtn: HTMLButtonElement;
+        private nextBtn: HTMLButtonElement;
+        private hintBtn: HTMLButtonElement;
+        private skipBtn: HTMLButtonElement;
+        private hintText: string = "";
+
+        constructor(el: HTMLElement) {
+            this.el = el;
+            // Scoped Query Selectors
+            this.submitBtn = el.querySelector('[id$="-submit"]')!;
+            this.nextBtn = el.querySelector('[id$="-next"]')!;
+            this.hintBtn = el.querySelector('[id$="-hint"]')!;
+            this.skipBtn = el.querySelector('[id$="-skip"]')!;
+
+            this.bindEvents();
+            (this.el as any).footerInstance = this;
+        }
+
+        private bindEvents() {
+            this.submitBtn.addEventListener('click', () => this.emit('request-submit'));
+            this.nextBtn.addEventListener('click', () => this.emit('request-next'));
+            this.skipBtn.addEventListener('click', () => this.emit('request-skip'));
+            
+            this.hintBtn.addEventListener('click', () => {
+                if(this.hintText) this.emit('request-hint', { text: this.hintText });
+            });
+        }
+
+        private emit(name: string, detail: any = {}) {
+            console.log(`[GameFooter] Emitting ${name}`, detail);
+            this.el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail }));
+            // Also emit on window for global catch if needed, but per-component is better
+        }
+
+        public setHint(text: string) {
+            this.hintText = text;
+            this.hintBtn.disabled = !text;
+            this.hintBtn.style.opacity = text ? '1' : '0.5';
+        }
+
+        public enableSubmit(enabled: boolean) {
+            this.submitBtn.disabled = !enabled;
+        }
+
+        public showSubmit() {
+            this.submitBtn.classList.remove('hidden');
+            this.nextBtn.classList.add('hidden');
+        }
+
+        public showNext(label: string = "Next") {
+            this.submitBtn.classList.add('hidden');
+            this.nextBtn.classList.remove('hidden');
+            // Update label text if needed, handling icon span
+            this.nextBtn.innerHTML = `${label} <span>➜</span>`;
+        }
+    }
+
+    document.querySelectorAll('.game-footer-root').forEach(el => {
+        new GameFooterController(el as HTMLElement);
+    });
+</script>

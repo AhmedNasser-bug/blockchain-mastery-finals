@@ -18,8 +18,8 @@ const { current = 1, total = 0, idPrefix = "" } = Astro.props;
     justify-content: space-between;
     align-items: center;
     padding-top: 15px;
-    border-top: 1px dashed var(--border); /* Separation line */
-    font-family: 'Roboto Mono', monospace; /* Technical Font */
+    border-top: 1px dashed var(--border); 
+    font-family: 'Roboto Mono', monospace; 
     letter-spacing: -0.5px;
     color: var(--text-secondary);
     font-size: 0.9rem;
@@ -38,3 +38,30 @@ const { current = 1, total = 0, idPrefix = "" } = Astro.props;
     border: 1px solid var(--primary);
 }
 </style>
+
+<script>
+    class ScoreDisplay {
+        private container: HTMLElement;
+        private currentEl: HTMLElement;
+        private totalEl: HTMLElement;
+        private scoreEl: HTMLElement;
+
+        constructor(container: HTMLElement) {
+            this.container = container;
+            this.currentEl = container.querySelector('[id$="currentQ"]')!;
+            this.totalEl = container.querySelector('[id$="totalQ"]')!;
+            this.scoreEl = container.querySelector('[id$="liveScore"]')!;
+            
+            window.addEventListener('game:progress-update', (e: any) => {
+                 this.currentEl.textContent = e.detail.current;
+                 this.totalEl.textContent = e.detail.total;
+            });
+            
+            window.addEventListener('game:stats-update', (e: any) => {
+                 this.scoreEl.textContent = e.detail.score;
+            });
+        }
+    }
+    
+    document.querySelectorAll('.score-display').forEach(el => new ScoreDisplay(el as HTMLElement));
+</script>

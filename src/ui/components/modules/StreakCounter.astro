@@ -1,0 +1,123 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = "streak-counter" } = Astro.props;
+---
+
+<div id={id} class="combo-popup hidden">
+    <div class="combo-content">
+        <div class="combo-icon">🔥</div>
+        <div class="combo-text"></div>
+        <div class="combo-subtext">Keep it up!</div>
+    </div>
+</div>
+
+<style>
+/* COMBO / MILESTONE POPUP MOVED FROM SPEEDRUN CSS */
+.combo-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.combo-content {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--accent, #fbbf24);
+    padding: 30px 50px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.combo-content.pop-in {
+    transform: scale(1);
+    opacity: 1;
+    animation: bounceIn 0.5s;
+}
+
+.combo-icon {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    animation: flame 1s infinite alternate;
+}
+
+.combo-text {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.combo-subtext {
+    color: #fff;
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 1; }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+@keyframes flame {
+    from { transform: scale(1); filter: brightness(1); }
+    to { transform: scale(1.1); filter: brightness(1.2); }
+}
+</style>
+
+<script define:vars={{ id }}>
+  class StreakCounterController {
+      constructor(rootId) {
+          this.el = document.getElementById(rootId);
+          if(!this.el) return;
+          
+          this.textEl = this.el.querySelector('.combo-text');
+          this.contentEl = this.el.querySelector('.combo-content');
+          
+          this.el.streakInstance = this;
+      }
+      
+      show(streakCount) {
+          if(!this.el || !this.textEl) return;
+          
+          this.textEl.textContent = `${streakCount} STREAK!`;
+          this.el.classList.remove('hidden');
+          this.contentEl.classList.add('pop-in');
+          
+          // Auto hide after 2s
+          setTimeout(() => {
+              this.contentEl.classList.remove('pop-in');
+              setTimeout(() => {
+                   this.el.classList.add('hidden');
+              }, 300);
+          }, 2000);
+      }
+  }
+  
+  new StreakCounterController(id);
+</script>

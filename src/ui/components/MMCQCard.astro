@@ -1,0 +1,105 @@
+---
+import '../../styles/components/mmcq-card.css';
+
+interface Props {
+    id: string;
+    options: string[];
+    correctIndices: number[]; // Array of correct indices
+}
+
+const { id, options, correctIndices } = Astro.props;
+---
+
+<div class="mmcq-container" data-id={id} data-correct={JSON.stringify(correctIndices)}>
+    <div class="mmcq-instruction">Select all that apply</div>
+    {options.map((option, index) => (
+        <button class="mmcq-option" data-index={index}>
+            <div class="checkbox-indicator"></div>
+            <span class="option-text">{option}</span>
+        </button>
+    ))}
+</div>
+
+<script>
+    export class MMCQCard {
+        private container: HTMLElement;
+        private options: NodeListOf<HTMLButtonElement>;
+        private correctIndices: number[];
+        private isLocked: boolean = false;
+
+        constructor(container: HTMLElement) {
+            this.container = container;
+            this.options = container.querySelectorAll('.mmcq-option');
+            this.correctIndices = JSON.parse(container.dataset.correct || '[]');
+            
+            this.initListeners();
+        }
+
+        private initListeners() {
+            this.options.forEach(option => {
+                option.addEventListener('click', () => {
+                    if (this.isLocked) return;
+
+                    // Toggle Selection (Allow multiple)
+                    option.classList.toggle('selected');
+
+                    // Dispatch Selection Event (Generic notification that interaction happened)
+                    // We can include current selection state if needed
+                    this.dispatchSelection();
+                });
+            });
+        }
+
+        private dispatchSelection() {
+            const selectedIndices = Array.from(this.options)
+                .map((opt, i) => opt.classList.contains('selected') ? i : -1)
+                .filter(i => i !== -1);
+
+            this.container.dispatchEvent(new CustomEvent('question-selected', {
+                bubbles: true,
+                detail: {
+                    selectedIndices,
+                    isComplete: selectedIndices.length > 0 // Logic to enable submit
+                }
+            }));
+        }
+
+        // Public API for Parent
+        public reveal(): boolean {
+            this.isLocked = true;
+            this.container.classList.add('locked');
+            this.options.forEach(opt => opt.classList.add('disabled'));
+
+            const selectedIndices = Array.from(this.options)
+                .map((opt, i) => opt.classList.contains('selected') ? i : -1)
+                .filter(i => i !== -1);
+            
+            // Validate
+            // Check if all selected are correct AND all correct are selected
+            // Simple set comparison
+            const s = new Set(selectedIndices);
+            const c = new Set(this.correctIndices);
+            
+            const isCorrect = s.size === c.size && [...s].every(x => c.has(x));
+
+            // Visual Feedback
+            this.options.forEach((opt, i) => {
+                const isSelected = opt.classList.contains('selected');
+                const isActuallyCorrect = this.correctIndices.includes(i);
+
+                if (isSelected && isActuallyCorrect) {
+                    opt.classList.add('correct'); // Correctly selected
+                } else if (isSelected && !isActuallyCorrect) {
+                    opt.classList.add('incorrect'); // Wrongly selected
+                } else if (!isSelected && isActuallyCorrect) {
+                    opt.classList.add('missed'); // Should have selected
+                }
+            });
+
+            return isCorrect;
+        }
+    }
+
+    // Expose for dynamic usage
+    (window as any).MMCQCard = MMCQCard;
+</script>

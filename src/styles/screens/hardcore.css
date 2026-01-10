@@ -1,0 +1,32 @@
+/* Hardcore Screen */
+.hardcore-screen {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    background: var(--bg-dark);
+    /* Maybe red tint in future? */
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.hardcore-screen.active {
+    display: flex;
+}
+
+.hc-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.question-display-root {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

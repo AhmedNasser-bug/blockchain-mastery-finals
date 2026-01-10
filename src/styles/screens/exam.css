@@ -1,0 +1,30 @@
+.exam-screen {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    background: var(--bg-dark);
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.exam-screen.active {
+    display: flex;
+}
+
+.ex-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.question-display-root {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

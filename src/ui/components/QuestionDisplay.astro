@@ -1,224 +1,328 @@
 ---
+// QuestionDisplay.astro
+// Acts as a dynamic host for specific Question Cards via QuestionContainer
+import QuestionContainer from './gameplay/QuestionContainer.astro';
+import '../../styles/components/question-cards.css'; // RESTORED STYLES
+
 interface Props {
   id?: string;
-  className?: string;
 }
-const { id = "activeQuestion", className = "" } = Astro.props;
+
+const { id = "questionDisplay" } = Astro.props;
 ---
 
-<div class={`card question-container ${className}`} id={id}>
-    <div class="question-header">
-        <span class="question-number q-counter"></span>
-        <span class="question-category q-category"></span>
+<div class="question-display-root" id={id}>
+    <div class="q-header-meta">
+       <span class="category-badge" id="qdCategory">Category</span>
+       <!-- Difficulty could go here -->
+    </div>
+
+    <div class="q-text-area" id="qdText">
+        Loading Question...
+    </div>
+
+    <!-- Container for dynamic card injection -->
+    <div class="q-card-area" id="qdCardArea">
+        <!-- Dynmaically mounted cards go here -->
     </div>
     
-    <div class="question-text q-text"></div>
-
-    <!-- Options Container -->
-    <div class="options-grid q-options"></div>
-    
-    <!-- Feedback Section -->
-    <div class="feedback q-feedback"></div>
-
-    <!-- Hidden Template for Option Items (Standard & Multi) -->
-    <template class="option-template">
-        <div class="option">
-            <span class="marker"></span>
-            <span class="text"></span>
-            <div class="checkbox-indicator hidden"></div>
-        </div>
-    </template>
-
-    <!-- Hidden Template for TF Grid -->
-    <template class="tf-template">
-        <div class="tf-grid">
-             <div class="option tf-option" data-value="true">
-                <span class="marker">✓</span>
-                <span class="text">TRUE</span>
-            </div>
-            <div class="option tf-option" data-value="false">
-                 <span class="marker">✗</span>
-                <span class="text">FALSE</span>
-            </div>
-        </div>
-    </template>
+    <div class="q-feedback-area hidden" id="qdFeedback">
+        <div class="feedback-content" id="qdExplanation"></div>
+    </div>
 </div>
 
 <style>
-.question-container {
-    padding: 0;
-    margin-bottom: 20px;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-.question-header {
-    display: flex;
-    justify-content: space-between;
-    color: var(--primary);
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 15px;
-    font-weight: 800;
-}
-
-.question-text {
-    font-size: 2.2rem;
-    line-height: 1.1;
-    font-weight: 800;
-    min-height: 100px;
-    text-transform: uppercase;
-    font-family: 'Roboto Condensed', sans-serif;
-}
-
-/* Options Grid */
-.options-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 1fr;
-    margin-top: 20px;
-}
-
-@media (min-width: 768px) {
-    .options-grid {
-        grid-template-columns: 1fr 1fr;
+    .question-display-root {
+        padding: 0;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        max-width: 900px; /* Constrained width */
+        margin: 0 auto;
     }
-}
 
-/* Option Styles */
-.option {
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    padding: 25px 30px;
-    border-radius: 0px; /* Brutalist */
-    cursor: pointer;
-    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
-    min-height: 80px;
-}
+    .q-header-meta {
+        display: flex;
+        justify-content: flex-end;
+    }
 
-.option:hover {
-    border-color: var(--text-primary);
-    transform: translate(-4px, -4px);
-    box-shadow: 8px 8px 0px rgba(0,0,0,0.8);
-    background: var(--bg-card-hover);
-    z-index: 10;
-}
+    .category-badge {
+        font-family: 'Roboto Condensed', sans-serif;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 700;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+        background: rgba(255, 215, 0, 0.1);
+        padding: 4px 12px;
+        border-radius: 4px;
+    }
 
-.option:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.8);
-}
+    .q-text-area {
+        position: relative;
+        background: transparent;
+        border: none;
+        padding: 20px;
+        font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+        line-height: 1.3;
+        font-weight: 700;
+        flex-grow: 1; 
+        flex-shrink: 1;
+        min-height: 100px; 
+        max-height: 40vh;
+        overflow-y: auto;
+        color: var(--text-primary);
+        font-family: 'Roboto Condensed', sans-serif;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-image: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+    }
 
-.option.selected {
-    border-color: var(--primary);
-    background: rgba(255, 215, 0, 0.1);
-    box-shadow: 6px 6px 0px var(--primary);
-}
+    .q-text-area::before {
+        content: '"';
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        font-size: 4rem;
+        line-height: 1;
+        color: var(--primary);
+        opacity: 0.2;
+        font-family: serif;
+    }
 
-/* FEEDBACK STATES - High Contrast */
-.option.correct {
-    border-color: var(--accent-green) !important;
-    background: rgba(34, 197, 94, 0.2) !important; /* Green tint */
-    box-shadow: 6px 6px 0px var(--accent-green) !important;
-    color: white;
-}
-.option.incorrect {
-    border-color: var(--accent-red) !important;
-    background: rgba(239, 68, 68, 0.2) !important; /* Red tint */
-    box-shadow: 6px 6px 0px var(--accent-red) !important;
-    color: white;
-}
+    .q-feedback-area {
+        background: var(--bg-card);
+        border: 2px solid var(--border);
+        padding: 20px;
+        margin-top: 20px;
+        animation: slideIn 0.3s ease;
+    }
+    
+    .q-feedback-area.correct {
+        border-color: var(--success);
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--success);
+    }
+    
+    .q-feedback-area.incorrect {
+        border-color: var(--error);
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--error);
+    }
 
-/* Markers */
-.option .marker {
-    background: var(--bg-dark);
-    color: var(--text-muted);
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0px; /* Square */
-    font-weight: 800;
-    font-size: 1.2rem;
-    border: 2px solid var(--border);
-}
+    .hidden {
+        display: none !important;
+    }
 
-.option.selected .marker {
-    background: var(--primary);
-    color: black;
-    border-color: var(--primary);
-}
-
-.option.correct .marker {
-    background: var(--accent-green);
-    color: black;
-    border-color: var(--accent-green);
-    content: "✓"; 
-}
-
-.option.incorrect .marker {
-    background: var(--accent-red);
-    color: white;
-    border-color: var(--accent-red);
-    content: "✗";
-}
-
-.option .text {
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1.3;
-}
-
-/* TF Specifics */
-.tf-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    width: 100%;
-}
-
-.tf-option {
-    justify-content: center;
-    height: 120px;
-    font-size: 2rem;
-    text-transform: uppercase;
-}
-
-/* Feedback Text Container */
-.feedback {
-    margin-top: 20px;
-    padding: 20px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    border: 2px solid transparent;
-    display: none; /* Hidden by default */
-}
-.feedback.correct {
-    display: block;
-    color: var(--accent-green);
-    border-color: var(--accent-green);
-    background: rgba(34, 197, 94, 0.1);
-}
-.feedback.incorrect {
-    color: var(--accent-red);
-    border-color: var(--accent-red);
-    background: rgba(239, 68, 68, 0.1);
-}
-
-.hidden {
-    display: none !important;
-}
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
+
+<script>
+    // We import Card Classes. 
+    // In a full refactor, these would be exported from the .astro files or separate .ts files.
+    // Assuming global availability for now as per existng pattern or we could dynamic import.
+    
+    export class QuestionDisplay {
+        private container: HTMLElement;
+        private categoryEl: HTMLElement;
+        private textEl: HTMLElement;
+        private cardArea: HTMLElement;
+        private feedbackEl: HTMLElement;
+        private explanationEl: HTMLElement;
+        
+        private activeComponent: any = null;
+        private currentQuestion: any = null;
+        
+        private header: any;
+        private footer: any;
+
+        constructor(container: HTMLElement) {
+            this.container = container;
+            this.categoryEl = container.querySelector('#qdCategory')!;
+            this.textEl = container.querySelector('#qdText')!;
+            this.cardArea = container.querySelector('#qdCardArea')!;
+            this.feedbackEl = container.querySelector('#qdFeedback')!;
+            this.explanationEl = container.querySelector('#qdExplanation')!;
+            
+            this.findDependencies();
+        }
+
+        private findDependencies() {
+            const screen = this.container.closest('.screen') || document.body;
+            const headerEl = screen.querySelector('.game-header');
+            const footerEl = screen.querySelector('.game-footer');
+            
+            if(headerEl) this.header = (headerEl as any).gameHeaderInstance;
+            if(footerEl) this.footer = (footerEl as any).gameFooterInstance;
+            
+            if(!this.header || !this.footer) {
+                // Retry simply helper
+                setTimeout(() => this.findDependencies(), 100);
+            } else {
+                this.initOrchestration();
+            }
+        }
+        
+        private initOrchestration() {
+            window.addEventListener('request-submit', () => this.handleSubmit());
+        }
+
+        public render(question: any) {
+            this.currentQuestion = question;
+            if(!question) return;
+
+            // Update UI
+            this.categoryEl.textContent = question.category || 'General';
+            this.feedbackEl.classList.add('hidden');
+            this.feedbackEl.className = 'q-feedback-area hidden'; // Reset classes
+            
+            this.textEl.textContent = ''; // Safer than innerHTML for clear
+            const textContent = document.createElement('div');
+            textContent.className = 'q-text-content';
+            textContent.textContent = question.question; // Use textContent for safety
+            // If question has HTML needs (e.g. code blocks), we might need innerHTML but sanitized.
+             this.textEl.innerHTML = question.question;
+
+            // Clear Area
+            this.cardArea.innerHTML = '';
+            this.activeComponent = null;
+
+            // Render Card Safely
+            this.mountCard(question);
+            
+            // Hint Logic ...
+            this.updateHint(question);
+        }
+        
+        private mountCard(question: any) {
+             let containerClass = '';
+             let cardClass: any = null;
+             
+             if (question.type === 'tf') {
+                 containerClass = 'tf-container';
+                 cardClass = (window as any).TFCard;
+             } else if (question.type === 'mmcq' || question.type === 'multi') {
+                 containerClass = 'mmcq-container';
+                 cardClass = (window as any).MMCQCard;
+             } else {
+                 containerClass = 'mcq-container';
+                 cardClass = (window as any).MCQCard;
+             }
+             
+             // Create container programmatically
+             const wrapper = document.createElement('div');
+             wrapper.className = containerClass;
+             wrapper.dataset.id = question.id;
+             wrapper.dataset.correct = JSON.stringify(question.correct); // Data attr for Card logic
+             
+             // Pre-fill HTML structure required by the Legacy Card Classes?
+             wrapper.innerHTML = this.generateCardSkeleton(question); // This is still HTML gen, but localized.
+             
+             this.cardArea.appendChild(wrapper);
+             
+             this.cardArea.appendChild(wrapper);
+             
+             if(cardClass) {
+                 this.activeComponent = new cardClass(wrapper);
+             }
+
+             // Event Delegation for Options
+             // This ensures we catch clicks on buttons generated by generateCardSkeleton
+             wrapper.addEventListener('click', (e) => this.handleOptionClick(e));
+        }
+
+        private handleOptionClick(e: Event) {
+            const target = (e.target as HTMLElement).closest('button');
+            if (!target) return;
+
+            // Handle selection UI
+            this.container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            target.classList.add('selected');
+
+            // Dispatch Event to Controller
+            // Data-index or Data-value needed
+            const detail = {
+                index: target.dataset.index,
+                value: target.dataset.value
+            };
+            
+            // Inform Card Class if needed (for internal state)
+            if (this.activeComponent && typeof this.activeComponent.select === 'function') {
+                this.activeComponent.select(detail.index || detail.value);
+            }
+
+            // Bubble up to Screen
+            const event = new CustomEvent('question-selected', { 
+                bubbles: true, 
+                detail: detail 
+            });
+            this.container.dispatchEvent(event);
+        }
+        
+        // Helper to keep render() clean
+        private generateCardSkeleton(question: any): string {
+             if (question.type === 'tf') {
+                 return `
+                    <button class="tf-option true-option" data-value="true"><span class="tf-icon">👍</span> True</button>
+                    <button class="tf-option false-option" data-value="false"><span class="tf-icon">👎</span> False</button>
+                 `;
+             } else if (question.type === 'mmcq' || question.type === 'multi') {
+                 return `
+                    <div class="mmcq-instruction">Select all that apply</div>
+                    ${question.options.map((opt: string, i: number) => `
+                        <button class="mmcq-option" data-index="${i}"><div class="checkbox-indicator"></div><span>${opt}</span></button>
+                    `).join('')}
+                 `;
+             } else {
+                 // MCQ
+                  return question.options.map((opt: string, i: number) => `
+                        <button class="mcq-option" data-index="${i}">
+                             <div class="option-marker">${String.fromCharCode(65 + i)}</div>
+                             <span class="option-text">${opt}</span>
+                        </button>
+                    `).join('');
+             }
+        }
+        
+        private updateHint(question: any) {
+             if(this.footer) {
+                 this.footer.setCurrentHint(question.hint || "");
+             }
+        }
+        
+        private handleSubmit() {
+             if (this.activeComponent && typeof this.activeComponent.reveal === 'function') {
+                const isCorrect = this.activeComponent.reveal();
+                this.handleResult(isCorrect);
+            }
+        }
+        
+        private handleResult(isCorrect: boolean) {
+            import('../scripts/GameUtils').then(({ GameUtils }) => {
+                 GameUtils.recordAnswer(isCorrect);
+            });
+            this.showFeedback(isCorrect, this.currentQuestion.explanation);
+        }
+
+        public showFeedback(isCorrect: boolean, explanation: string) {
+            this.feedbackEl.classList.remove('hidden');
+            this.feedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect');
+            const icon = isCorrect ? '🎉 Correct!' : '❌ Incorrect';
+            this.explanationEl.innerHTML = `<strong>${icon}</strong><br/>${explanation}`;
+        }
+    }
+
+    (window as any).QuestionDisplay = QuestionDisplay;
+
+    document.querySelectorAll('.question-display-root').forEach(el => {
+        (el as any).questionDisplayInstance = new QuestionDisplay(el as HTMLElement);
+    });
+</script>

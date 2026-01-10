@@ -1,10 +1,35 @@
 @import './achievements.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Condensed:wght@700&display=swap');
+@import './components/game-header.css';
+@import './components/game-footer.css';
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Screen Management utilities */
+.screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: block;
+    /* Default is block, specific screens can override to flex */
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 :root {
@@ -59,7 +84,10 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
+    overflow-y: auto;
+    /* Ensure vertical scroll */
     /* Dot Grid Background */
+
     background-image: radial-gradient(#333 1px, transparent 1px);
     background-size: 20px 20px;
 }
@@ -268,147 +296,8 @@ h6 {
     border-style: dashed;
 }
 
-/* Inputs & Progress */
-.progress-container {
-    background: var(--bg-card-hover);
-    border-radius: var(--radius-pill);
-    height: 16px;
-    overflow: hidden;
-    margin: 20px 0;
-    border: 1px solid var(--border);
-}
+/* Question Styles & Progress Removed - Refactored to Components */
 
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary), #FFED4D);
-    border-radius: var(--radius-pill);
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-}
-
-/* Stats */
-.stats-bar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    margin: 30px 0;
-}
-
-.stat-value {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--primary);
-    font-family: 'Roboto Condensed', sans-serif;
-}
-
-.stat-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 5px;
-}
-
-/* Question Styles */
-.question-text {
-    font-size: 1.5rem;
-    line-height: 1.5;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
-.option {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 20px 25px;
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-bottom: 12px;
-}
-
-.option:hover {
-    border-color: var(--primary);
-    transform: translateX(5px);
-    background: var(--bg-card-hover);
-}
-
-.option.selected {
-    border-color: var(--primary);
-    background: rgba(255, 215, 0, 0.05);
-}
-
-.option.correct {
-    border-color: var(--accent-green);
-    background: rgba(0, 230, 118, 0.05);
-}
-
-.option.incorrect {
-    border-color: var(--accent-red);
-    background: rgba(255, 64, 129, 0.05);
-}
-
-.option-marker {
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--border-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.checkbox-indicator {
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--border-light);
-    border-radius: 6px;
-    margin-right: 15px;
-    transition: all 0.2s;
-    background: transparent;
-}
-
-.option.selected .checkbox-indicator {
-    background: var(--primary);
-    border-color: var(--primary);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-}
-
-.option.selected .option-marker {
-    border-color: var(--primary);
-    background: var(--primary);
-    color: var(--text-dark);
-}
-
-.option.correct .option-marker {
-    border-color: var(--accent-green);
-    background: var(--accent-green);
-    color: white;
-}
-
-.option.incorrect .option-marker {
-    border-color: var(--accent-red);
-    background: var(--accent-red);
-    color: white;
-}
-
-/* Remove old glow line */
-.glow-line {
-    display: none;
-}
-
-.particles {
-    display: none;
-}
 
 /* Clean look preferred over particles for this style usually, unless requested */
 

@@ -12,22 +12,21 @@ const { id = "progressBar", progress = 0 } = Astro.props;
 
 <style>
 .progress-container {
-    background: var(--bg-dark); /* Darker track */
-    border-radius: 0;           /* Sharp */
-    height: 16px;              /* Thicker */
+    background: var(--bg-dark); 
+    border-radius: 0;           
+    height: 16px;              
     overflow: hidden;
     margin: 20px 0;
-    border: 2px solid var(--border); /* Visible Border */
+    border: 2px solid var(--border); 
     position: relative;
 }
 
-/* Optional: Tick marks background */
 .progress-container::after {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background-image: linear-gradient(90deg, transparent 98%, var(--bg-dark) 98%);
-    background-size: 5% 100%; /* 20 ticks */
+    background-size: 5% 100%; 
     z-index: 1;
     pointer-events: none;
     opacity: 0.5;
@@ -35,11 +34,10 @@ const { id = "progressBar", progress = 0 } = Astro.props;
 
 .progress-bar {
     height: 100%;
-    background: var(--primary); /* Solid Primary Color */
+    background: var(--primary); 
     border-radius: 0;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: none;
-    /* Striped filling */
     background-image: repeating-linear-gradient(
         45deg,
         var(--primary),
@@ -49,3 +47,23 @@ const { id = "progressBar", progress = 0 } = Astro.props;
     );
 }
 </style>
+
+<script>
+    class ProgressBar {
+        private el: HTMLElement;
+        constructor(el: HTMLElement) {
+            this.el = el;
+            window.addEventListener('game:progress-update', (e: any) => this.update(e.detail.current, e.detail.total));
+        }
+
+        update(current: number, total: number) {
+            if (total > 0) {
+                 const pct = Math.min(100, (current / total) * 100);
+                 this.el.style.width = `${pct}%`;
+            } else {
+                 this.el.style.width = '0%';
+            }
+        }
+    }
+    document.querySelectorAll('.progress-bar').forEach(el => new ProgressBar(el as HTMLElement));
+</script>

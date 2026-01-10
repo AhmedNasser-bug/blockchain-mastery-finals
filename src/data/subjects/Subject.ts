@@ -103,44 +103,27 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         label: 'Speedrun',
         description: 'Time Attack: Complete all questions.',
         icon: '⚡',
-        componentId: 'QuizScreen',
+        componentId: 'SpeedrunScreen',
         schema: z.array(QuestionSchema),
-        promptStrategy: (context) => `
-            GOAL: Generate the MASTER QUESTION SET (questions.json).
-            STRATEGY: This file is used for ALL modes (Speedrun, Blitz, Revision).
-            RULES:
-            1. Pedagogical Order: From simple foundations to complex mastery.
-            2. Comprehensive: Cover 100% of the material.
-            3. Quantity: Generate as many as needed to cover the topics (Subject Specific).
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     },
     blitz: {
         id: 'blitz',
         label: 'Blitz',
         description: 'Random subset for quick review.',
         icon: '🎯',
-        componentId: 'QuizScreen',
+        componentId: 'BlitzScreen',
         schema: z.array(QuestionSchema),
-        promptStrategy: (context) => `
-            GOAL: Generate the MASTER QUESTION SET (questions.json).
-            NOTE: Blitz mode simply subsets this master file.
-            STRATEGY: Same as Full Revision. Order matters. Coverage matters.
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     },
     hardcore: {
         id: 'hardcore',
         label: 'Hardcore',
         description: 'Deep analysis & application',
         icon: '🔥',
-        componentId: 'QuizScreen',
+        componentId: 'HardcoreScreen',
         schema: z.array(QuestionSchema),
-        promptStrategy: (context) => `
-            GOAL: Generate the MASTER QUESTION SET (Hardcore variant/tier).
-            STRATEGY: Focus on deep analysis, edge cases, and "select all that apply".
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     },
     survival: {
         id: 'survival',
@@ -156,13 +139,9 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         label: 'Practice',
         description: 'By category, no pressure',
         icon: '📚',
-        componentId: 'QuizScreen',
+        componentId: 'PracticeScreen',
         schema: z.array(QuestionSchema),
-        promptStrategy: (context) => `
-             GOAL: Generate the MASTER QUESTION SET (Practice view).
-             STRATEGY: Ensure distinct Categories are assigned to every question for filtering.
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     },
     'flashcards-term': {
         id: 'flashcards-term',
@@ -171,15 +150,7 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         icon: '🃏',
         componentId: 'FlashcardScreen',
         schema: FlashcardSchema,
-        promptStrategy: (context) => `
-            ROLE: Lexicographer for this field.
-            GOAL: Extract every significant technical term.
-            STRATEGY:
-            1. Front: The Term.
-            2. Back: Precise Definition + a real-world Analogy (if applicable).
-            3. OutputFormat: JSON array of objects with { front, back, type: 'term' }.
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     },
     'flashcards-bank': {
         id: 'flashcards-bank',
@@ -188,32 +159,16 @@ export const SUBJECT_MODES: Record<string, GameModeConfig> = {
         icon: '🧠',
         componentId: 'FlashcardScreen',
         schema: FlashcardSchema,
-        promptStrategy: (context) => `
-            ROLE: Interview Coach.
-            GOAL: Create a "Cheat Sheet" of high-impact Questions & Answers.
-            STRATEGY:
-            1. Front: A common interview or exam question.
-            2. Back: The concisest "perfect score" answer.
-            3. Focus on "Big Picture" concepts and critical relationships.
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     },
     'full-revision': {
         id: 'full-revision',
         label: 'Full Revision',
         description: 'Strict order: Questions then Terminology. 100% Mastery.',
         icon: '🎓',
-        componentId: 'QuizScreen',
+        componentId: 'ExamScreen',
         schema: z.array(QuestionSchema),
-        promptStrategy: (context) => `
-            ROLE: Pedagogical Architect.
-            GOAL: Generate the MASTER QUESTION SET (questions.json).
-            CRITICAL RULES:
-            1. STRICT PEDAGOGICAL ORDER: Q1 is a foundation for Q2.
-            2. NO GAPS: Assume zero prior knowledge.
-            3. TOTAL COVERAGE: If it's in the text, it's in the questions.
-            CONTEXT: ${context}
-        `
+        promptStrategy: (context) => `...`
     }
 };
 
@@ -246,61 +201,75 @@ export interface SubjectData {
 export class Subject {
 
     /**
-     * Loads a full subject by ID, aggregating all generated content.
+     * Loads a full subject by ID from public/data using FS (SSR/Build time).
      */
     static async load(subjectId: string): Promise<SubjectData | null> {
         try {
-            const metas = import.meta.glob('../../data/subjects/*/meta.json');
-            let metaPath = `../../data/subjects/${subjectId}/meta.json`;
+            const fs = await import('node:fs/promises');
+            const path = await import('node:path');
 
-            // Handle potential URL encoding issues or mismatch
-            if (!metas[metaPath]) {
-                const found = Object.keys(metas).find(k => {
-                    const parts = k.split('/');
-                    const dir = parts[parts.length - 2];
-                    return dir === subjectId || dir === decodeURIComponent(subjectId);
-                });
-                if (found) metaPath = found;
-                else return null;
+            // Resolve public directory
+            const publicDir = path.join(process.cwd(), 'public');
+            const subjectsDir = path.join(publicDir, 'data', 'subjects');
+
+            // Handle case sensitivity/spaces by finding matching directory
+            // This mirrors client logic but on server fs
+            let targetDir = path.join(subjectsDir, subjectId);
+
+            try {
+                await fs.access(targetDir);
+            } catch {
+                // If exact match fails, try case-insensitive search
+                const dirs = await fs.readdir(subjectsDir);
+                const match = dirs.find(d => d.toLowerCase() === subjectId.toLowerCase() || d === decodeURIComponent(subjectId));
+                if (match) {
+                    targetDir = path.join(subjectsDir, match);
+                } else {
+                    console.error(`Subject directory not found for: ${subjectId}`);
+                    return null;
+                }
             }
 
-            const metaMod: any = await metas[metaPath]();
-            const config = metaMod.default.config;
-            const subjectMeta = metaMod.default.subject || {};
+            // Load Meta
+            const metaPath = path.join(targetDir, 'meta.json');
+            const metaContent = await fs.readFile(metaPath, 'utf-8');
+            const metaJson = JSON.parse(metaContent);
+
+            const config = metaJson.config;
+            const subjectMeta = metaJson.subject || {};
             const name = subjectMeta.name || config.title || subjectId;
 
-            // Load Content
-            const jsonFiles = import.meta.glob('../../data/subjects/**/*.json', { eager: true });
+            // Load Content Files
             let questions: Question[] = [];
             let flashcards: Flashcard[] = [];
             let terminology: Terminology = {};
             let achievements: any[] = [];
 
-            // We need to match files in the same relative directory as metaPath
-            // metaPath is like ../../data/subjects/Theory of computation/meta.json
-            const subjectDirPart = metaPath.split('/').slice(0, -1).join('/'); // ../../data/subjects/Theory of computation
-
-            for (const filePath in jsonFiles) {
-                // strict check: filePath must start with the subject directory path
-                // normalizing paths might be needed if slashes differ, but import.meta.glob usually standardizes to '/'
-                if (!filePath.startsWith(subjectDirPart + '/')) continue;
-
-                const fileName = filePath.split('/').pop() || '';
-                const content = (jsonFiles[filePath] as any).default;
-
-                if (fileName.startsWith('questions')) {
-                    if (Array.isArray(content)) questions = questions.concat(content);
-                } else if (fileName.startsWith('flashcards')) {
-                    if (Array.isArray(content)) flashcards = flashcards.concat(content);
-                } else if (fileName.startsWith('terminology')) {
-                    terminology = { ...terminology, ...content };
-                } else if (fileName.startsWith('achievements')) {
-                    if (Array.isArray(content)) achievements = achievements.concat(content);
+            // Helper to safe load JSON
+            const safeLoad = async (filename: string): Promise<any> => {
+                try {
+                    const p = path.join(targetDir, filename);
+                    const c = await fs.readFile(p, 'utf-8');
+                    return JSON.parse(c);
+                } catch {
+                    return null;
                 }
-            }
+            };
+
+            const qData = await safeLoad('questions.json');
+            if (Array.isArray(qData)) questions = qData;
+
+            const fData = await safeLoad('flashcards.json');
+            if (Array.isArray(fData)) flashcards = fData;
+
+            const tData = await safeLoad('terminology.json');
+            if (tData) terminology = tData;
+
+            const aData = await safeLoad('achievements.json');
+            if (Array.isArray(aData)) achievements = aData;
 
             return {
-                id: subjectId,
+                id: subjectId, // Keep original requested ID or directory name? Using requested ID helps with URL matching.
                 name,
                 config,
                 questions,
@@ -319,20 +288,24 @@ export class Subject {
      * Returns a list of all available subjects (for the Index page).
      */
     static async listAll(): Promise<SubjectData[]> {
-        const metas = import.meta.glob('../../data/subjects/*/meta.json');
+        const fs = await import('node:fs/promises');
+        const path = await import('node:path');
         const subjects: SubjectData[] = [];
 
-        for (const metaPath in metas) {
-            try {
-                // Extract ID from path: ../../data/subjects/blockchain/meta.json -> blockchain
-                const parts = metaPath.split('/');
-                const id = parts[parts.length - 2];
-                // Use the extracted ID to load the full subject
-                const subj = await this.load(id);
-                if (subj) subjects.push(subj);
-            } catch (e) {
-                console.error(`Error listing subject ${metaPath}`, e);
+        try {
+            const publicDir = path.join(process.cwd(), 'public');
+            const subjectsDir = path.join(publicDir, 'data', 'subjects');
+
+            const dirs = await fs.readdir(subjectsDir, { withFileTypes: true });
+
+            for (const dirent of dirs) {
+                if (dirent.isDirectory()) {
+                    const subj = await this.load(dirent.name);
+                    if (subj) subjects.push(subj);
+                }
             }
+        } catch (e) {
+            console.error(`Error listing subjects`, e);
         }
         return subjects;
     }

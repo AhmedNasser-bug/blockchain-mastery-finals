@@ -22,4 +22,5 @@ SUGGESTED FEATURES
 - the question should lead the player with perfect bottom up understanding of the material to ensure a 100% pass rate of the Full revision mode.
 - Uses the same questions from questions.ts but in order not random, so add the disclaimer of the order importance on the subject adding tutorial on readme.md, append the terminology questions to the mode question set, again, also in order. So the question set used in the mode are [Questions, Terminoloy] in order
 - Finishing this feature must not crash any existing subjects
-10
+Add difficulties for the survival mode 
+And Add modes for Speedrun mode

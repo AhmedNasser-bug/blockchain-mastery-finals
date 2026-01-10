@@ -1,12 +1,92 @@
 ---
 interface Props {
   id?: string;
-  initialTime?: number;
+  initialTime?: string;
 }
 const { id = "timer", initialTime = "00:00" } = Astro.props;
 ---
 
 <div class="timer-display" id={id}>{initialTime}</div>
+
+<script>
+    export class TimerController {
+        private el: HTMLElement;
+        private interval: any = null;
+        private seconds: number = 0;
+        private limit: number = 0;
+        private mode: 'elapsed' | 'countdown' = 'elapsed';
+
+        constructor(el: HTMLElement) {
+            this.el = el;
+        }
+
+        public start(startAt: number = 0, limit: number = 0) {
+            this.stop();
+            this.seconds = startAt;
+            this.limit = limit;
+            this.mode = limit > 0 ? 'countdown' : 'elapsed';
+            
+            // If countdown, we start at limit ? No, usually we count down from Limit. 
+            // If startAt is 0 and limit is 60, we assume we start at 60.
+            if(this.mode === 'countdown' && startAt === 0) {
+                 this.seconds = limit;
+            }
+            
+            this.render();
+            
+            this.interval = setInterval(() => {
+                if(this.mode === 'countdown') {
+                    this.seconds--;
+                    if(this.seconds <= 0) {
+                        this.seconds = 0;
+                        this.stop();
+                        this.emit('timer:expired');
+                    }
+                } else {
+                    this.seconds++;
+                }
+                this.render();
+                this.emit('timer:tick', { seconds: this.seconds });
+            }, 1000);
+        }
+
+        public stop() {
+            if(this.interval) clearInterval(this.interval);
+            this.interval = null;
+        }
+
+        public reset(time: string = "00:00") {
+            this.stop();
+            this.el.textContent = time;
+        }
+        
+        public getTime(): number {
+             return this.seconds;
+        }
+
+        private render() {
+            const m = Math.floor(this.seconds / 60).toString().padStart(2, '0');
+            const s = (this.seconds % 60).toString().padStart(2, '0');
+            this.el.textContent = `${m}:${s}`;
+            
+            // Visual Warning
+            if(this.mode === 'countdown' && this.seconds <= 10) {
+                this.el.classList.add('danger');
+            } else {
+                this.el.classList.remove('danger');
+            }
+        }
+        
+        private emit(name: string, detail: any = {}) {
+            this.el.dispatchEvent(new CustomEvent(name, { detail, bubbles: true }));
+        }
+    }
+    
+    // Auto-init and expose
+    document.querySelectorAll('.timer-display').forEach(el => {
+        (el as any).timerInstance = new TimerController(el as HTMLElement);
+    });
+</script>
 
 <style>
   .timer-display {
@@ -17,7 +97,6 @@ const { id = "timer", initialTime = "00:00" } = Astro.props;
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: color 0.3s ease;
   }
-  .timer-display.warning { color: var(--primary); }
   .timer-display.danger { color: var(--accent-red); animation: pulse 1s infinite; }
 
   @keyframes pulse {

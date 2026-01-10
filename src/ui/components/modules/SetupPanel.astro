@@ -1,0 +1,50 @@
+---
+import '../../../styles/modules/setup-panel.css';
+---
+<div class="setup-panel card" style="max-width: 800px; margin: 0 auto; width: 100%;">
+    <h3>CONFIGURATION</h3>
+    
+    <div class="control-row">
+        <label class="toggle-switch">
+             <input type="checkbox" id="setupSurvivalToggle">
+             <span class="slider"></span>
+             <span class="label">SURVIVAL MDOE (1-LIFE)</span>
+        </label>
+    </div>
+
+    <div class="control-row">
+        <label class="toggle-switch">
+             <input type="checkbox" id="setupTimeToggle">
+             <span class="slider"></span>
+             <span class="label">TIME LIMIT</span>
+        </label>
+        <input type="number" id="setupTimeInput" class="time-input" value="300" min="60" disabled>
+    </div>
+</div>
+
+<script>
+    // Simple UI interaction logic
+    const timeToggle = document.getElementById('setupTimeToggle') as HTMLInputElement;
+    const timeInput = document.getElementById('setupTimeInput') as HTMLInputElement;
+    
+    if (timeToggle && timeInput) {
+        timeToggle.addEventListener('change', () => {
+            timeInput.disabled = !timeToggle.checked;
+            if (timeToggle.checked) {
+                timeInput.focus();
+            }
+        });
+    }
+    
+    // Exposed getter for HomeScreen to read
+    (window as any).getGameConfig = () => {
+         const survival = (document.getElementById('setupSurvivalToggle') as HTMLInputElement)?.checked || false;
+         const useTime = (document.getElementById('setupTimeToggle') as HTMLInputElement)?.checked || false;
+         const timeVal = parseInt((document.getElementById('setupTimeInput') as HTMLInputElement)?.value || "300");
+         
+         return {
+             isSurvival: survival,
+             timeLimitSeconds: useTime ? timeVal : 0
+         };
+    };
+</script>

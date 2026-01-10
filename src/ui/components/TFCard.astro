@@ -1,0 +1,107 @@
+---
+import '../../styles/components/tf-card.css';
+
+interface Props {
+    id: string;
+    isTrue: boolean; // if true, 'True' is correct.
+}
+
+const { id, isTrue } = Astro.props;
+---
+
+<div class="tf-container" data-id={id} data-correct-val={isTrue.toString()}>
+    <button class="tf-option true-option" data-value="true">
+        <span class="tf-icon">👍</span>
+        <span class="tf-label">True</span>
+    </button>
+    <button class="tf-option false-option" data-value="false">
+        <span class="tf-icon">👎</span>
+        <span class="tf-label">False</span>
+    </button>
+</div>
+
+<script>
+    export class TFCard {
+        private container: HTMLElement;
+        private options: NodeListOf<HTMLButtonElement>;
+        private correctVal: boolean = false;
+        private isLocked: boolean = false;
+        private hasAnswered: boolean = false;
+
+        constructor(container: HTMLElement) {
+            this.container = container;
+            this.options = container.querySelectorAll('.tf-option');
+            this.correctVal = container.dataset.correctVal === 'true';
+            
+            // Load by ID support
+             const id = container.dataset.id;
+            if(id && container.dataset.dynamicLoad === "true") {
+                 this.loadById(id);
+            }
+
+            this.initListeners();
+        }
+        
+        private loadById(id: string) {
+            // @ts-ignore
+            const subject = window.subjectData;
+            const q = subject?.questions.find((q: any) => q.id === id);
+            if(q) {
+                this.correctVal = q.correct;
+            }
+        }
+
+        private initListeners() {
+            this.options.forEach(option => {
+                option.addEventListener('click', () => this.handleSelection(option));
+            });
+        }
+
+        private handleSelection(selectedOption: HTMLButtonElement) {
+             // In new orchestration, "Selection" is separate from "Submission/Reveal"
+             // But existing TFCard logic combined them (Instant feedback).
+             // User wants: "correctness is sent by the game footer"
+             // So I must REMOVE instant feedback here and wait for reveal().
+             
+            if (this.isLocked) return;
+            
+            // Toggle Visual Selection
+            this.options.forEach(opt => opt.classList.remove('selected'));
+            selectedOption.classList.add('selected');
+            
+            // Dispatch Selection
+             this.container.dispatchEvent(new CustomEvent('question-selected', {
+                bubbles: true,
+                detail: {
+                    selectedVal: selectedOption.dataset.value === 'true',
+                    isComplete: true
+                }
+            }));
+        }
+        
+        // Public API called by Footer->Display->Card
+        public reveal(): boolean {
+            this.isLocked = true;
+            this.hasAnswered = true;
+            this.container.classList.add('locked');
+            this.options.forEach(opt => opt.classList.add('disabled'));
+
+            const selectedOption = this.container.querySelector('.tf-option.selected') as HTMLElement;
+            if (!selectedOption) return false;
+
+            const selectedVal = selectedOption.dataset.value === 'true';
+            const isCorrect = selectedVal === this.correctVal;
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+            } else {
+                selectedOption.classList.add('incorrect');
+                const correctOption = this.container.querySelector(`.tf-option[data-value="${this.correctVal}"]`);
+                correctOption?.classList.add('correct');
+            }
+            return isCorrect;
+        }
+    }
+
+    (window as any).TFCard = TFCard;
+</script>

@@ -1,0 +1,108 @@
+---
+import '../../styles/components/game-settings.css'; // We'll create this or use global
+---
+
+<div id="gameSettingsPanel" class="settings-overlay hidden">
+    <div class="settings-card">
+        <div class="settings-header">
+            <h3>⚙️ MISSION PARAMETERS</h3>
+            <button class="close-btn" id="closeSettings">&times;</button>
+        </div>
+        
+        <div class="settings-body">
+            <!-- Difficulty -->
+            <div class="setting-group">
+                <label>DIFFICULTY CLASS</label>
+                <div class="toggle-group" id="difficultySelect">
+                    <button class="toggle-btn" data-val="easy">EASY</button>
+                    <button class="toggle-btn selected" data-val="medium">MEDIUM</button>
+                    <button class="toggle-btn" data-val="hard">HARD</button>
+                </div>
+            </div>
+
+            <!-- Time Limit -->
+            <div class="setting-group">
+                <label>TIME RESTRICTION</label>
+                <input type="range" id="timeLimitRange" min="0" max="300" step="30" value="0">
+                <span id="timeLimitDisplay">NO LIMIT</span>
+            </div>
+
+            <!-- Survival Toggle -->
+            <div class="setting-group">
+                <label class="checkbox-container">
+                    <span>SURVIVAL PROTOCOL (Life Drain)</span>
+                    <input type="checkbox" id="survivalCheck">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="settings-footer">
+            <button class="btn btn-primary" id="confirmSettings">CONFIRM & LAUNCH</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    import { DEFAULT_SETTINGS } from '../../data/GameSettings';
+
+    class GameSettingsPanel {
+        private container: HTMLElement;
+        private settings = { ...DEFAULT_SETTINGS };
+        private onConfirm: ((settings: any) => void) | null = null;
+
+        constructor(container: HTMLElement) {
+            this.container = container;
+            this.initListeners();
+        }
+
+        private initListeners() {
+            // Difficulty
+            this.container.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    this.container.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+                    (e.target as HTMLElement).classList.add('selected');
+                    this.settings.difficulty = (e.target as HTMLElement).dataset.val as any;
+                });
+            });
+
+            // Time Limit
+            const range = this.container.querySelector('#timeLimitRange') as HTMLInputElement;
+            const display = this.container.querySelector('#timeLimitDisplay')!;
+            range.addEventListener('input', () => {
+                const val = parseInt(range.value);
+                this.settings.timeLimit = val;
+                display.textContent = val === 0 ? "NO LIMIT" : `${val} SECONDS`;
+            });
+
+            // Survival
+            const check = this.container.querySelector('#survivalCheck') as HTMLInputElement;
+            check.addEventListener('change', () => {
+                this.settings.survivalMode = check.checked;
+            });
+
+            // Close / Confirm
+            this.container.querySelector('#closeSettings')?.addEventListener('click', () => this.hide());
+            this.container.querySelector('#confirmSettings')?.addEventListener('click', () => {
+                if(this.onConfirm) this.onConfirm(this.settings);
+                this.hide();
+            });
+        }
+
+        public show(callback: (settings: any) => void) {
+            this.onConfirm = callback;
+            this.container.classList.remove('hidden');
+        }
+
+        public hide() {
+            this.container.classList.add('hidden');
+        }
+    }
+
+    (window as any).GameSettingsPanel = GameSettingsPanel;
+    document.querySelectorAll('.settings-overlay').forEach(el => {
+        (el as any).gameSettingsPanelInstance = new GameSettingsPanel(el as HTMLElement);
+    });
+</script>

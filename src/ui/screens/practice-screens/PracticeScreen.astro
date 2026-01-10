@@ -1,0 +1,149 @@
+---
+import GameHeader from '../../components/GameHeader.astro';
+import QuestionContainer from '../../components/gameplay/QuestionContainer.astro';
+import GameFooter from '../../components/GameFooter.astro';
+import HintPopup from '../../components/HintPopup.astro';
+import '../../../styles/screens/practice.css';
+---
+
+<div class="screen practice-screen" id="practice-screen">
+    <div class="screen-wrapper">
+        <GameHeader mode="practice" id="pc-header" />
+        
+        <div class="pc-content">
+            <QuestionContainer id="pc-question-container" enableStressBar={false} />
+        </div>
+    
+        <GameFooter id="pc-footer" />
+        <HintPopup id="pc-hint-popup" />
+    </div>
+</div>
+
+<script>
+    import { GameEngine } from "../../../logic/controllers/GameEngine";
+    import { Subject } from "../../../logic/entities/Subject";
+    import { Player } from "../../../logic/entities/Player";
+    
+    class PracticeController {
+        private engine: GameEngine;
+        private header: any;
+        private container: any;
+        private footer: any;
+
+        private isAnswered: boolean = false;
+        private currentSelection: any = null;
+
+        constructor() {
+            this.init();
+        }
+
+        async init() {
+            const screen = document.getElementById('practice-screen');
+            if(!screen) return;
+            
+            this.header = (document.getElementById('pc-header') as any)?.headerInstance;
+            this.container = (document.getElementById('pc-question-container') as any)?.containerInstance;
+            this.footer = (document.getElementById('pc-footer') as any)?.footerInstance;
+
+            this.bindEvents(screen);
+
+            // @ts-ignore
+            window.game = window.game || {};
+            // @ts-ignore
+            window.game.startPractice = this.startPractice.bind(this);
+        }
+
+        bindEvents(screen: HTMLElement) {
+             screen.addEventListener('request-submit', () => this.submitAnswer());
+             screen.addEventListener('request-next', () => this.nextQuestion()); // Practice might auto-next?
+             screen.addEventListener('request-hint', (e: any) => this.showHint(e.detail));
+             screen.addEventListener('question-selected', (e: any) => this.handleSelection(e.detail));
+        }
+
+        async startPractice(categoryFilter: string | null) {
+            this.activateScreen();
+            
+            // @ts-ignore
+            const subjectData = window.subjectData;
+            const subject = new Subject(
+                subjectData.id, 
+                subjectData.name
+            );
+            // ENFORCE OFFLINE-FIRST: Load only from DB
+            await subject.loadFromDB();
+            const player = await Player.create("Guest"); 
+            
+            this.engine = new GameEngine(
+                subject, player,
+                { subjectId: subject.id, modeType: 'practice', settings: { isSurvival: false, timeLimitSeconds: 0 } },
+                (state) => this.renderState(state)
+            );
+
+            await this.engine.start();
+            if(this.header) this.header.startTimer(0); // Elapsed
+        }
+
+        activateScreen() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('practice-screen')?.classList.add('active');
+        }
+
+        renderState(state: any) {
+            if(state.isGameOver) {
+                 // @ts-ignore
+                 if(window.game.goHome) window.game.goHome();
+                 return;
+            }
+            
+            this.isAnswered = false;
+            this.currentSelection = null;
+            
+            // Render
+            if(this.container) this.container.render(state.currentQuestion);
+            if(this.header) this.header.setScore(state.score);
+            
+            // Handle Hint availability
+            if(this.footer) {
+                this.footer.setHint(state.currentQuestion?.explanation || "No hint available.");
+                this.footer.showSubmit();
+                this.footer.enableSubmit(false);
+            }
+        }
+        
+        handleSelection(detail: any) {
+             if(this.isAnswered) return;
+             this.currentSelection = detail;
+             if(this.footer) this.footer.enableSubmit(true);
+        }
+
+        submitAnswer() {
+            if (this.isAnswered || !this.currentSelection) return;
+            this.isAnswered = true;
+            
+            if(this.container) {
+                 const isCorrect = this.container.reveal();
+                 this.container.showFeedback(isCorrect);
+                 this.engine.submitAnswer(isCorrect);
+            }
+            if(this.footer) this.footer.showNext();
+        }
+        
+        showHint(detail: any) {
+             // Logic to show hint 
+             const popup = document.getElementById('pc-hint-popup');
+             // Dispatch open?
+             // Or update content? 
+             // Component HintPopup logic usually listens to event or has method.
+             // Let's assume global event or finding instance.
+             // Simplification: just alert for now or update DOM if simple.
+             // Actually, HintPopup usually listens to 'open-hint'.
+             window.dispatchEvent(new CustomEvent('open-hint', { detail: { text: detail.text } }));
+        }
+
+        nextQuestion() {
+             this.engine.nextQuestion();
+        }
+    }
+
+    new PracticeController();
+</script>

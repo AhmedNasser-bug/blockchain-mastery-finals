@@ -1,0 +1,147 @@
+---
+import GameHeader from '../../components/GameHeader.astro';
+import GameFooter from '../../components/GameFooter.astro';
+import QuestionDisplay from '../../components/QuestionDisplay.astro';
+import HintPopup from '../../components/HintPopup.astro';
+import '../../../styles/screens/exam.css';
+---
+
+<div class="screen exam-screen" id="exam-screen">
+    <GameHeader totalQuestions={0} initialTime="00:00" />
+    <div class="ex-content">
+        <QuestionDisplay id="ex-question-display" />
+    </div>
+    <GameFooter />
+    <HintPopup id="ex-hint-popup" />
+</div>
+
+<script>
+    import { GameUtils } from '../../scripts/GameUtils';
+    import type { SubjectData, Question } from '../../../data/subjects/Subject';
+
+    class ExamGame {
+        private subject: SubjectData;
+        private currentQuestions: Question[] = [];
+        private currentIndex: number = 0;
+        private isAnswered: boolean = false;
+        private currentSelection: any = null;
+        private answers: any[] = [];
+        private display: any;
+
+        constructor() {
+            // @ts-ignore
+            this.subject = window.subjectData;
+            this.init();
+        }
+
+        init() {
+            const screen = document.getElementById('exam-screen');
+            if(!screen) return;
+            this.display = (screen.querySelector('.question-display-root') as any).questionDisplayInstance;
+            window.addEventListener('request-submit', () => this.submitAnswer());
+            window.addEventListener('request-next', () => this.nextQuestion());
+            window.addEventListener('request-skip', () => this.skip());
+            window.addEventListener('request-hint', () => this.showHint());
+            screen.addEventListener('question-selected', (e: any) => this.handleSelection(e.detail));
+             // @ts-ignore
+            window.game = window.game || {};
+             // @ts-ignore
+            window.game.startExam = this.startGame.bind(this);
+        }
+
+        startGame() {
+            this.currentQuestions = [...this.subject.questions];
+            this.currentIndex = 0;
+            this.answers = [];
+            this.isAnswered = false;
+
+            this.activateScreen();
+            
+            GameUtils.startGame(this.currentQuestions.length);
+            
+            this.renderQuestion();
+        }
+
+        activateScreen() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('exam-screen')?.classList.add('active');
+        }
+
+        renderQuestion() {
+            const q = this.currentQuestions[this.currentIndex];
+            this.isAnswered = false;
+            this.currentSelection = null;
+            this.display.render(q);
+            GameUtils.enableSubmit(false);
+            GameUtils.showSubmitButton();
+            GameUtils.updateProgress(this.currentIndex + 1);
+        }
+
+        handleSelection(detail: any) {
+            if (this.isAnswered) return;
+            this.currentSelection = detail;
+            GameUtils.enableSubmit(detail.isComplete !== false);
+        }
+
+        submitAnswer() {
+            if (this.isAnswered || !this.currentSelection) return;
+            this.isAnswered = true;
+            const isCorrect = this.display.reveal();
+            const q = this.currentQuestions[this.currentIndex];
+
+            GameUtils.recordAnswer(isCorrect);
+
+            this.display.showFeedback(isCorrect, q.explanation);
+            
+            if(this.currentIndex === this.currentQuestions.length - 1) {
+                GameUtils.showNextButton("Finish");
+            } else {
+                GameUtils.showNextButton();
+            }
+            
+            this.answers.push({
+                question: q.question,
+                correct: isCorrect,
+                userAnswer: this.currentSelection,
+                correctAnswer: q.correct,
+                explanation: q.explanation,
+            });
+        }
+
+        nextQuestion() {
+            this.currentIndex++;
+            if (this.currentIndex < this.currentQuestions.length) {
+                this.renderQuestion();
+            } else {
+                this.finishGame();
+            }
+        }
+
+        skip() {
+            if(this.isAnswered) { this.nextQuestion(); return; }
+            this.isAnswered = true;
+            GameUtils.recordAnswer(false);
+            this.nextQuestion();
+        }
+
+        showHint() {
+             const q = this.currentQuestions[this.currentIndex];
+             const hint = (q as any).hint || "No hint available.";
+             const popup = document.getElementById('ex-hint-popup');
+             if(popup) {
+                 popup.classList.remove('hidden');
+                 const text = popup.querySelector('.hint-text');
+                 if(text) text.textContent = hint;
+             }
+        }
+
+        finishGame() {
+            GameUtils.stopTimer();
+            const results = GameUtils.createResult('full-revision', this.answers);
+            // @ts-ignore
+            if (window.game.showResults) window.game.showResults(results);
+        }
+    }
+
+    new ExamGame();
+</script>

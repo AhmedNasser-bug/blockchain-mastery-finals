@@ -1,0 +1,142 @@
+.mcq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.mcq-option {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    /* More modern, less brutalist pure square unless requested */
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    /* Reset button defaults */
+    font-family: inherit;
+    color: inherit;
+    outline: none;
+    user-select: none;
+}
+
+/* Hover Effect */
+.mcq-option:hover:not(.disabled) {
+    transform: translateY(-2px);
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mcq-option:active:not(.disabled) {
+    transform: translateY(0);
+}
+
+/* Marker (Circle) */
+.option-marker {
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--border-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.option-text {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+/* Selected State */
+.mcq-option.selected {
+    background: rgba(251, 191, 36, 0.1);
+    /* Primary tint */
+    border-color: var(--primary);
+}
+
+.mcq-option.selected .option-marker {
+    background: var(--primary);
+    color: var(--bg-dark);
+    /* Contrast */
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+.mcq-option.selected .option-text {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Correct State */
+.mcq-option.correct {
+    background: rgba(34, 197, 94, 0.15) !important;
+    border-color: var(--accent-green) !important;
+}
+
+.mcq-option.correct .option-marker {
+    background: var(--accent-green) !important;
+    border-color: var(--accent-green) !important;
+    color: white !important;
+    content: "✓";
+    /* CSS content hack if we handled it in CSS, but text is A/B/C... keep text or icon? */
+}
+
+/* Incorrect State */
+.mcq-option.incorrect {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: var(--accent-red) !important;
+}
+
+.mcq-option.incorrect .option-marker {
+    background: var(--accent-red) !important;
+    border-color: var(--accent-red) !important;
+    color: white !important;
+}
+
+/* Disabled (Locked) */
+.mcq-option.disabled {
+    cursor: default;
+    opacity: 0.9;
+    /* Slight dim only */
+}
+
+.mcq-option.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Animation */
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.mcq-option.selected .option-marker {
+    animation: pop 0.3s ease;
+}

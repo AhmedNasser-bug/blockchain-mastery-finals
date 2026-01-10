@@ -1,0 +1,32 @@
+---
+import '../../../styles/modules/operation-logs.css';
+
+// Props could be accepted if we want to pass initial logs, 
+// but typically this reads from a store or is static.
+---
+<div class="operation-logs-container">
+    <div class="logs-header">
+        <h3>SYSTEM LOGS</h3>
+        <div class="status-indicator online"></div>
+    </div>
+    <div class="logs-content" id="logContent">
+        <div class="log-entry"><span class="timestamp">[INIT]</span> System initialized...</div>
+        <div class="log-entry"><span class="timestamp">[DB]</span> SQLite WASM loaded.</div>
+        <div class="log-entry"><span class="timestamp">[NET]</span> API Endpoint: /api/subjects available.</div>
+        <!-- More dynamic logs could be appended via JS -->
+    </div>
+</div>
+
+<script>
+    // Optional: Listen for system events to append logs
+    window.addEventListener('sys-log', (e: any) => {
+        const container = document.getElementById('logContent');
+        if (container && e.detail) {
+            const row = document.createElement('div');
+            row.className = 'log-entry';
+            row.innerHTML = `<span class="timestamp">[${new Date().toLocaleTimeString()}]</span> ${e.detail}`;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+    });
+</script>

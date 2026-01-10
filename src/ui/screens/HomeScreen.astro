@@ -1,5 +1,8 @@
 ---
-import { SUBJECT_MODES } from "../../data/subjects/Subject";
+import SetupPanel from "../components/modules/SetupPanel.astro";
+import ModeSelector from "../components/modules/ModeSelector.astro";
+import OperationLogs from "../components/modules/OperationLogs.astro";
+import '../../styles/screens/home.css';
 interface Props {
     subjectName: string;
     description: string;
@@ -8,288 +11,59 @@ const { subjectName, description } = Astro.props;
 ---
 
 <div class="screen active" id="homeScreen">
-    <div class="header">
-        <h1 class="hero-title">{subjectName.toUpperCase()}</h1>
-         <div class="hero-subtitle-container">
-            <div class="separator-line"></div>
-            <p class="subtitle-text">MASTERY PROTOCOL V2</p>
-        </div>
-        <p class="description-text">{description}</p>
-    </div>
-
-    <!-- Stats Ticker / Grid -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-label">TOTAL RUNS</div>
-            <div class="stat-value" id="totalRuns">0</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">BEST SCORE</div>
-            <div class="stat-value" id="bestScore">0%</div>
-        </div>
-        <div class="stat-card">
-             <div class="stat-label">AVERAGE</div>
-            <div class="stat-value" id="avgScore">0%</div>
-        </div>
-        <div class="stat-card">
-             <div class="stat-label">STREAK</div>
-            <div class="stat-value" id="bestStreak">0</div>
-        </div>
-        <div class="stat-card awards-card" onclick="window.game.showAchievements()">
-             <div class="stat-label">AWARDS</div>
-            <div class="stat-value" id="totalAwards">🏆</div>
-        </div>
-    </div>
-
-    <div class="card selector-container">
-        <h2 class="section-title">SELECT OPERATIONAL MODE</h2>
-        <div class="mode-selector">
-            {
-                Object.values(SUBJECT_MODES).map((mode) => (
-                    <div
-                        class="mode-btn"
-                        data-mode={mode.id}
-                        onclick={
-                            mode.componentId === "FlashcardScreen"
-                                ? `window.game.startFlashcards('${mode.id === "flashcards-bank" ? "questionBank" : "terminology"}')`
-                                : `window.game.selectMode('${mode.id}')`
-                        }
-                    >
-                        <div class="mode-icon">{mode.icon}</div>
-                        <div>
-                            <h3 class="mode-title">{mode.label}</h3>
-                            <p class="mode-desc">{mode.description}</p>
-                        </div>
-                    </div>
-                ))
-            }
+    <div style="max-width: 1200px; margin: 0 auto; padding: 40px;">
+        <div class="header">
+            <h1 class="hero-title">{subjectName.toUpperCase()}</h1>
+             <div class="hero-subtitle-container">
+                <div class="separator-line"></div>
+                <p class="subtitle-text">MASTERY PROTOCOL V2</p>
+            </div>
+            <p class="description-text">{description}</p>
         </div>
 
-        <div id="categorySelector" class="category-selector-container">
-            <h3 class="category-selector-title">TARGET SECTOR</h3>
-            <div class="category-grid" id="categoryGrid"></div>
+        {/* Setup Module */}
+        <SetupPanel />
+
+        <div class="card selector-container">
+            <h2 class="section-title">SELECT OPERATIONAL MODE</h2>
+            
+            {/* New Mode Selector Component */}
+            <ModeSelector onSelect={(mode) => console.log('Mode selected', mode)} />
+
+            <div id="categorySelector" class="category-selector-container">
+                <h3 class="category-selector-title">TARGET SECTOR</h3>
+                <div class="category-grid" id="categoryGrid"></div>
+            </div>
+
+            <div class="start-btn-group">
+                <button
+                    class="btn btn-secondary encyclopedia-btn"
+                    id="revisionBtn"
+                >
+                    📖 ENCYCLOPEDIA (REF)
+                </button>
+                <button
+                    class="btn btn-primary start-challenge-btn"
+                    onclick="window.game.startQuiz()"
+                >
+                    INITIALIZE CHALLENGE
+                </button>
+            </div>
         </div>
 
-        <div class="start-btn-group">
-            <button
-                class="btn btn-secondary encyclopedia-btn"
-                onclick="window.game.showRevisionScreen()"
-                id="revisionBtn"
-            >
-                📖 ENCYCLOPEDIA (REF)
-            </button>
-            <button
-                class="btn btn-primary start-challenge-btn"
-                onclick="window.game.startQuiz()"
-            >
-                INITIALIZE CHALLENGE
-            </button>
-        </div>
-    </div>
-
-    <div class="card history-card">
-        <div class="history-header">
-            <h2>OPERATION LOGS</h2>
-        </div>
-        <div id="historyContainer">
-            <p class="empty-history">
-                AWAITING DATA...
-            </p>
+        <div class="card history-card">
+            <div class="history-header">
+                <h2>OPERATION LOGS</h2>
+            </div>
+            <OperationLogs />
         </div>
     </div>
 </div>
 
-<style>
-    .hero-title {
-        font-size: 6rem;
-        line-height: 0.9;
-    }
+<!-- Settings Panel Overlay -->
 
-    .hero-subtitle-container {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-        margin-top: 20px;
-    }
 
-    .separator-line {
-        height: 4px;
-        background: var(--primary);
-        flex-grow: 1;
-    }
 
-    .subtitle-text {
-        margin: 0;
-        font-weight: bold;
-        color: var(--primary);
-        letter-spacing: 2px;
-    }
-
-    .description-text {
-        margin-top: 20px;
-        font-size: 1.2rem;
-        border-left: none;
-        padding: 0;
-        max-width: 100%;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        border: 2px solid var(--border);
-        background: var(--bg-card);
-        gap: 1px;
-        background-color: var(--border);
-        margin-bottom: 40px;
-    }
-
-    .stat-card {
-        background: var(--bg-card);
-        /* Padding likely handled by global .stat-card or inherited, usually needs padding if not globally defined */
-        /* Checking generic .stat-card definition in globals if exists, otherwise assume defaults or add padding */
-        padding: 20px; /* Safety add */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .awards-card {
-        cursor: pointer;
-    }
-
-    .stat-label {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        font-weight: bold;
-        letter-spacing: 1px;
-    }
-    
-    .stat-value {
-        font-size: 1.5rem;
-        font-weight: bold;
-        font-family: 'JetBrains Mono', monospace;
-    }
-
-    .selector-container {
-        border: none;
-        background: transparent;
-        padding: 0;
-        box-shadow: none;
-    }
-
-    .section-title {
-        font-size: 2rem;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-
-    .mode-selector {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-    }
-
-    .mode-btn {
-        text-align: left;
-        padding: 30px;
-        border: 2px solid var(--border);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        cursor: pointer;
-        transition: all 0.2s;
-        background: var(--bg-card);
-    }
-    
-    /* Hover effects for mode-btn provided by logic or global? Adding here for completeness if needed, or relying on global */
-    .mode-btn:hover, .mode-btn.selected {
-        border-color: var(--primary);
-    }
-
-    .mode-icon {
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .mode-title {
-        font-size: 1.5rem;
-        color: var(--text-primary);
-        margin-bottom: 5px;
-    }
-
-    .mode-desc {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-    }
-
-    .category-selector-container {
-        display: none; /* logic toggles this */
-        margin-top: 30px;
-    }
-    
-    .category-selector-title {
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        color: var(--text-muted);
-    }
-
-    .category-grid {
-        display: grid; 
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-        gap: 10px;
-    }
-    
-    .category-card {
-        border: 1px solid var(--border);
-        padding: 15px;
-        cursor: pointer;
-        background: var(--bg-card);
-    }
-
-    .start-btn-group {
-        margin-top: 40px;
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 20px;
-    }
-
-    .encyclopedia-btn {
-        height: 80px;
-        font-size: 1.2rem;
-    }
-
-    .start-challenge-btn {
-        height: 80px;
-        font-size: 2rem;
-        letter-spacing: 2px;
-    }
-
-    .history-card {
-        margin-top: 60px;
-        border: 2px solid var(--border);
-        border-radius: 0;
-        padding: 0; /* Override default card padding if needed for inner structure */
-    }
-
-    .history-header {
-        background: var(--bg-card-hover);
-        padding: 15px;
-        border-bottom: 2px solid var(--border);
-    }
-
-    .history-header h2 {
-        margin: 0;
-        font-size: 1.5rem;
-    }
-
-    .empty-history {
-        color: var(--text-muted);
-        text-align: center;
-        padding: 20px;
-    }
-</style>
 
 <script>
     import type { SubjectData as Subject } from "../../data/subjects/Subject";
@@ -299,6 +73,7 @@ const { subjectName, description } = Astro.props;
         private subject: Subject;
         private currentMode: string = "speedrun";
         private selectedCategory: string | null = null;
+        private settingsPanel: any; // Instance of GameSettingsPanel
 
         constructor() {
             // @ts-ignore
@@ -308,6 +83,7 @@ const { subjectName, description } = Astro.props;
         }
 
         bindEvents() {
+            // Bind global methods for legacy/inline calls if any (though we prefer listeners)
             // @ts-ignore
             window.game = window.game || {};
             // @ts-ignore
@@ -322,6 +98,26 @@ const { subjectName, description } = Astro.props;
             window.game.loadHistory = this.loadHistory.bind(this);
             // @ts-ignore
             window.game.goHome = this.goHome.bind(this);
+            // @ts-ignore
+            window.game.showRevisionScreen = () => {
+                 this.currentMode = 'full-revision'; // Just a fallback
+                 // We need to implement actual screen switching if 'RevisionScreen' is a separate component
+                 document.getElementById('homeScreen')?.classList.remove('active');
+                 document.getElementById('revisionScreen')?.classList.add('active');
+            };
+
+            // Attach explicit listeners for robustness
+            // We listen to the Custom Event dispatched by ModeSelector component
+            document.addEventListener('mode-selected', (e: any) => {
+                 if(e.detail) {
+                     this.selectMode(e.detail);
+                 }
+            });
+            
+            document.getElementById('revisionBtn')?.addEventListener('click', () => {
+                 // @ts-ignore
+                 window.game.showRevisionScreen();
+            });
         }
 
         goHome() {
@@ -334,12 +130,53 @@ const { subjectName, description } = Astro.props;
         }
 
         startChallenge() {
-            if (this.currentMode === 'survival') {
-                // @ts-ignore
-                if(window.game.startSurvival) window.game.startSurvival();
-            } else {
-                // @ts-ignore
-                if(window.game.startStandardGame) window.game.startStandardGame(this.currentMode);
+            // Read config from SetupPanel
+            const config = (window as any).getGameConfig ? (window as any).getGameConfig() : { isSurvival: false, timeLimitSeconds: 0 };
+            
+            // Store config globally or pass it? 
+            // For transition, we'll attach it to the game object so specific screens can read it
+            // until we fully refactor them to use GameEngine directly.
+            (window as any).currentGameConfig = config;
+
+            // @ts-ignore
+            const game = window.game;
+
+            // Simple "Launch" for now as requested "Prepare interface", maybe not enforce it yet?
+            // User: "Prepare the interface of each mode for a settings pattern refactor"
+            // I will Launch directly for now to preserve existing behavior, 
+            // BUT I will modify this to support a "Setup Phase".
+            
+            // Let's just Launch the Mode. The Settings Panel exists in DOM now.
+            // Wiring it up completely might break "Quick Start" if user didn't ask for mandatory settings.
+            
+            switch(this.currentMode) {
+                case 'speedrun':
+                    if(game.startSpeedrun) game.startSpeedrun();
+                    break;
+                case 'blitz':
+                    if(game.startBlitz) game.startBlitz();
+                    break;
+                case 'hardcore':
+                    if(game.startHardcore) game.startHardcore();
+                    break;
+                case 'full-revision':
+                    if(game.startExam) game.startExam();
+                    break;
+                case 'practice':
+                    if(game.startPractice) game.startPractice(this.selectedCategory);
+                    break;
+                case 'flashcards':
+                    // Legacy fallback
+                    if(game.startFlashcards) game.startFlashcards('questionBank');
+                    break;
+                case 'terminology':
+                    if(game.startFlashcards) game.startFlashcards('terminology');
+                    break;
+                case 'question-bank':
+                    if(game.startFlashcards) game.startFlashcards('questionBank');
+                    break;
+                default:
+                    console.warn("Unknown mode:", this.currentMode);
             }
         }
 
@@ -351,10 +188,8 @@ const { subjectName, description } = Astro.props;
 
         selectMode(mode: string) {
             this.currentMode = mode;
-            document.querySelectorAll(".mode-btn").forEach((btn: any) => {
-                btn.classList.toggle("selected", btn.dataset.mode === mode);
-            });
-
+            // Visual state handled by ModeSelector component
+            
             const categorySelector =
                 document.getElementById("categorySelector");
             if (categorySelector) {

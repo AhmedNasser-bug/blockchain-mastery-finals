@@ -1,0 +1,87 @@
+---
+import '../../../styles/modules/mode-selector.css';
+
+interface Props {
+  onSelect: (mode: string) => void;
+}
+---
+<div class="mode-selector-grid">
+    <!-- Row 1: Challenges -->
+    <button class="mode-card" data-mode="speedrun">
+        <div class="mode-icon">⚡</div>
+        <div class="mode-info">
+            <h3>SPEEDRUN</h3>
+            <p>Time Attack: Complete all questions.</p>
+        </div>
+    </button>
+
+    <button class="mode-card" data-mode="blitz">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-info">
+            <h3>BLITZ</h3>
+            <p>Random subset for quick review.</p>
+        </div>
+    </button>
+    
+    <button class="mode-card" data-mode="hardcore">
+        <div class="mode-icon">🔥</div>
+        <div class="mode-info">
+            <h3>HARDCORE</h3>
+            <p>Deep analysis & application</p>
+        </div>
+    </button>
+
+    <!-- Row 2: Practice & Study -->
+    <button class="mode-card highlight-border" data-mode="practice">
+        <div class="mode-icon">🗂️</div>
+        <div class="mode-info">
+            <h3>PRACTICE</h3>
+            <p>By category, no pressure</p>
+        </div>
+    </button>
+
+    <button class="mode-card" data-mode="terminology">
+        <div class="mode-icon">🃏</div>
+        <div class="mode-info">
+            <h3>TERMINOLOGY</h3>
+            <p>Memorize key terms</p>
+        </div>
+    </button>
+
+    <button class="mode-card" data-mode="question-bank">
+        <div class="mode-icon">🧠</div>
+        <div class="mode-info">
+            <h3>QUESTION BANK</h3>
+            <p>High-impact Q&A</p>
+        </div>
+    </button>
+
+    <button class="mode-card" data-mode="full-revision">
+        <div class="mode-icon">🎓</div>
+        <div class="mode-info">
+            <h3>FULL REVISION</h3>
+            <p>Strict order: Questions then Terminology. 100% Mastery.</p>
+        </div>
+    </button>
+</div>
+
+
+
+<script>
+    const container = document.querySelector('.mode-selector-grid');
+    if (container) {
+        container.addEventListener('click', (e) => {
+            const btn = (e.target as HTMLElement).closest('.mode-card');
+            if (!btn) return;
+            
+            // UI Selection
+            container.querySelectorAll('.mode-card').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            
+            const mode = btn.getAttribute('data-mode');
+            
+            // Dispatch
+            container.dispatchEvent(new CustomEvent('mode-selected', { detail: mode, bubbles: true }));
+        });
+    }
+</script>

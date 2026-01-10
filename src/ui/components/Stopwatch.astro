@@ -1,0 +1,114 @@
+---
+import '../../styles/components/stopwatch.css';
+
+interface Props {
+  initialTime?: number; // Seconds
+  onTimeUp?: string; // Global function name or event dispatch logic? Better to use events.
+  autoStart?: boolean;
+}
+
+const { id, initialTime = 0, onTimeUp, autoStart = false } = Astro.props;
+---
+<div class="stopwatch-container" id={id || "stopwatch-root"}>
+    <div class="stopwatch-icon">⏱️</div>
+    <div class="stopwatch-time" id={`${id || "sw"}-display`}>00:00</div>
+</div>
+
+<script define:vars={{ id: id || "stopwatch-root" }}>
+    class StopwatchController {
+        constructor(rootId) {
+            this.el = document.getElementById(rootId);
+            if (!this.el) return;
+            
+            this.display = this.el.querySelector('.stopwatch-time');
+            this.remaining = 0;
+            this.interval = null;
+            this.onTimeUpHandler = null;
+
+            // Expose instance
+            this.el.stopwatchInstance = this;
+        }
+
+        setTime(seconds) {
+            this.remaining = seconds;
+            this.updateDisplay();
+        }
+
+        start(duration, onComplete) {
+            this.mode = (duration && duration > 0) ? 'countdown' : 'elapsed';
+            
+            if (this.mode === 'countdown') {
+                this.remaining = duration;
+            } else {
+                this.elapsed = 0; // Usage for count-up
+                this.remaining = 0; // display uses remaining variable name? let's split.
+            }
+            
+            if (onComplete) this.onTimeUpHandler = onComplete;
+
+            if(this.interval) clearInterval(this.interval);
+
+            this.updateDisplay();
+            this.el.classList.remove('stopwatch-warning', 'stopwatch-critical');
+
+            this.interval = window.setInterval(() => {
+                if (this.mode === 'countdown') {
+                    this.remaining--;
+                    this.updateDisplay(this.remaining);
+
+                    // Visual Feedback
+                    if(this.remaining <= 10 && this.remaining > 5) {
+                        this.el.classList.add('stopwatch-warning');
+                    } else if (this.remaining <= 5) {
+                        this.el.classList.remove('stopwatch-warning');
+                        this.el.classList.add('stopwatch-critical');
+                    }
+
+                    if (this.remaining <= 0) {
+                        this.stop();
+                        this.updateDisplay(0);
+                        this.el.dispatchEvent(new CustomEvent('time-up', { bubbles: true }));
+                        if (this.onTimeUpHandler) this.onTimeUpHandler();
+                    }
+                } else {
+                    // Elapsed Mode
+                    this.elapsed = (this.elapsed || 0) + 1;
+                    this.updateDisplay(this.elapsed);
+                }
+            }, 1000);
+        }
+
+        stop() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+            this.el.classList.remove('stopwatch-warning', 'stopwatch-critical');
+        }
+
+        updateDisplay(seconds) {
+            // Default to remaining if seconds argument missing (legacy call safety)
+            const val = (seconds !== undefined) ? seconds : (this.mode === 'countdown' ? this.remaining : this.elapsed);
+            const m = Math.floor(val / 60);
+            const s = val % 60;
+            this.display.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        stop() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+            this.el.classList.remove('stopwatch-warning', 'stopwatch-critical');
+        }
+
+        updateDisplay() {
+            const m = Math.floor(this.remaining / 60);
+            const s = this.remaining % 60;
+            this.display.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+    }
+
+    // Instantiate specifically for this component's ID
+    new StopwatchController(id);
+</script>

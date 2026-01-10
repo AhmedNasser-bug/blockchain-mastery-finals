@@ -1,4 +1,5 @@
 ---
+import '../../styles/screens/results.css';
 ---
 <div class="screen" id="resultsScreen">
     <div class="container container-narrow">
@@ -7,6 +8,7 @@
                 <div>
                     <h2 class="mission-title">MISSION REPORT</h2>
                     <p class="mission-status">CLEARANCE LEVEL: MAX</p>
+                </div>
                 </div>
                 <div class="grade-box">
                     <div class="grade-label">GRADE</div>
@@ -57,145 +59,13 @@
     </div>
 </div>
 
-<style>
-    .container-narrow {
-        max-width: 800px;
-    }
-
-    .results-container {
-        text-align: left; 
-        padding: 40px; 
-        border: 4px solid var(--text-primary);
-    }
-
-    .results-header {
-        border-bottom: 2px solid var(--text-primary); 
-        padding-bottom: 20px; 
-        margin-bottom: 30px; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: flex-end;
-    }
-
-    .mission-title {
-        font-size: 3rem; 
-        margin: 0; 
-        line-height: 1;
-    }
-
-    .mission-status {
-        margin: 0; 
-        color: var(--text-secondary); 
-        letter-spacing: 1px;
-    }
-
-    .grade-box {
-        text-align: right;
-    }
-
-    .grade-label {
-        font-size: 1.2rem; 
-        font-weight: bold;
-    }
-
-    .grade-value {
-        font-size: 4rem; 
-        line-height: 1; 
-        font-weight: 900; 
-        color: var(--primary);
-    }
-    
-    /* Dynamic colors for grade can use utility classes or JS style setting if highly dynamic. */
-    .grade-s-plus, .grade-s { color: var(--primary); }
-    .grade-a-plus, .grade-a { color: var(--success); }
-    .grade-b { color: var(--accent-blue); }
-    .grade-c { color: var(--text-primary); }
-    .grade-d { color: var(--accent-purple); }
-    .grade-f { color: var(--text-muted); }
-
-    .report-grid {
-        display: grid; 
-        grid-template-columns: 1fr 1fr; 
-        gap: 0; 
-        border: 2px solid var(--border);
-    }
-
-    .report-cell {
-        padding: 20px;
-    }
-
-    .cell-border-right {
-        border-right: 2px solid var(--border);
-    }
-
-    .cell-border-bottom {
-        border-bottom: 2px solid var(--border);
-    }
-
-    .stat-lbl {
-        font-size: 0.9rem; 
-        text-transform: uppercase;
-    }
-    
-    .text-muted { color: var(--text-muted); }
-    .text-success { color: var(--success); font-weight: bold; }
-    .text-error { color: var(--error); font-weight: bold; }
-
-    .stat-val {
-        font-size: 2.5rem; 
-        font-weight: 800;
-    }
-
-    .action-buttons {
-        margin-top: 40px; 
-        display: grid; 
-        grid-template-columns: 1fr 1fr; 
-        gap: 20px;
-    }
-
-    .review-btn, .return-btn, .close-btn {
-        width: 100%;
-    }
-
-    .review-container {
-        margin-top: 20px; 
-        border: 2px solid var(--border); 
-        padding: 0;
-    }
-
-    .review-header {
-        padding: 20px; 
-        background: var(--bg-card-hover); 
-        border-bottom: 2px solid var(--border);
-    }
-
-    .review-title {
-        margin: 0;
-    }
-
-    .review-content {
-        padding: 20px;
-    }
-    
-    .close-btn {
-        border-top: 2px solid var(--border);
-    }
-
-    .hidden {
-        display: none !important;
-    }
-    
-    /* Styles for dynamic content injected via JS */
-    :global(.review-explanation) {
-        margin-top: 5px;
-        font-style: italic;
-    }
-</style>
 
 
 <script>
-    import { GameProgressService } from '../../storage/GameProgress';
-
+    import { DatabaseService } from '../../infrastructure/db/DatabaseService';
+    // We can also import Player or specific Stats entity if we had it.
+    // For now, let's assume we save runs via DB service or Player Logic.
+    
     export interface QuizResults {
         score: number;
         total: number;
@@ -215,7 +85,7 @@
             window.game.showReview = this.showReview.bind(this);
         }
 
-        display(results: QuizResults): void {
+        async display(results: QuizResults) {
             this.showScreen('resultsScreen');
 
             const percentage = Math.round((results.score / results.total) * 100);
@@ -223,26 +93,33 @@
              // @ts-ignore
             window.lastQuizResults = results;
             
-            // SAVE PROGRESS
+            // SAVE PROGRESS (DB)
             // @ts-ignore
-            const subjectId = window.subjectData.config.storageKey || window.subjectData.id;
-            // @ts-ignore
-            const definedAchievements = window.subjectData.achievements || [];
-            
+            const subjectId = window.subjectData.id;
             const run = {
-                date: Date.now(),
-                mode: results.mode || 'quiz',
+                player_id: 1, // Default Guest
+                subject_id: subjectId,
                 score: percentage,
-                rawScore: results.score,
-                total: results.total,
-                time: results.time,
-                streak: results.maxStreak
+                questions_answered: results.total,
+                questions_correct: results.score, // raw score = count
+                time_taken: results.time,
+                mode: results.mode || 'quiz',
+                timestamp: Date.now()
             };
             
-            const progress = GameProgressService.addRun(subjectId, run, definedAchievements);
-            
-            if(progress.newUnlocks && progress.newUnlocks.length > 0) {
-                alert(`🏆 ${progress.newUnlocks.length} New Achievement(s) Unlocked!`);
+            try {
+                // We use DatabaseService directly or via Player entity.
+                // Doing raw insert for now to fix the break.
+                // Ideally: await Player.getById(1).addRun(run);
+                const db = DatabaseService.getInstance();
+                await db.run(
+                    `INSERT INTO player_stats (player_id, subject_id, score, questions_answered, questions_correct, time_taken, mode, timestamp)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [run.player_id, run.subject_id, run.score, run.questions_answered, run.questions_correct, run.time_taken, run.mode, run.timestamp]
+                );
+                console.log("Results saved to DB");
+            } catch(e) {
+                console.error("Failed to save results:", e);
             }
 
             const elFinalScore = document.getElementById('finalScore');
@@ -278,21 +155,24 @@
                 content.innerHTML = results.answers.map((ans: any, idx: number) => `
                     <div class="review-item ${ans.correct ? 'review-correct' : 'review-incorrect'}">
                         <div class="review-question">${idx + 1}. ${ans.question}</div>
-                        <div class="review-answer">Your Answer: ${JSON.stringify(ans.userAnswer)}</div>
-                        <div class="review-answer">Correct: ${JSON.stringify(ans.correctAnswer)}</div>
+                        <div class="review-answer">Your Answer: ${this.formatAnswer(ans.userAnswer)}</div>
+                        <div class="review-answer">Correct: ${this.formatAnswer(ans.correctAnswer)}</div>
                         <div class="review-explanation">${ans.explanation}</div>
                     </div>
                 `).join('');
             }
+        }
+        
+        private formatAnswer(ans: any): string {
+            if(typeof ans === 'object') return JSON.stringify(ans);
+            return ans;
         }
 
         private updateGrade(score: number): void {
             const el = document.getElementById('finalGrade');
             if (!el) return;
             
-            // Usage of classes for colors
-            el.className = 'grade-value'; // reset
-            
+            el.className = 'grade-value'; 
             let grade = 'F';
             let gradeClass = 'grade-f';
             

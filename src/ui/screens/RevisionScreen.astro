@@ -1,270 +1,96 @@
 ---
-
+import '../../styles/global.css';
+import '../../styles/screens/revision.css';
 ---
 
-<div class="screen" id="revisionScreen">
-    <div class="header revision-header">
-        <h1 class="revision-title">📖 Full Revision</h1>
-        <p>Encyclopedia</p>
-        <div class="search-container">
-            <input
-                type="text"
-                id="termSearch"
-                placeholder="Search terms..."
-                class="search-input"
-            />
+<div class="screen revision-screen" id="revisionScreen">
+    <div class="revision-header">
+        <button class="back-btn" onclick="window.game.goHome()">← HOME</button>
+        <h2>ENCYCLOPEDIA</h2>
+        <div class="search-bar">
+            <input type="text" id="revSearch" placeholder="Search terms or questions...">
         </div>
     </div>
-    <div class="container container-no-pad-top">
-        <button
-            class="btn btn-secondary back-btn"
-            onclick="window.game.goHome()"
-        >
-            ← Back to Home
-        </button>
-        <div id="revisionContent" class="revision-grid"></div>
+    
+    <div class="revision-content" id="revisionContent">
+        <!-- Dynamic Content -->
     </div>
 </div>
 
-<style>
-    .revision-header {
-        background: var(--bg-card);
-        border-bottom: 2px solid var(--border);
-        padding: 20px;
-        margin-bottom: 0;
-    }
 
-    .revision-title {
-        font-size: 3rem;
-        margin: 0;
-        line-height: 1;
-    }
-
-    .search-container {
-        margin-top: 15px;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 15px;
-        font-size: 1.2rem;
-        border: 2px solid var(--border);
-        background: var(--bg-main);
-        color: var(--text-primary);
-        font-family: inherit;
-        border-radius: 0;
-    }
-
-    .container-no-pad-top {
-        padding-top: 0;
-    }
-
-    .back-btn {
-        margin-bottom: 20px;
-        width: auto;
-        display: inline-block;
-    }
-
-    .revision-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        padding-bottom: 40px;
-    }
-
-    .category-section {
-        border: 2px solid var(--border);
-        background: var(--bg-card);
-    }
-
-    .category-header {
-        background: var(--primary);
-        color: black;
-        padding: 10px 20px;
-        margin: 0;
-        font-size: 1.5rem;
-        text-transform: uppercase;
-        border-bottom: 2px solid var(--border);
-    }
-
-    .term-card {
-        padding: 0;
-        border-bottom: 1px solid var(--border);
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-    
-    .term-card:last-child {
-        border-bottom: none;
-    }
-
-    .term-card:hover {
-        background: var(--bg-card-hover);
-    }
-
-    .term-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-    }
-
-    .term-title {
-        font-weight: bold;
-        font-size: 1.2rem;
-        text-transform: capitalize;
-    }
-    
-    .expand-icon {
-        font-weight: bold;
-    }
-
-    .term-preview {
-        padding: 0 20px 15px;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .term-details {
-        display: none;
-        padding: 20px;
-        border-top: 1px solid var(--border);
-        background: rgba(0,0,0,0.1);
-    }
-
-    .term-card.expanded .term-details {
-        display: block;
-    }
-    
-    .term-card.expanded .expand-icon {
-        transform: rotate(180deg);
-    }
-
-    .analogy-box {
-        margin-top: 10px;
-        padding: 10px;
-        border-left: 4px solid var(--accent-purple);
-        background: rgba(128, 0, 128, 0.1);
-    }
-
-    .hidden {
-        display: none !important;
-    }
-</style>
 
 <script>
-    import type { SubjectData as Subject } from "../../data/subjects/Subject";
-    import { escapeHtml } from '../../utils';
-
-    class RevisionScreenController {
-        private subject: Subject;
+    class RevisionController {
+        private content: HTMLElement;
+        private search: HTMLInputElement;
+        private items: any[] = [];
 
         constructor() {
+            this.content = document.getElementById('revisionContent')!;
+            this.search = document.getElementById('revSearch') as HTMLInputElement;
+            
+            this.init();
+        }
+        
+        init() {
             // @ts-ignore
-            this.subject = window.subjectData;
-            this.bindEvents();
-        }
-
-        bindEvents() {
-            // @ts-ignore
-            window.game = window.game || {};
-            // @ts-ignore
-            window.game.showRevisionScreen = this.show.bind(this);
-        }
-
-        show() {
-            this.showScreen("revisionScreen");
-            this.render();
-        }
-
-        showScreen(id: string) {
-            document
-                .querySelectorAll(".screen")
-                .forEach((s) => s.classList.remove("active"));
-            document.getElementById(id)?.classList.add("active");
-        }
-
-        render(): void {
-            const grid = document.getElementById("revisionContent");
-            if (!grid) return;
-
-            // Group by Category
-            const categorized: Record<string, any[]> = {};
-
-            Object.entries(this.subject.terminology).forEach(([key, term]) => {
-                const cat = term.Category || "General";
-                if (!categorized[cat]) categorized[cat] = [];
-                categorized[cat].push({ key, ...term });
-            });
-
-            // Sort categories (optional) and Render
-            const sortedCategories = Object.keys(categorized).sort();
-
-            grid.innerHTML = sortedCategories
-                .map(
-                    (cat) => `
-                <div class="category-section">
-                    <h3 class="category-header">${escapeHtml(cat)}</h3>
-                    <div class=""> <!-- Inner grid helper if needed -->
-                        ${categorized[cat]
-                            .map(
-                                (term) => `
-                            <div class="term-card" data-term="${escapeHtml(term.key.toLowerCase())}">
-                                <div class="term-header">
-                                    <div class="term-title">${escapeHtml(term.key.replace(/_/g, " "))}</div>
-                                    <div class="expand-icon">▼</div>
-                                </div>
-                                <div class="term-preview">${escapeHtml(term.Meaning).substring(0, 50)}...</div>
-                                <div class="term-details">
-                                    <p><strong>Meaning:</strong> ${escapeHtml(term.Meaning)}</p>
-                                    ${term.Analogy ? `<div class="analogy-box"><strong>Analogy:</strong> ${escapeHtml(term.Analogy)}</div>` : ""}
-                                    ${term.Where_it_is_used ? `<p><strong>Where:</strong> ${escapeHtml(term.Where_it_is_used)}</p>` : ""}
-                                </div>
-                            </div>
-                        `,
-                            )
-                            .join("")}
-                    </div>
-                </div>
-            `,
-                )
-                .join("");
-
-            this.attachEventListeners();
-        }
-
-        private attachEventListeners(): void {
-            // Expand/collapse cards
-            document.querySelectorAll(".term-card").forEach((card) => {
-                card.addEventListener("click", () => {
-                    card.classList.toggle("expanded");
-                });
-            });
-
-            // Search functionality
-            const searchInput = document.getElementById("termSearch");
-            if (searchInput) {
-                searchInput.addEventListener("input", (e: any) => {
-                    const query = e.target.value.toLowerCase();
-                    this.filterTerms(query);
-                });
+            const sd = window.subjectData;
+            console.log("Revision Screen Init. Subject Data:", sd);
+            
+            if(!sd) {
+                console.error("No subject data found.");
+                return;
             }
-        }
-
-        private filterTerms(query: string): void {
-            document.querySelectorAll(".term-card").forEach((card: any) => {
-                const text = card.dataset.term;
-                const content = card.textContent.toLowerCase();
-                if (content.includes(query)) {
-                    card.classList.remove("hidden");
-                } else {
-                    card.classList.add("hidden");
-                }
+            
+            // Merge Terminology and Questions for search?
+            // "Encyclopedia" usually implies Terms.
+            this.items = sd.terminology || [];
+            if(this.items.length === 0) {
+                 console.warn("No terminology data found in subject.");
+                 this.content.innerHTML = "<div class='rev-item'>No terminology data available.</div>";
+                 return;
+            }
+            
+            this.render();
+            
+            this.render();
+            
+            this.search.addEventListener('input', () => this.render());
+            
+            // Listen for late-loaded data
+            window.addEventListener('game-assets-ready', (e: any) => {
+                 console.log("RevisionScreen: Data Refreshed");
+                 // @ts-ignore
+                 const sd = window.subjectData;
+                 if(sd && sd.terminology) {
+                     this.items = sd.terminology;
+                     // Reset "No data" message if present
+                     this.render();
+                 }
             });
+        }
+        
+        render() {
+            const query = this.search.value.toLowerCase();
+            const filtered = this.items.filter((t: any) => 
+                t.term.toLowerCase().includes(query) || 
+                t.definition.toLowerCase().includes(query)
+            );
+            
+            this.content.innerHTML = filtered.map((t: any) => `
+                <div class="rev-item">
+                    <div class="rev-term">${t.term}</div>
+                    <div class="rev-def">${t.definition}</div>
+                </div>
+            `).join('');
         }
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        new RevisionScreenController();
+    
+    // Defer init
+    document.addEventListener('DOMContentLoaded', () => {
+         // @ts-ignore
+         // We might need to wait for subjectData?
+         // Assuming Layout loads it before DOMContentLoaded or very early.
+         new RevisionController();
     });
 </script>

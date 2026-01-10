@@ -1,0 +1,40 @@
+.speedrun-screen {
+    display: none;
+    min-height: 100vh;
+    /* Allow growth */
+    width: 100vw;
+    /* background: var(--bg-dark); */
+    flex-direction: column;
+}
+
+.speedrun-screen.active {
+    display: flex;
+}
+
+.sr-content {
+    flex: 1;
+    /* overflow-y: auto; <-- REMOVED */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 900px;
+    /* Constrained for HUD focus */
+    margin: 0 auto;
+}
+
+/* Ensure QuestionContainer fits nicely */
+.question-display-root {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center question vertically if possible */
+}
+
+/* COMBO POPUP Removed - Moved to StreakCounter.astro */
+
+/* Utility */
+.hidden {
+    display: none !important;
+}

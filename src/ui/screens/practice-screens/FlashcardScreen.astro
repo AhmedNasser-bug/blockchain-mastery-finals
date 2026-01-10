@@ -1,0 +1,224 @@
+---
+import Flashcard from '../../components/Flashcards/Flashcard.astro';
+import BackButton from '../../components/BackButton.astro';
+import '../../../styles/screens/practice.css';
+---
+
+<div class="screen flashcard-screen" id="flashcard-screen">
+    <div class="screen-wrapper">
+        <div class="fc-header">
+            <BackButton />
+            <div class="fc-progress" id="fc-progress">Card 1 / 10</div>
+        </div>
+    
+        <div class="pc-content">
+            <div class="flashcard-container-wrapper">
+                 <Flashcard />
+            </div>
+            
+            <div class="fc-controls">
+                <button class="btn btn-secondary" id="fc-prev-btn">PREV</button>
+                <button class="btn btn-primary" id="fc-reveal-btn">REVEAL</button>
+                <button class="btn btn-success hidden" id="fc-know-btn">I KNEW IT</button>
+                <button class="btn btn-danger hidden" id="fc-dont-know-btn">STUDY AGAIN</button>
+                <button class="btn btn-secondary" id="fc-next-btn">NEXT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: var(--bg-card);
+        border-bottom: 2px solid var(--border);
+    }
+    
+    .fc-progress {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.2rem;
+        color: var(--primary);
+    }
+
+    .flashcard-container {
+        width: 100%;
+        max-width: 800px;
+        height: 500px; /* Increased height */
+        margin: 40px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .fc-controls {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+        justify-content: center;
+    }
+    
+    .hidden { display: none !important; }
+</style>
+
+<script>
+    import { GameUtils } from "../../scripts/GameUtils";
+    import { Subject } from '../../../logic/entities/Subject';
+    // We don't import UserProgress anymore. We use DB or Transiet state via GameUtils/Player?
+    // Or we handle simple local storage for flashcards for now to avoid complex SQL for "Correct/Incorrect" tracking per card?
+    // Let's use simple localStorage for flashcard mastery for speed, or integrate into PlayerStats later.
+    // For now: LocalStorage legacy style but cleaning up the import.
+    
+    class FlashcardController {
+        private subject: Subject;
+        private items: any[] = [];
+        private currentIndex: number = 0;
+        private isFlipped: boolean = false;
+        private mode: 'questionBank' | 'terminology' = 'questionBank';
+        
+        // private mountPoint: HTMLElement;
+        private revealBtn: HTMLElement;
+        private knowBtn: HTMLElement;
+        private dontKnowBtn: HTMLElement;
+        private nextBtn: HTMLElement;
+        private prevBtn: HTMLElement;
+
+        constructor() {
+            this.init();
+        }
+
+        async init() {
+             const screen = document.getElementById('flashcard-screen');
+             if(!screen) return;
+             
+             // We don't mount manually anymore
+             // this.mountPoint = document.getElementById('fc-mount-point')!;
+             
+             this.revealBtn = document.getElementById('fc-reveal-btn')!;
+             this.knowBtn = document.getElementById('fc-know-btn')!;
+             this.dontKnowBtn = document.getElementById('fc-dont-know-btn')!;
+             this.nextBtn = document.getElementById('fc-next-btn')!;
+             this.prevBtn = document.getElementById('fc-prev-btn')!;
+             
+             this.bindEvents();
+             
+             // Register global start
+             // @ts-ignore
+             window.game = window.game || {};
+             // @ts-ignore
+             window.game.startFlashcards = this.start.bind(this);
+             
+             window.addEventListener('game-assets-ready', () => {
+                 console.log("Flashcards: Data Refreshed");
+                 // We don't need to auto-start, just ensure data is available for next start() call
+             });
+        }
+        
+        bindEvents() {
+            this.revealBtn.addEventListener('click', () => this.flipCard());
+            this.knowBtn.addEventListener('click', () => this.markResult(true));
+            this.dontKnowBtn.addEventListener('click', () => this.markResult(false));
+            this.nextBtn.addEventListener('click', () => this.navigate(1));
+            this.prevBtn.addEventListener('click', () => this.navigate(-1));
+        }
+        
+        async start(mode: 'questionBank' | 'terminology') {
+            this.mode = mode;
+            this.activateScreen();
+            
+            // @ts-ignore
+            const sd = window.subjectData;
+            // API-like fetch from local data or new Subject Entity
+            // Ideally we use: 
+            // const subject = new Subject(sd.id, sd.name, ...);
+            // const questions = await subject.loadQuestions();
+            
+            // For transition, we use window.subjectData which is already loaded by Layout
+            this.items = mode === 'questionBank' ? sd.questions : sd.terminology;
+            
+            // Transform terminology to unified interface if needed
+            if(mode === 'terminology') {
+                 this.items = this.items.map((t: any) => ({
+                     front: t.term,
+                     back: t.definition,
+                     id: `term_${t.term}`
+                 }));
+            } else {
+                 this.items = this.items.map((q: any) => ({
+                     front: q.question,
+                     back: `<strong>Answer:</strong> ${q.correctAnswer || q.correct}<br/><br/>${q.explanation || ''}`,
+                     id: q.id
+                 }));
+            }
+            
+            this.currentIndex = 0;
+            this.render();
+        }
+        
+        activateScreen() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('flashcard-screen')?.classList.add('active');
+        }
+        
+        render() {
+            this.isFlipped = false;
+            const item = this.items[this.currentIndex];
+            
+            // Reset Buttons
+            this.revealBtn.classList.remove('hidden');
+            this.knowBtn.classList.add('hidden');
+            this.dontKnowBtn.classList.add('hidden');
+            
+            // Update Card Content via DOM manipulation of the existing component
+            // We assume the component structure matches what we expect
+            const card = document.querySelector('.flashcard-inner');
+            if(card) {
+                card.classList.remove('flipped');
+                const front = card.querySelector('.fc-term-title');
+                const back = card.querySelector('.fc-content-text');
+                
+                if(front) front.textContent = item.front;
+                if(back) back.innerHTML = item.back;
+            }
+            
+            // Update Progress
+            const progress = document.getElementById('fc-progress');
+            if(progress) {
+                progress.textContent = `Card ${this.currentIndex + 1} / ${this.items.length}`;
+            }
+        }
+        
+        flipCard() {
+            this.isFlipped = !this.isFlipped;
+            const inner = document.querySelector('.flashcard-inner');
+            if(inner) inner.classList.toggle('flipped', this.isFlipped);
+            
+            if(this.isFlipped) {
+                this.revealBtn.classList.add('hidden');
+                this.knowBtn.classList.remove('hidden');
+                this.dontKnowBtn.classList.remove('hidden');
+            }
+        }
+        
+        markResult(known: boolean) {
+            // Store result in LocalStorage for now (Mastery System Lite)
+            const item = this.items[this.currentIndex];
+            const key = `fc_${this.mode}_${item.id}_mastery`;
+            const val = known ? 1 : 0; // Simple boolean for now
+            localStorage.setItem(key, val.toString());
+            
+            this.navigate(1);
+        }
+        
+        navigate(dir: number) {
+            this.currentIndex += dir;
+            if(this.currentIndex < 0) this.currentIndex = this.items.length - 1;
+            if(this.currentIndex >= this.items.length) this.currentIndex = 0;
+            this.render();
+        }
+    }
+    
+    new FlashcardController();
+</script>

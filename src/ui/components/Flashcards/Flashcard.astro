@@ -1,4 +1,6 @@
 ---
+import '../../../styles/components/flashcard.css';
+
 /**
  * Flashcard Component
  * Renders a flip-card with front/back faces.
@@ -12,13 +14,22 @@ const { frontText = "Term Name", backText = "Definition text..." } = Astro.props
 ---
 
 <div class="flashcard-scene">
-    <div class="flashcard-inner" id="currentFlashcard">
+    <div class="flashcard-inner">
         <div class="flashcard-face flashcard-front-face">
-            <h2 id="fcTerm" class="fc-term-title">{frontText}</h2>
+            <h2 class="fc-term-title">{frontText}</h2>
             <p class="fc-tap-hint">(Tap to flip)</p>
         </div>
         <div class="flashcard-face flashcard-back-face">
-            <div id="fcContent" class="fc-content-text">{backText}</div>
+            <div class="fc-content-text">{backText}</div>
         </div>
     </div>
 </div>
+
+<script>
+    // Add click listener to flip
+    document.querySelectorAll('.flashcard-inner').forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+    });
+</script>

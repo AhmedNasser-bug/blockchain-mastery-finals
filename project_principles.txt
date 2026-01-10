@@ -1,0 +1,29 @@
+# Coding and Design Principles & Patterns
+
+## Architectural Principles
+1.  **Offline-First Architecture**: Handsets must primarily function without network access. Data is cached locally (IndexedDB/SQLite) and the application reads from this local cache for all gameplay.
+2.  **Database-First Strategy**: The local SQLite database is the Single Source of Truth for the application runtime.
+3.  **Synchronization Phase**: Network usage is restricted to a dedicated "Synchronization" or "Asset Loading" phase upon subject entry.
+4.  **Strict Layering**: 
+    - **UI Layer**: (Astro Components) only handles presentation and user interaction.
+    - **Logic Layer**: (Entities like `Subject`, `Player`) contains business logic but delegates persistence.
+    - **Infrastructure Layer**: (Repositories, DatabaseService) handles raw data access and storage.
+
+## Design Patterns
+1.  **Repository Pattern**: Encapsulates data access logic (`SubjectRepository`, `PlayerRepository`), decoupling the business entities from the specific database implementation (SQLite WASM).
+2.  **Singleton Pattern**: Used for `DatabaseService` and Repositories to ensure a single active connection/instance.
+3.  **Dependency Inversion Principle (DIP)**: Entities depend on abstractions (Repositories/Services) rather than concrete lower-level details (Raw SQL). *Note: Implemented via static instance access currently, moving towards injection.*
+4.  **Component Composition**: Game screens (`Speedrun`, `Practice`) are composed of smaller, reusable components (`GameHeader`, `QuestionContainer`, `GameFooter`) rather than monolithic files.
+5.  **Evolutionary Database Design**: Database migrations check for existing schemas and evolve them (e.g., adding missing columns) rather than wiping/resetting, preserving user data.
+
+## UX & UI Choices
+1.  **Seamless Offline Experience**: Users are unaware of the data source shift. The "Loading Assets" overlay manages expectations during the sync phase.
+2.  **Centered Focus**: The "Question Frame" is centered with an invisible patterned background to focus user attention.
+3.  **Reachable Interaction**: Footers and controls are designed to be reachable (scrolling/fixed positioning) to ensure usability.
+4.  **Instant Feedback**: Game logic provides immediate feedback (correct/incorrect) on interaction.
+5.  **Aesthetic Polish**: Modern, "Premium" feel requested (Glassmorphism, rich aesthetics, dynamic animations).
+
+## Coding Operations
+1.  **Encapsulation**: DB operations are strictly separated from Logic (Entity) files.
+2.  **Strong Typing**: TypeScript interfaces for props and data structures.
+3.  **Defensive Coding**: Fallbacks for API fetching (case-insensitivity checks, retry logic) and Asset Loading (checks for missing data).

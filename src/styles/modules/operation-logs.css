@@ -1,0 +1,52 @@
+.operation-logs-container {
+    background: #000;
+    border: 1px solid var(--border);
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.logs-header h3 {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: red;
+}
+
+.status-indicator.online {
+    background: var(--success);
+    box-shadow: 0 0 5px var(--success);
+}
+
+.logs-content {
+    flex: 1;
+    overflow-y: auto;
+    color: var(--text-secondary);
+}
+
+.log-entry {
+    margin-bottom: 2px;
+}
+
+.timestamp {
+    color: var(--primary-dim);
+    margin-right: 5px;
+}

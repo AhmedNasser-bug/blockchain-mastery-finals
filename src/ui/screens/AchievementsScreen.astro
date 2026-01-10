@@ -15,10 +15,17 @@
 
 
 <script>
-    import type { SubjectData as Subject } from '../../data/subjects/Subject';
+
+    interface SubjectData {
+        id: string;
+        name: string;
+        achievements?: any[];
+        config?: { storageKey: string };
+    }
+
 
     class AchievementsScreenController {
-        private subject: Subject;
+        private subject: SubjectData;
 
         constructor() {
             // @ts-ignore
